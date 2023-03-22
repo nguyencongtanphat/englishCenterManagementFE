@@ -3,6 +3,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useState } from "react";
 import AppLineChart from "../../../globalComponents/LineChart";
+import CircleChartExample from "../../../globalComponents/CirlceChart";
+import StudentCenterInfo from "../components/StudentCenterInfo";
+import ClassList from "../../../globalComponents/ClassList";
 
 function HomePage() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -22,6 +25,8 @@ function HomePage() {
         </Col>
       </Row>
       <AppLineChart/>
+      <StudentCenterInfo/>
+      <ClassList/>
     </Container>
     
   );
