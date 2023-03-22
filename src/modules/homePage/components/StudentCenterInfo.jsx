@@ -5,10 +5,11 @@ import ListStudentView from "./ListView";
 
 function StudentCenterInfo() {
   return (
-    <Container>
+    <Container className="mt-5">
       <Row>
         <Col xs={5}>
-          <Card>
+          <Card className="p-6">
+            <h3>Classify</h3>
             <AppCircleChart />
           </Card>
         </Col>

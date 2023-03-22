@@ -3,12 +3,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import React, { useState } from "react";
 import AppLineChart from "../../../globalComponents/LineChart";
-import CircleChartExample from "../../../globalComponents/CirlceChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
 
 function HomePage() {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <Container fluid="md">
@@ -17,18 +16,18 @@ function HomePage() {
         <Col>
           <h2>Cente Dashboard</h2>
         </Col>
-        <Col>
+        <Col className="text-end">
           <DatePicker
             selected={selectedDate}
             onChange={(date) => setSelectedDate(date)}
           />
         </Col>
       </Row>
-      <AppLineChart/>
-      <StudentCenterInfo/>
-      <ClassList/>
+      <AppLineChart />
+      
+      <StudentCenterInfo />
+      <ClassList />
     </Container>
-    
   );
 }
 

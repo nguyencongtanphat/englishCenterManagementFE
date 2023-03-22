@@ -1,22 +1,36 @@
 import Card from "react-bootstrap/Card";
 
-function ClassCard({color}) {
+function ClassCard({ classInfo }) {
+  const colorBg = [
+    "#1C64F2",
+    "#BC2FB6",
+    "#9B51E0",
+    "#F2C94C",
+    "#F2994A",
+    "#1BB0A7",
+    "#E83480",
+    "#27AE60",
+    "#2D9CDB",
+  ];
+  let indexColor = Math.floor(Math.random() * 10);
+  let bgColor =
+    colorBg[indexColor < colorBg.length ? indexColor : 0];
+  console.log(bgColor)
+  const { id, className, teacher,  number, target, time } = classInfo;
   return (
     <Card
-     
-      bg={color.toLowerCase()}
-      key={color}
-      text={color.toLowerCase() === "light" ? "dark" : "white"}
-      style={{ width: "180px" }}
+      key={id}
+      text={bgColor === "light" ? "dark" : "white"}
+      style={{ width: "190px", backgroundColor: bgColor }}
       className="mb-2"
     >
-      <Card.Header>Header</Card.Header>
       <Card.Body>
-        <Card.Title>{color} Card Title </Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+        <Card.Title className="text-center"> {className} </Card.Title>
+        <Card.Text className="text-center">
+          {teacher} | {number} students
         </Card.Text>
+        <Card.Text className="text-center">Target: {target}</Card.Text>
+        <Card.Text className="text-center">{time}</Card.Text>
       </Card.Body>
     </Card>
   );
