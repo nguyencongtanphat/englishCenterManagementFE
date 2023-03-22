@@ -10,11 +10,13 @@ const Root = () => {
         <Col>
           <div>SideBar</div>
         </Col>
-        <Col>
-        {/* content of web will appear here */}
+        <Col xs={10}>
+          {/* content of web will appear here */}
           <Outlet />
         </Col>
       </Row>
+      
+      
       {/* <Footer /> */}
       <div>footer</div>
     </Container>
