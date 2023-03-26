@@ -120,4 +120,4 @@ function ClassesPage() {
     )
 }
 
-export default ClassesPage
+export default  ClassesPage
