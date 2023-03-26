@@ -98,7 +98,7 @@ const DUMMY_CLASSES = [
     }, 
 ]
 
-function classesPage() {
+function ClassesPage() {
     return (
         <Container>
             <Row className='align-items-center'>
@@ -107,7 +107,7 @@ function classesPage() {
                     <h2>Class List</h2>
                 </Col>
                 <Col className='text-end'>
-                    <Link to='add' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none'>
+                    <Link to='/classes/addclasses' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none'>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2'>Add Class</span>
                     </Link>
@@ -120,4 +120,4 @@ function classesPage() {
     )
 }
 
-export default classesPage
+export default  ClassesPage
