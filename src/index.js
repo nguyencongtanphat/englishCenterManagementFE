@@ -13,6 +13,7 @@ import ClassDashboard from './modules/classesPage/screens/ClassDashboard';
 import ClassAttendant from './modules/classesPage/screens/ClassAttendant';
 import ClassPeriodicTest from './modules/classesPage/screens/ClassPeriodicTest';
 import ClassHomework from './modules/classesPage/screens/ClassHomework';
+import ClassesAdd from './modules/classesPage/components/ClassesAdd';
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             index: true,
             path: "",
             element: <ClassesPage/>
+          },
+          {
+            path: "classes/addclasses",
+            element: <ClassesAdd />
           },
           {
             path: ":className",
@@ -57,7 +62,7 @@ const router = createBrowserRouter([
             ]
           }
         ]
-      }
+      },
     ],
   },
 ]);
