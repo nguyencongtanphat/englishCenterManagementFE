@@ -7,11 +7,14 @@ import Root from './Root';
 import ErrorPage from './modules/errorPage/ErrorPage';
 import HomePage from './modules/homePage/screens/HomePage';
 import ClassesPage from './modules/classesPage/screens/ClassesPage';
+import ClassDetailPage from './modules/classesPage/screens/ClassDetailPage';
+import ClassDetailRoot from './modules/classesPage/components/ClassDetailRoot';
+import ClassDashboard from './modules/classesPage/screens/ClassDashboard';
+import ClassAttendant from './modules/classesPage/screens/ClassAttendant';
+import ClassPeriodicTest from './modules/classesPage/screens/ClassPeriodicTest';
+import ClassHomework from './modules/classesPage/screens/ClassHomework';
 import ClassesAdd from './modules/classesPage/components/ClassesAdd';
-import ClassesDashboardPage from './modules/classesPage/screens/ClassesDashboardPage';
-import ClassesHomeworkPage from './modules/classesPage/screens/ClassesHomeworkPage';
-import ClassesAttendantPage from './modules/classesPage/screens/ClassesAttendantPage';
-import ClassesPeriodicTestsPage from './modules/classesPage/screens/ClassesPeriodicTestsPage';
+
 
 
 const router = createBrowserRouter([
@@ -27,28 +30,40 @@ const router = createBrowserRouter([
       },
       {
         path: "classes",
-        element: <ClassesPage/>
+        children: [
+          {
+            index: true,
+            path: "",
+            element: <ClassesPage/>
+          },
+          {
+            path: "addclasses",
+            element: <ClassesAdd />
+          },
+          {
+            path: ":className",
+            element: <ClassDetailRoot />,
+            children: [
+              {
+                path: 'dashboard',
+                element: <ClassDashboard/>
+              }, 
+              {
+                path: 'attendant',
+                element: <ClassAttendant/>
+              },
+              {
+                path: 'periodic-test',
+                element: <ClassPeriodicTest/>
+              },
+              {
+                path: 'homework',
+                element: <ClassHomework/>
+              },
+            ]
+          }
+        ]
       },
-      {
-        path: "classes/addclasses",
-        element: <ClassesAdd/>
-      },
-      {
-        path: "classes/classesDashboard",
-        element: <ClassesDashboardPage/>
-      },
-      {
-        path: "classes/attendant",
-        element: <ClassesAttendantPage/>
-      },
-      {
-        path: "classes/periodictests",
-        element: <ClassesPeriodicTestsPage/>
-      },
-      {
-        path: "classes/homework",
-        element: <ClassesHomeworkPage/>
-      }
     ],
   },
 ]);
