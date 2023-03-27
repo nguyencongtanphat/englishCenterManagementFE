@@ -39,7 +39,7 @@ function ClassesTable({classes}) {
                 {
                     classes.map(_class => <tr key={_class.id}>
                         <td>
-                            <Link to={_class.name} className='text-decoration-none text-dark fw-semibold'>{_class.name}</Link>
+                            <Link to={_class.name + '/dashboard'} className='text-decoration-none text-dark fw-semibold'>{_class.name}</Link>
                         </td>
                         <td>{ _class.teacher.name }</td>
                         <td>{ _class.studentQuantity }</td>
@@ -50,7 +50,6 @@ function ClassesTable({classes}) {
             </tbody>
         </Table>
     </>
-    
 }
 
 export default ClassesTable
