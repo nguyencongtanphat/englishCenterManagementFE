@@ -82,7 +82,7 @@ const DUMMY_CLASSES = [
         }
     }, 
     {
-        id: 'cl04',
+        id: 'cl06',
         name: 'TOERL700.5',
         teacher: {
             id: 'gv01',
@@ -101,7 +101,7 @@ const DUMMY_CLASSES = [
 function ClassesPage() {
     return (
         <Container>
-            <Row className='align-items-center'>
+            <Row className='align-items-center justify-content-between'>
                 <Col>
                     <p>Student Lists</p>
                     <h2>Class List</h2>
