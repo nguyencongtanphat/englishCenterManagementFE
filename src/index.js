@@ -14,7 +14,7 @@ import ClassAttendant from './modules/classesPage/screens/ClassAttendant';
 import ClassPeriodicTest from './modules/classesPage/screens/ClassPeriodicTest';
 import ClassHomework from './modules/classesPage/screens/ClassHomework';
 import ClassesAdd from './modules/classesPage/components/ClassesAdd';
-
+import StudentsPage from './modules/studentsPage/screens/StudentsPage'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +26,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <HomePage />,
         errorElement: <ErrorPage />,
+      },
+      {
+        path: "students",
+        element: <StudentsPage/>
       },
       {
         path: "classes",
