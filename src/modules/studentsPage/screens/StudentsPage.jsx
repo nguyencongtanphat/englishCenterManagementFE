@@ -104,7 +104,7 @@ const DUMMY_STUDENTS = [
     {
         id: 'cl01',
         name: 'Nguyễn Thành Trung',
-        avatar: 'https://i.imgur.com/DizC5X0.png',
+        avatar: 'https://i.imgur.com/XZuh0eK.png',
         mshv: '20520334',
         class: {
             id: 'cl01',
@@ -123,7 +123,7 @@ const DUMMY_STUDENTS = [
     {
         id: 'cl01',
         name: 'Nguyễn Thành Trung',
-        avatar: 'https://i.imgur.com/DizC5X0.png',
+        avatar: 'https://i.imgur.com/oirOmyV.png',
         mshv: '20520334',
         class: {
             id: 'cl01',
