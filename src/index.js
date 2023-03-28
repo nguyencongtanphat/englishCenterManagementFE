@@ -17,6 +17,7 @@ import ClassPeriodicTest from './modules/classesPage/screens/ClassPeriodicTest';
 import ClassHomework from './modules/classesPage/screens/ClassHomework';
 import ClassesAdd from './modules/classesPage/components/ClassesAdd';
 import StudentsPage from './modules/studentsPage/screens/StudentsPage'
+import ClassesRoot from './modules/classesPage/components/ClassesRoot';
 
 const router = createBrowserRouter([{
   path: "/",
@@ -29,15 +30,12 @@ const router = createBrowserRouter([{
     },
     {
       path: "classes",
+      element: <ClassesRoot/>,
       children: [
         {
           index: true,
           path: "",
           element: < ClassesPage />
-        },
-        {
-          path: "students",
-          element: <StudentsPage/>
         },
         {
           path: "addclasses",
@@ -70,6 +68,10 @@ const router = createBrowserRouter([{
         }
       ]
     },
+    {
+      path: "students",
+      element: < StudentsPage />
+    }
   ],
 }, ]);
 
