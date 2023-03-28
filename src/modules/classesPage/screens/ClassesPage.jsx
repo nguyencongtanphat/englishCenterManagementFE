@@ -1,8 +1,4 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ClassesTable from '../components/ClassesTable'
 
 const DUMMY_CLASSES = [
@@ -100,23 +96,7 @@ const DUMMY_CLASSES = [
 
 function ClassesPage() {
     return (
-        <Container>
-            <Row className='align-items-center justify-content-between'>
-                <Col>
-                    <p>Student Lists</p>
-                    <h2>Class List</h2>
-                </Col>
-                <Col className='d-flex justify-content-end'>
-                    <Link to='/classes/addclasses' className='bg-primary text-center text-light py-1 px-3 rounded-2 text-decoration-none w-auto'>
-                        <FontAwesomeIcon icon={faPlusCircle}/>
-                        <span className='ps-2'>Add Class</span>
-                    </Link>
-                </Col>
-            </Row>
-            <Row>
-                <ClassesTable classes={DUMMY_CLASSES}/>
-            </Row>
-        </Container>
+        <ClassesTable classes={DUMMY_CLASSES}/>
     )
 }
 

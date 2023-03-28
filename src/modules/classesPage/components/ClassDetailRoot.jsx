@@ -1,12 +1,10 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import ClassDetailHeader from "./ClassDetailHeader";
 import classes from "./ClassDetailRoot.module.css";
 
 function ClassDetailRoot() {
   return (
     <>
-      <ClassDetailHeader/>
       <div className="bg-dark bg-opacity-10 p-3 rounded-4">
         <nav className={`${classes['class-navigator']} px-6`}>
           <ul className="list-unstyled d-flex justify-content-around gap-4">
