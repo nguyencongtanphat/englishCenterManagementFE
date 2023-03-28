@@ -106,8 +106,8 @@ function ClassesPage() {
                     <p>Student Lists</p>
                     <h2>Class List</h2>
                 </Col>
-                <Col className='text-end'>
-                    <Link to='/classes/addclasses' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none'>
+                <Col className='d-flex justify-content-end'>
+                    <Link to='/classes/addclasses' className='bg-primary text-center text-light py-1 px-3 rounded-2 text-decoration-none w-auto'>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2'>Add Class</span>
                     </Link>

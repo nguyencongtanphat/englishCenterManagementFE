@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Col, Container, Row, Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 
@@ -120,13 +119,34 @@ let DUMMY_PERIODIC_TESTS = [
     { Score: Math.round(Math.random() * 990), StudentID: '20521952', TestID: 'test_7' },
 ]
 
+// Populate foreign Fields of periodic tests
 DUMMY_PERIODIC_TESTS = DUMMY_PERIODIC_TESTS.map(periodic_test => {
     const student = DUMMY_STUDENTS.find(std => std.StudentID === periodic_test.StudentID)
     const test = DUMMY_TESTS.find(test => test.ID === periodic_test.TestID)
     return {
         Score: periodic_test.Score,
-        Student: student,
-        Test: test,
+        StudentID: student,
+        TestID: test,
+    }
+})
+
+const students_test = DUMMY_STUDENTS.map(student => {
+    // test: [{date: ..., scores: ...}]
+    let sumScores = 0
+    const tests = DUMMY_PERIODIC_TESTS.filter(periodic_test => {
+        return periodic_test.StudentID === student
+    }).map(test => {
+        sumScores += test.Score
+        return {
+            date: test.TestID.Date,
+            score: test.Score
+        }
+    })
+
+    return {
+        ...student,
+        tests,
+        averageScore: Math.round(sumScores / tests.length)
     }
 })
 
@@ -151,10 +171,21 @@ function ClassPeriodicTest() {
                     <tr>
                         <th>Name</th>
                         <th>Average</th>
+                        <th>5/3</th>
+                        <th>8/3</th>
+                        <th>11/3</th>
+                        <th>14/3</th>
+                        <th>17/3</th>
+                        <th>21/3</th>
+                        <th>24/3</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    {students_test.map(sdtt => <tr key={sdtt.StudentID}>
+                        <td>{sdtt.Name + sdtt.StudentID}</td>
+                        <td>{ sdtt.averageScore }</td>
+                        {sdtt.tests.map(test => <td>{test.score}</td>)}
+                    </tr>)}
                 </tbody>
             </Table>
         </Row>
