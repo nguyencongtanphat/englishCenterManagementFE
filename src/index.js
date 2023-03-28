@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider
+} from "react-router-dom";
 import Root from './Root';
 import ErrorPage from './modules/errorPage/ErrorPage';
 import HomePage from './modules/homePage/screens/HomePage';
@@ -15,60 +18,61 @@ import ClassHomework from './modules/classesPage/screens/ClassHomework';
 import ClassesAdd from './modules/classesPage/components/ClassesAdd';
 
 
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/",
-        element: <HomePage />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: "classes",
-        children: [
-          {
-            index: true,
-            path: "",
-            element: <ClassesPage/>
-          },
-          {
-            path: "addclasses",
-            element: <ClassesAdd />
-          },
-          {
-            path: ":className",
-            element: <ClassDetailRoot />,
-            children: [
-              {
-                path: 'dashboard',
-                element: <ClassDashboard/>
-              }, 
-              {
-                path: 'attendant',
-                element: <ClassAttendant/>
-              },
-              {
-                path: 'periodic-test',
-                element: <ClassPeriodicTest/>
-              },
-              {
-                path: 'homework',
-                element: <ClassHomework/>
-              },
-            ]
-          }
-        ]
-      },
-    ],
-  },
-]);
+const router = createBrowserRouter([{
+  path: "/",
+  element: < Root / > ,
+  errorElement: < ErrorPage / > ,
+  children: [{
+      path: "/",
+      element: < HomePage / > ,
+      errorElement: < ErrorPage / > ,
+    },
+    {
+      path: "classes",
+      children: [
+        {
+          index: true,
+          path: "",
+          element: < ClassesPage / >
+        },
+        {
+          path: "addclasses",
+          element: < ClassesAdd / >
+        },
+        {
+          path: ":className",
+          element: < ClassDetailRoot / > ,
+          children: [{
+              index: true,
+              element: < ClassDashboard / >
+            },
+            {
+              path: 'dashboard',
+              element: < ClassDashboard / >
+            },
+            {
+              path: 'attendant',
+              element: < ClassAttendant / >
+            },
+            {
+              path: 'periodic-test',
+              element: < ClassPeriodicTest / >
+            },
+            {
+              path: 'homework',
+              element: < ClassHomework / >
+            },
+          ]
+        }
+      ]
+    },
+  ],
+}, ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(
-    <RouterProvider router={router} />
+root.render( <
+  RouterProvider router = {
+    router
+  }
+  />
 );
-
