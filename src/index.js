@@ -20,12 +20,12 @@ import ClassesAdd from './modules/classesPage/components/ClassesAdd';
 
 const router = createBrowserRouter([{
   path: "/",
-  element: < Root / > ,
-  errorElement: < ErrorPage / > ,
+  element: < Root /> ,
+  errorElement: < ErrorPage /> ,
   children: [{
       path: "/",
-      element: < HomePage / > ,
-      errorElement: < ErrorPage / > ,
+      element: < HomePage /> ,
+      errorElement: < ErrorPage /> ,
     },
     {
       path: "classes",
@@ -33,34 +33,34 @@ const router = createBrowserRouter([{
         {
           index: true,
           path: "",
-          element: < ClassesPage / >
+          element: < ClassesPage />
         },
         {
           path: "addclasses",
-          element: < ClassesAdd / >
+          element: < ClassesAdd />
         },
         {
           path: ":className",
-          element: < ClassDetailRoot / > ,
+          element: < ClassDetailRoot /> ,
           children: [{
               index: true,
-              element: < ClassDashboard / >
+              element: < ClassDashboard />
             },
             {
               path: 'dashboard',
-              element: < ClassDashboard / >
+              element: < ClassDashboard />
             },
             {
               path: 'attendant',
-              element: < ClassAttendant / >
+              element: < ClassAttendant />
             },
             {
               path: 'periodic-test',
-              element: < ClassPeriodicTest / >
+              element: < ClassPeriodicTest />
             },
             {
               path: 'homework',
-              element: < ClassHomework / >
+              element: < ClassHomework />
             },
           ]
         }
