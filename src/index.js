@@ -16,56 +16,62 @@ import ClassAttendant from './modules/classesPage/screens/ClassAttendant';
 import ClassPeriodicTest from './modules/classesPage/screens/ClassPeriodicTest';
 import ClassHomework from './modules/classesPage/screens/ClassHomework';
 import ClassesAdd from './modules/classesPage/components/ClassesAdd';
-
+import StudentsPage from './modules/studentsPage/screens/StudentsPage'
+import ClassesRoot from './modules/classesPage/components/ClassesRoot';
 
 const router = createBrowserRouter([{
   path: "/",
-  element: < Root / > ,
-  errorElement: < ErrorPage / > ,
+  element: < Root /> ,
+  errorElement: < ErrorPage /> ,
   children: [{
       path: "/",
-      element: < HomePage / > ,
-      errorElement: < ErrorPage / > ,
+      element: < HomePage /> ,
+      errorElement: < ErrorPage /> ,
     },
     {
       path: "classes",
+      element: <ClassesRoot/>,
       children: [
         {
           index: true,
           path: "",
-          element: < ClassesPage / >
+          element: < ClassesPage />
         },
         {
           path: "addclasses",
-          element: < ClassesAdd / >
+          element: < ClassesAdd />
         },
         {
           path: ":className",
-          element: < ClassDetailRoot / > ,
+          element: < ClassDetailRoot /> ,
           children: [{
               index: true,
-              element: < ClassDashboard / >
+              element: < ClassDashboard />
             },
             {
               path: 'dashboard',
-              element: < ClassDashboard / >
+              element: < ClassDashboard />
             },
             {
               path: 'attendant',
-              element: < ClassAttendant / >
+              element: < ClassAttendant />
             },
             {
               path: 'periodic-test',
-              element: < ClassPeriodicTest / >
+              element: < ClassPeriodicTest />
             },
             {
               path: 'homework',
-              element: < ClassHomework / >
+              element: < ClassHomework />
             },
           ]
         }
       ]
     },
+    {
+      path: "students",
+      element: < StudentsPage />
+    }
   ],
 }, ]);
 
