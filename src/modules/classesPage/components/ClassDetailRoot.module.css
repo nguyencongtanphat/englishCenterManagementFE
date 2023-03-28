@@ -1,4 +1,4 @@
-a:link, a:visited {
+.class-navigator a:link, .class-navigator a:visited {
     color: #666;
     text-decoration: none;
     font-family: Inter;
@@ -9,10 +9,10 @@ a:link, a:visited {
     padding: 3px 0;
 }
 
-a:hover {
+.class-navigator a:hover {
     color: #333;
 }
 
-a.active {
+.class-navigator a.active {
     background-color: white;
 }
