@@ -1,124 +1,237 @@
 import React from 'react'
-import AppCircleChart from '../../../globalComponents/CirlceChart'
+import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
 
-
 const DUMMY_STUDENTS = [
     {
-        StudentID: '20521947',
-        Name: 'Nguyễn Thành Trung',
-        ImageURL: 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png',
-        Phone: '0902352835',
-        Attendant: {
-            Persent:'100%',
-            Present: '20/20'
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://file.tinnhac.com/resize/600x-/2020/06/17/20200617123908-fdf3.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
         },
-        PeriodicTest:{
-            Persent:'90%',
-            Score: '800/990'
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
         },
-        Homework:{
-            Persent: '100%',
-            Completed:'20/30'
+        homework:{
+            persent: 100,
+            completed:'20/30'
         },
-        Valuation: "Good"
+        evaluation: {
+            value:'good',
+            type:'success'
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
     },
     {
-        StudentID: '20521948',
-        Name: 'Nguyễn Đỗ Nhã Khuyên',
-        ImageURL: 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png',
-        Phone: '0902352835',
-        Attendant: {
-            Persent:'100%',
-            Present: '20/20'
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://symbols.vn/wp-content/uploads/2022/02/Hinh-Jennie-Blackpink-Dep-de-thuong-nhat.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
         },
-        PeriodicTest:{
-            Persent:'90%',
-            Score: '800/990'
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
         },
-        Homework:{
-            Persent: '100%',
-            Completed:'20/30'
+        homework:{
+            persent: 100,
+            completed:'20/30'
         },
-        Valuation: "Good"
+        evaluation: {
+            value:'good',
+            type:'success'
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
     },
     {
-        StudentID: '20521949',
-        Name: 'Nguyễn Công Tấn Phát',
-        ImageURL: 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png',
-        Phone: '0902352835',
-        Attendant: {
-            Persent:'100%',
-            Present: '20/20'
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
         },
-        PeriodicTest:{
-            Persent:'90%',
-            Score: '800/990'
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
         },
-        Homework:{
-            Persent: '100%',
-            Completed:'20/30'
+        homework:{
+            persent: 100,
+            completed:'20/30'
         },
-        Valuation: "Good"
+        evaluation: {
+            value: "Medium",
+            type: "warning"
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
     },
     {
-        StudentID: '20521950',
-        Name: 'Lê Văn Thiện',
-        ImageURL: 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png',
-        Phone: '0902352835',
-        Attendant: {
-            Persent:'100%',
-            Present: '20/20'
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
         },
-        PeriodicTest:{
-            Persent:'90%',
-            Score: '800/990'
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
         },
-        Homework:{
-            Persent: '100%',
-            Completed:'20/30'
+        homework:{
+            persent: 100,
+            completed:'20/30'
         },
-        Valuation: "Good"
+        evaluation: {
+            value: "Not-good",
+            type: "danger"
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
     },
     {
-        StudentID: '20521951',
-        Name: 'Đoàn Quốc Bảo',
-        ImageURL: 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png',
-        Phone: '0902352835',
-        Attendant: {
-            Persent:'100%',
-            Present: '20/20'
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
         },
-        PeriodicTest:{
-            Persent:'90%',
-            Score: '800/990'
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
         },
-        Homework:{
-            Persent: '100%',
-            Completed:'20/30'
+        homework:{
+            persent: 100,
+            completed:'20/30'
         },
-        Valuation: "Good"
+        evaluation: {
+            value:'good',
+            type:'success'
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
     },
     {
-        StudentID: '20521952',
-        Name: 'Lưu Thượng Vỹ',
-        ImageURL: 'https://www.nicepng.com/png/detail/128-1280406_view-user-icon-png-user-circle-icon-png.png',
-        Phone: '0902352835',
-        Attendant: {
-            Persent:'100%',
-            Present: '20/20'
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
         },
-        PeriodicTest:{
-            Persent:'90%',
-            Score: '800/990'
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
         },
-        Homework:{
-            Persent: '100%',
-            Completed:'20/30'
+        homework:{
+            persent: 100,
+            completed:'20/30'
         },
-        Valuation: "Good"
+        evaluation: {
+            value: "Not-good",
+            type: "danger"
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
     },
+    {
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
+        },
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
+        },
+        homework:{
+            persent: 100,
+            completed:'20/30'
+        },
+        evaluation: {
+            value:'good',
+            type:'success'
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
+    },
+    {
+        id: 'cl01',
+        name: 'Jennie Blackpink',
+        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        phone: '0902352835',
+        studentId:'20521097',
+        attendant: {
+            persent: 100,
+            present: '20/20'
+        },
+        periodicTest:{
+            persent: 90,
+            score: '800/990'
+        },
+        homework:{
+            persent: 100,
+            completed:'20/30'
+        },
+        evaluation: {
+            value:'good',
+            type:'success'
+        },
+        class:{
+            id:'cl01',
+            name:'TOE700.1',
+            type:'TOEIC'
+        }
+    },
+    
+   
+    
+
 ]
 
 function ClassDashboard() {
@@ -126,11 +239,15 @@ function ClassDashboard() {
         <>
             <div style={{backgroundColor:"#F9FAFB", borderRadius:"10px", marginTop:"10px"}}>
                 <ClassesStudentList
-                   dumyStuden= {DUMMY_STUDENTS}
+                   dumyStudent= {DUMMY_STUDENTS}
                 />
-                {/* <AppCircleChart/> */}
-                <StudentCenterInfo/>
-
+                <h3 className='p-4' >Overall</h3>
+                <div>
+                 <div className='d-flex justify-content-center' style={{ border:' solid 1px #f9fafb'}} >
+                    <AppLineChart/>
+                </div>
+                 <StudentCenterInfo/>    
+                </div>
             </div>
         </>
     )
