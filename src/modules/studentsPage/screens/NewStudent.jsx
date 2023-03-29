@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom'
 import { Button } from "react-bootstrap";
-import styled from "../components/NewStudentStyle.module.css"
+import styled from "../components/styleStd.module.css"
 import { Col, Form, Row, Image} from 'react-bootstrap'
 
 function ClassesAdd(){
@@ -10,8 +10,9 @@ function ClassesAdd(){
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
-                <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small>Student List</small></Link>{">"}
-                <Link  style={{color:"black", textDecoration:"none"}} to="/newstudent"><small>New Student</small></Link>
+                <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/students"><small>Student List</small></Link>
+                <small style={{color: "#6B7280"}}>{">"}</small>
+                <Link  style={{color:"#6B7280", textDecoration:"none"}} to=""><small>New Student</small></Link>
             </Stack>
             <h3 className="mb-3"><b>New Student</b></h3>
             <div className={`${styled['form']}`}>

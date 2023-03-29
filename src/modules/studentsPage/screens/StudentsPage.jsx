@@ -27,7 +27,7 @@ const DUMMY_STUDENTS = [
     }, 
     {
         id: 'cl01',
-        name: 'Nguyễn Thành Trung',
+        name: 'Nguyễn Công Tấn Phát',
         avatar: 'https://i.imgur.com/s1LJioE.png',
         mshv: '20520334',
         class: {
@@ -46,7 +46,7 @@ const DUMMY_STUDENTS = [
     }, 
     {
         id: 'cl01',
-        name: 'Nguyễn Thành Trung',
+        name: 'Đoàn Quốc Bảo',
         avatar: 'https://i.imgur.com/SZT3DnJ.png',
         mshv: '20520334',
         class: {
@@ -65,7 +65,7 @@ const DUMMY_STUDENTS = [
     }, 
     {
         id: 'cl01',
-        name: 'Nguyễn Thành Trung',
+        name: 'Nguyễn Đỗ Nhã Khuyên',
         avatar: 'https://i.imgur.com/UyS6gMi.png',
         mshv: '20520334',
         class: {
@@ -84,7 +84,7 @@ const DUMMY_STUDENTS = [
     }, 
     {
         id: 'cl01',
-        name: 'Nguyễn Thành Trung',
+        name: 'Lê Văn Thiện',
         avatar: 'https://i.imgur.com/dCH07c0.png',
         mshv: '20520334',
         class: {
@@ -103,7 +103,7 @@ const DUMMY_STUDENTS = [
     }, 
     {
         id: 'cl01',
-        name: 'Nguyễn Thành Trung',
+        name: 'Lưu Thượng Vỹ',
         avatar: 'https://i.imgur.com/XZuh0eK.png',
         mshv: '20520334',
         class: {
@@ -122,7 +122,7 @@ const DUMMY_STUDENTS = [
     }, 
     {
         id: 'cl01',
-        name: 'Nguyễn Thành Trung',
+        name: 'Nguyễn Thành Long',
         avatar: 'https://i.imgur.com/oirOmyV.png',
         mshv: '20520334',
         class: {
@@ -147,12 +147,12 @@ function ClassesPage() {
             <Row className='align-items-center'>
                 <Col>
                     <Stack direction="horizontal" gap={2} className="mt-3">
-                        <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small>Student List</small></Link>
+                        <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small style={{color: "#6B7280"}}>Student List</small></Link>
                     </Stack>
                     <h3 className="mb-3"><b>Student List</b></h3>
                 </Col>
                 <Col className='text-end' md="auto">
-                    <Link to='/newstudent' className='bg-primary text-light py-2 px-3 rounded-2 text-decoration-none'>
+                    <Link to='new' className='bg-primary text-light py-2 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2' style={{fontSize: "14px"}}>Add Student</span>
                     </Link>
