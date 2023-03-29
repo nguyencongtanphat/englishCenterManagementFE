@@ -8,7 +8,7 @@ import './Header.css'
 
 export default function Header() {
   return (
-    <div className='sticky-top disableCopy'>
+    <div className='sticky-top header-disable-copy'>
         <Container fluid
         style={{
             height: "70px", 
