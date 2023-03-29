@@ -6,7 +6,7 @@ export default function HeaderNotification() {
   return (
     <div >
         <div class="dropdown">
-            <a class="me-3 hidden-arrow" href="#" id="navbarDropdownMenuLink"
+            <a className="me-3 hidden-arrow" href="#" id="navbarDropdownMenuLink"
             role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                 <img src={BellSVG} alt="bell"
                     style={{lineHeight: '46px', height: '46px', padding: '12px'}}/>
