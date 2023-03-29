@@ -68,7 +68,7 @@ function ClassesAdd(){
                     <Row>
                         <Col>
                             <Form.Group controlId="formGridType" style={{width: "300px"}}>
-                                <Form.Label style={{fontWeight:"500"}}>Type</Form.Label>
+                                <Form.Label style={{fontWeight:"500"}}>Type class</Form.Label>
                                     <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"-4px"}}>
                                         <option value="type01">Toeic Reading & Listening</option>
                                         <option value="type02">Toeic Writing & Speaking</option>
@@ -78,13 +78,13 @@ function ClassesAdd(){
                         </Col>
                         <Col>
                             <Form.Group controlId="formGridScoreRequired">
-                                <Form.Label style={{fontWeight:"500"}}>Score required</Form.Label>
+                                <Form.Label style={{fontWeight:"500"}}>Score income</Form.Label>
                                 <Form.Control type="number" min="0" placeholder="Score required" style={{fontSize: "14px", marginTop:"-4px"}}/>
                             </Form.Group>
                         </Col>
                         <Col>
                             <Form.Group controlId="formGridScoreTarget">
-                                <Form.Label style={{fontWeight:"500"}}>ScoreTarget</Form.Label>
+                                <Form.Label style={{fontWeight:"500"}}>Score desire</Form.Label>
                                 <Form.Control type="number" min="0" placeholder="Score Target" style={{fontSize: "14px", marginTop:"-4px"}}/>
                             </Form.Group>
                         </Col>
