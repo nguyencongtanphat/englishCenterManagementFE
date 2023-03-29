@@ -18,7 +18,7 @@ function BreadCrumbs() {
   console.log(breadcrumbs);
 
   return (
-    <nav>
+    <nav className="d-flex pt-3">
       {breadcrumbs.map(({ match, breadcrumb }, index) => (
         <>
           <Link
@@ -29,7 +29,7 @@ function BreadCrumbs() {
             {breadcrumb}
           </Link>
           {!(index === breadcrumbs.length - 1) && (
-            <FontAwesomeIcon icon={faChevronRight} className="me-3"></FontAwesomeIcon>
+            <FontAwesomeIcon icon={faChevronRight} className="me-3" style={{fontSize:'10px', marginTop:'8px'}}></FontAwesomeIcon>
           )}
         </>
       ))}

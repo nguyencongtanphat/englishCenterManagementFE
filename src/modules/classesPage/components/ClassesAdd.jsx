@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-datepicker';
-import Stack from 'react-bootstrap/Stack';
-import { Link } from 'react-router-dom'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Button } from "react-bootstrap";
@@ -15,12 +13,12 @@ function ClassesAdd(){
     
     return(
         <>
-            <Stack direction="horizontal" gap={2}>
+            {/* <Stack direction="horizontal" gap={2}>
                 <Link  style={{color:"black", textDecoration:"none"}} to="/classes">Classlist</Link>{">"}
                 <Link  style={{color:"black", textDecoration:"none"}} to="/classes/addclasses">New Class</Link>
-            </Stack>
-            <h1>New Class</h1>
-            <Form>
+            </Stack> */}
+            <h2>New Class</h2>
+            <Form style={{maxWidth:'900px'}}>
                 <Row className="mb-3">
                     <Col>
                         <Form.Group controlId="formGridName">
