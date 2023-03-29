@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import DatePicker from 'react-datepicker';
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom'
 import { Button } from "react-bootstrap";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "../components/NewStudentStyle.module.css"
 import { Col, Form, Row, Image} from 'react-bootstrap'
 
 function ClassesAdd(){
-    const [selectedDate1, setSelectedDate1]= useState(new Date());
-    const [selectedDate2, setSelectedDate2]= useState(new Date());
     
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
-                <Link  style={{color:"black", textDecoration:"none"}} to="/classes"><small>Student List</small></Link>{">"}
-                <Link  style={{color:"black", textDecoration:"none"}} to="/classes/addclasses"><small>New Student</small></Link>
+                <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small>Student List</small></Link>{">"}
+                <Link  style={{color:"black", textDecoration:"none"}} to="/newstudent"><small>New Student</small></Link>
             </Stack>
             <h3 className="mb-3"><b>New Student</b></h3>
             <div className={`${styled['form']}`}>

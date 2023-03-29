@@ -1,6 +1,7 @@
 import React from 'react'
 import { Col, Form, Row, Table, Container, Badge, Image, Dropdown } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import styled from "./NewStudentStyle.module.css"
 
 function StudentsTable({std}) {
     return <>
@@ -30,6 +31,7 @@ function StudentsTable({std}) {
                 </Form.Group>
             </Row>
         </Form>
+        <div className={`${styled['form']}`}>
         <Table bordered hover style={{ fontSize: 14, borderCollapse: 'collapse', borderRadius: '1em', overflow: 'hidden', borderColor: '#E5E7EB'}}>
             <thead>
                 <tr className='text-uppercase text-secondary' style={{ backgroundColor: "#F9FAFB"}}>
@@ -42,7 +44,7 @@ function StudentsTable({std}) {
                     <th>Evaluation</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style={{backgroundColor: "white"}}>
                 {
                     std.map(_std => <tr key={_std.id}>
                         <td>
@@ -54,7 +56,7 @@ function StudentsTable({std}) {
                             </Container>
                         </td>
     
-                        <td>{ _std.class.name }</td>
+                        <td style={{width: "100px", backgroundColor: "white"}}>{ _std.class.name }</td>
                         <td>{ _std.phone }</td>
                         <td>{ _std.attendent }%<br/>Present: 20/20</td>
                         <td>{ _std.test }%<br/>Score: 650/700</td>
@@ -64,6 +66,7 @@ function StudentsTable({std}) {
                 }
             </tbody>
         </Table>
+        </div>
     </>
     
 }

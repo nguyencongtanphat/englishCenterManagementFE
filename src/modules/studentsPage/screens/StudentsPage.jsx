@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Col, Container, Row, Stack } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -143,14 +143,16 @@ const DUMMY_STUDENTS = [
 
 function ClassesPage() {
     return (
-        <Container>
+        <Container  style={{fontSize: "14px", marginTop: "1px"}} className='mx-1'>
             <Row className='align-items-center'>
                 <Col>
-                    <small style={{color: "#6B7280"}}>Student List</small>
-                    <h3><b>Student List</b></h3>
+                    <Stack direction="horizontal" gap={2} className="mt-3">
+                        <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small>Student List</small></Link>
+                    </Stack>
+                    <h3 className="mb-3"><b>Student List</b></h3>
                 </Col>
                 <Col className='text-end' md="auto">
-                    <Link to='/classes/addclasses' className='bg-primary text-light py-2 px-3 rounded-2 text-decoration-none'>
+                    <Link to='/newstudent' className='bg-primary text-light py-2 px-3 rounded-2 text-decoration-none'>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2' style={{fontSize: "14px"}}>Add Student</span>
                     </Link>
