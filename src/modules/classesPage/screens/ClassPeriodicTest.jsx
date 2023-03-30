@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPlusCircle } from "@fortawesome/fontawesome-free-solid";
-import { Link } from "react-router-dom";
 import classes from "./ClassPeriodicTest.module.css";
+import UpdatePeriodicModal from "../components/UpdatePeriodic";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 const DUMMY_STUDENTS = [
   {
@@ -330,14 +331,24 @@ const students_test = DUMMY_STUDENTS.map((student) => {
 
 function ClassPeriodicTest() {
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
   const updateHandler = () => {
-    setIsUpdating(true)
+    setIsUpdating(true);
   };
 
-  const saveHandler = () => {
-    setIsUpdating(false)
-  }
+  const addHandler = () => {
+    setIsAddingPeriodic(true);
+  };
+
+  const closeAddHandler = () => {
+    setIsAddingPeriodic(false);
+  };
+
+  const savePeriodicHandler = () => {
+    setIsEditable(true);
+  };
 
   return (
     <Container className="bg-light p-4 rounded-4">
@@ -350,13 +361,13 @@ function ClassPeriodicTest() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          <Button
+          <button
             onClick={updateHandler}
-            className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none"
+            className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
           >
-            <FontAwesomeIcon icon={faPlusCircle} />
+            <FontAwesomeIcon icon={faPenToSquare} />
             <span className="ps-2">Update</span>
-          </Button>
+          </button>
         </Col>
       </Row>
       <div style={{ overflowX: "scroll" }}>
@@ -374,9 +385,9 @@ function ClassPeriodicTest() {
               <th>24/3</th>
               {isUpdating && (
                 <th>
-                  <Button style={{backgroundColor: "white", borderColor: "white"}} onClick={saveHandler}>
-                    <FontAwesomeIcon icon={faPlus} color="blue"/>
-                  </Button>
+                  <button className="border-0 bg-light" onClick={addHandler}>
+                    <FontAwesomeIcon icon={faPlus} color="blue" />
+                  </button>
                 </th>
               )}
             </tr>
@@ -384,7 +395,6 @@ function ClassPeriodicTest() {
           <tbody>
             {students_test.map((sdtt) => (
               <tr key={sdtt.StudentID}>
-
                 {/* Student info */}
                 <th>
                   <div className={classes.imgDiv}>
@@ -407,17 +417,38 @@ function ClassPeriodicTest() {
 
                 {/* Scores by days */}
                 {sdtt.tests.map((test) => (
-                  <td>{test.score}</td>
+                  <td>
+                    <input
+                      defaultValue={test.score}
+                      readOnly={!isUpdating}
+                      className="text-center bg-light border-0 w-100"
+                      style={{ outline: "none" }}
+                    />
+                  </td>
                 ))}
 
                 {/* Score before updating */}
-                {isUpdating && <td>0</td>}
-
+                {isUpdating && (
+                  <td>
+                    <input
+                      defaultValue={0}
+                      readOnly={!isEditable}
+                      className="text-center bg-light border-0 w-100"
+                      style={{ outline: "none" }}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
+      {isAddingPeriodic && (
+        <UpdatePeriodicModal
+          onCloseModal={closeAddHandler}
+          onSavePeriodic={savePeriodicHandler}
+        />
+      )}
     </Container>
   );
 }
