@@ -20,7 +20,7 @@ export default function Sidebar() {
     const [teacherColor, setTeacherColor] = useState("black");
     const [certificateColor, setCertificateColor] = useState("black");
     const [helpColor, setHelpColor] = useState("black");
-    return <div className='d-flex flex-column justify-content-between disableCopy' 
+    return <div className='d-flex flex-column justify-content-between sidebar-disable-copy' 
         style={{  height: '100%',
             width: "calc(100% / 6 - 20px)",
             position: "fixed",
@@ -41,7 +41,7 @@ export default function Sidebar() {
                 return (
                     <div className=''>
                         
-                        <div className='row menu-item'
+                        <div className='row sitebar-menu-item'
                             key={index}
                             onMouseEnter={ () => {
                                 if(item.title === "Dashboard"){

@@ -20,7 +20,7 @@ const data = [
 
 const AppLineChart = () => {
   return (
-    <LineChart
+    <LineChart 
       width={900}
       height={300}
       data={data}

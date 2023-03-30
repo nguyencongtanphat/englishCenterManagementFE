@@ -1,5 +1,5 @@
 import React from 'react'
-import LogoImg from '../../assets/images/global/logo.png'
+import LogoImg from '../../assets/images/global/earth.png'
 import { Col, Container, Row } from 'react-bootstrap'
 import HeaderSearchBar from './HeaderSearchBar'
 import HeaderNotification from './HeaderNotification'
@@ -8,7 +8,7 @@ import './Header.css'
 
 export default function Header() {
   return (
-    <div className='sticky-top disableCopy'>
+    <div className='sticky-top header-disable-copy'>
         <Container fluid
         style={{
             height: "70px", 

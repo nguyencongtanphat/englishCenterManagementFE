@@ -1,7 +1,10 @@
-import React from "react";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import React, { useState } from "react";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from "@fortawesome/fontawesome-free-solid";
+import { faPlus, faPlusCircle } from "@fortawesome/fontawesome-free-solid";
+import classes from "./ClassPeriodicTest.module.css";
+import UpdatePeriodicModal from "../components/UpdatePeriodic";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 const DUMMY_STUDENTS = [
   {
@@ -327,6 +330,26 @@ const students_test = DUMMY_STUDENTS.map((student) => {
 });
 
 function ClassPeriodicTest() {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
+
+  const updateHandler = () => {
+    setIsUpdating(true);
+  };
+
+  const addHandler = () => {
+    setIsAddingPeriodic(true);
+  };
+
+  const closeAddHandler = () => {
+    setIsAddingPeriodic(false);
+  };
+
+  const savePeriodicHandler = () => {
+    setIsEditable(true);
+  };
+
   return (
     <Container className="bg-light p-4 rounded-4">
       <Row className="align-items-center">
@@ -337,15 +360,18 @@ function ClassPeriodicTest() {
             <span className="fw-bold">{DUMMY_TESTS.length}</span>
           </p>
         </Col>
-        <Col className="text-end">
-          <Button className="bg-primary text-light py-2 px-3 rounded-2 text-decoration-none">
-            <FontAwesomeIcon icon={faPlusCircle} />
+        <Col className="d-flex justify-content-end">
+          <button
+            onClick={updateHandler}
+            className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+          >
+            <FontAwesomeIcon icon={faPenToSquare} />
             <span className="ps-2">Update</span>
-          </Button>
+          </button>
         </Col>
       </Row>
-      <Row>
-        <Table>
+      <div style={{ overflowX: "scroll" }}>
+        <Table className={classes.table} bordered>
           <thead>
             <tr>
               <th>Name</th>
@@ -357,47 +383,72 @@ function ClassPeriodicTest() {
               <th>17/3</th>
               <th>21/3</th>
               <th>24/3</th>
+              {isUpdating && (
+                <th>
+                  <button className="border-0 bg-light" onClick={addHandler}>
+                    <FontAwesomeIcon icon={faPlus} color="blue" />
+                  </button>
+                </th>
+              )}
             </tr>
           </thead>
           <tbody>
             {students_test.map((sdtt) => (
               <tr key={sdtt.StudentID}>
-                <td className="px-4">
-                  <Row className="align-items-center">
-                    <div
-                      className="col-2"
+                {/* Student info */}
+                <th>
+                  <div className={classes.imgDiv}>
+                    <img
                       style={{
-                        width: "40px",
-                        height: "40px",
-                        overflow: "hidden",
-                        borderRadius: "25px",
-                        display: "flex",
-                        justifyContent: "center",
+                        height: "100%",
                       }}
-                    >
-                      <img
-                        style={{
-                          height: "100%",
-                        }}
-                        src={sdtt.ImageURL}
-                        alt={sdtt.Name}
-                      ></img>
-                    </div>
-                    <div className="col-10">
-                      <p className="mb-1">{sdtt.Name}</p>
-                      <p className="mb-0">{sdtt.StudentID}</p>
-                    </div>
-                  </Row>
-                </td>
-                <td style={{ verticalAlign: "middle" }}>{sdtt.averageScore}</td>
+                      src={sdtt.ImageURL}
+                      alt={sdtt.Name}
+                    ></img>
+                  </div>
+                  <div>
+                    <p className="mb-0 text-nowrap fw-semibold">{sdtt.Name}</p>
+                    <p className="mb-0 fw-light">{sdtt.StudentID}</p>
+                  </div>
+                </th>
+
+                {/* Average Score */}
+                <td>{sdtt.averageScore}</td>
+
+                {/* Scores by days */}
                 {sdtt.tests.map((test) => (
-                  <td style={{ verticalAlign: "middle" }}>{test.score}</td>
+                  <td>
+                    <input
+                      defaultValue={test.score}
+                      readOnly={!isUpdating}
+                      className="text-center bg-light border-0 w-100"
+                      style={{ outline: "none" }}
+                    />
+                  </td>
                 ))}
+
+                {/* Score before updating */}
+                {isUpdating && (
+                  <td>
+                    <input
+                      defaultValue={0}
+                      readOnly={!isEditable}
+                      className="text-center bg-light border-0 w-100"
+                      style={{ outline: "none" }}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </Table>
-      </Row>
+      </div>
+      {isAddingPeriodic && (
+        <UpdatePeriodicModal
+          onCloseModal={closeAddHandler}
+          onSavePeriodic={savePeriodicHandler}
+        />
+      )}
     </Container>
   );
 }
