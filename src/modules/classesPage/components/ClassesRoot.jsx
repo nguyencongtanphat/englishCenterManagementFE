@@ -13,7 +13,7 @@ function ClassesRoot() {
   else name = 'Classes List'
 
   return (
-    <div className="px-3">
+    <div className="px-3 position-relative">
       <div>
         <BreadCrumbs />
         <h2 className="mt-3 mb-5">{name}</h2>
@@ -21,6 +21,8 @@ function ClassesRoot() {
       <div>
         <Outlet />
       </div>
+      <div id="backdrop"/>
+      <div id="overlays"/>
     </div>
   );
 }
