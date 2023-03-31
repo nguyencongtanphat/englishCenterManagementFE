@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPlusCircle } from "@fortawesome/fontawesome-free-solid";
+import { faDownload, faPlus } from "@fortawesome/fontawesome-free-solid";
 import classes from "./ClassPeriodicTest.module.css";
 import UpdatePeriodicModal from "../components/UpdatePeriodic";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
@@ -336,6 +336,12 @@ function ClassPeriodicTest() {
 
   const updateHandler = () => {
     setIsUpdating(true);
+    setTimeout(() => {
+      const newTestCol = document.getElementById("newTestCol");
+      newTestCol.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }, 100)
   };
 
   const addHandler = () => {
@@ -356,21 +362,32 @@ function ClassPeriodicTest() {
         <Col>
           <h3>Periodic Test Score</h3>
           <p>
-            Total number of periodic test:{" "}
+            Total number of periodic test:
             <span className="fw-bold">{DUMMY_TESTS.length}</span>
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          <button
-            onClick={updateHandler}
-            className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-          >
-            <FontAwesomeIcon icon={faPenToSquare} />
-            <span className="ps-2">Update</span>
-          </button>
+          {!isUpdating &&
+            <button
+              onClick={updateHandler}
+              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+              <span className="ps-2">Update</span>
+            </button>
+          }
+          {isUpdating && (
+            <button
+              onClick={updateHandler}
+              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span className="ps-2">Save</span>
+            </button>
+          )}
         </Col>
       </Row>
-      <div style={{ overflowX: "scroll" }}>
+      <div className={classes['table-div']} id="tableDiv">
         <Table className={classes.table} bordered>
           <thead>
             <tr>
@@ -429,7 +446,7 @@ function ClassPeriodicTest() {
 
                 {/* Score before updating */}
                 {isUpdating && (
-                  <td>
+                  <td id="newTestCol">
                     <input
                       defaultValue={0}
                       readOnly={!isEditable}
