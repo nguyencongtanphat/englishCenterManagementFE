@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPlusCircle } from "@fortawesome/fontawesome-free-solid";
-import { Link } from "react-router-dom";
+import { faDownload, faPlus } from "@fortawesome/fontawesome-free-solid";
 import classes from "./ClassPeriodicTest.module.css";
+import UpdatePeriodicModal from "../components/UpdatePeriodic";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 const DUMMY_STUDENTS = [
   {
@@ -330,14 +331,30 @@ const students_test = DUMMY_STUDENTS.map((student) => {
 
 function ClassPeriodicTest() {
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
   const updateHandler = () => {
-    setIsUpdating(true)
+    setIsUpdating(true);
+    setTimeout(() => {
+      const newTestCol = document.getElementById("newTestCol");
+      newTestCol.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }, 100)
   };
 
-  const saveHandler = () => {
-    setIsUpdating(false)
-  }
+  const addHandler = () => {
+    setIsAddingPeriodic(true);
+  };
+
+  const closeAddHandler = () => {
+    setIsAddingPeriodic(false);
+  };
+
+  const savePeriodicHandler = () => {
+    setIsEditable(true);
+  };
 
   return (
     <Container className="bg-light p-4 rounded-4">
@@ -345,21 +362,32 @@ function ClassPeriodicTest() {
         <Col>
           <h3>Periodic Test Score</h3>
           <p>
-            Total number of periodic test:{" "}
+            Total number of periodic test:
             <span className="fw-bold">{DUMMY_TESTS.length}</span>
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          <Button
-            onClick={updateHandler}
-            className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none"
-          >
-            <FontAwesomeIcon icon={faPlusCircle} />
-            <span className="ps-2">Update</span>
-          </Button>
+          {!isUpdating &&
+            <button
+              onClick={updateHandler}
+              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+              <span className="ps-2">Update</span>
+            </button>
+          }
+          {isUpdating && (
+            <button
+              onClick={updateHandler}
+              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span className="ps-2">Save</span>
+            </button>
+          )}
         </Col>
       </Row>
-      <div style={{ overflowX: "scroll" }}>
+      <div className={classes['table-div']} id="tableDiv">
         <Table className={classes.table} bordered>
           <thead>
             <tr>
@@ -374,9 +402,9 @@ function ClassPeriodicTest() {
               <th>24/3</th>
               {isUpdating && (
                 <th>
-                  <Button style={{backgroundColor: "white", borderColor: "white"}} onClick={saveHandler}>
-                    <FontAwesomeIcon icon={faPlus} color="blue"/>
-                  </Button>
+                  <button className="border-0 bg-light" onClick={addHandler}>
+                    <FontAwesomeIcon icon={faPlus} color="blue" />
+                  </button>
                 </th>
               )}
             </tr>
@@ -384,7 +412,6 @@ function ClassPeriodicTest() {
           <tbody>
             {students_test.map((sdtt) => (
               <tr key={sdtt.StudentID}>
-
                 {/* Student info */}
                 <th>
                   <div className={classes.imgDiv}>
@@ -407,17 +434,38 @@ function ClassPeriodicTest() {
 
                 {/* Scores by days */}
                 {sdtt.tests.map((test) => (
-                  <td>{test.score}</td>
+                  <td>
+                    <input
+                      defaultValue={test.score}
+                      readOnly={!isUpdating}
+                      className="text-center bg-light border-0 w-100"
+                      style={{ outline: "none" }}
+                    />
+                  </td>
                 ))}
 
                 {/* Score before updating */}
-                {isUpdating && <td>0</td>}
-
+                {isUpdating && (
+                  <td id="newTestCol">
+                    <input
+                      defaultValue={0}
+                      readOnly={!isEditable}
+                      className="text-center bg-light border-0 w-100"
+                      style={{ outline: "none" }}
+                    />
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
         </Table>
       </div>
+      {isAddingPeriodic && (
+        <UpdatePeriodicModal
+          onCloseModal={closeAddHandler}
+          onSavePeriodic={savePeriodicHandler}
+        />
+      )}
     </Container>
   );
 }
