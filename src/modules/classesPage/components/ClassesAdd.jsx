@@ -17,7 +17,7 @@ function ClassesAdd(){
                 <Link  style={{color:"black", textDecoration:"none"}} to="/classes">Classlist</Link>{">"}
                 <Link  style={{color:"black", textDecoration:"none"}} to="/classes/addclasses">New Class</Link>
             </Stack> */}
-            <h2>New Class</h2>
+            {/* <h2>New Class</h2> */}
             <Form style={{maxWidth:'900px'}}>
                 <Row className="mb-3">
                     <Col>

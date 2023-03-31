@@ -1,11 +1,28 @@
-import React from 'react'
-import { Container, Row, Col, Table, Badge, Image } from 'react-bootstrap'
+import {React, useState} from 'react'
+import { Container, Row, Col, Table, Badge, Image, Button} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import DatePicker from 'react-datepicker';
 
 const ClassesStudentList = ({dumyStudent}) => {
+  const [selectedDate, setSelectedDate]= useState(new Date());
+
   return (
     <div style={{borderRadius:"10px"}}>
-        <h3 style={{padding:"20px 30px"}}>Student list</h3>
+      <Row>
+          <Col>
+            <h3 style={{padding:"20px 30px"}}>Student list</h3>
+          </Col>
+          <Col lg='auto' className='pt-3'>
+            <Button className='bg-black border border-white'>Daily</Button>
+            <Button className='bg-white border border-white'>
+                <DatePicker
+                    showIcon
+                    selected={selectedDate}
+                    onChange={(date) => setSelectedDate(date)}
+                />
+            </Button>
+          </Col>
+        </Row>
         <Table bordered hover style={{ fontSize: 14, borderCollapse: 'collapse', borderRadius: '1em', overflow: 'hidden', borderColor: '#E5E7EB'}}>
             <thead>
                 <tr className='text-uppercase text-secondary'>
