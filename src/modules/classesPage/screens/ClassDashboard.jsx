@@ -228,10 +228,6 @@ const DUMMY_STUDENTS = [
             type:'TOEIC'
         }
     },
-    
-   
-    
-
 ]
 
 function ClassDashboard() {
