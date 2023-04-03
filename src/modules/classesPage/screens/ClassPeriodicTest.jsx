@@ -5,6 +5,7 @@ import { faDownload, faPlus } from "@fortawesome/fontawesome-free-solid";
 import classes from "./ClassPeriodicTest.module.css";
 import UpdatePeriodicModal from "../components/UpdatePeriodic";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import PeriodicTableRow from "../components/PeriodicTableRow";
 
 const DUMMY_STUDENTS = [
   {
@@ -309,30 +310,31 @@ DUMMY_PERIODIC_TESTS = DUMMY_PERIODIC_TESTS.map((periodic_test) => {
   };
 });
 
-const students_test = DUMMY_STUDENTS.map((student) => {
-  // test: [{date: ..., scores: ...}]
-  let sumScores = 0;
-  const tests = DUMMY_PERIODIC_TESTS.filter((periodic_test) => {
-    return periodic_test.StudentID === student;
-  }).map((test) => {
-    sumScores += test.Score;
-    return {
-      date: test.TestID.Date,
-      score: test.Score,
-    };
-  });
-
-  return {
-    ...student,
-    tests,
-    averageScore: Math.round(sumScores / tests.length),
-  };
-});
-
 function ClassPeriodicTest() {
+  const [periodicTests, setPeriodicTests] = useState(DUMMY_PERIODIC_TESTS);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+
+  const students_test = DUMMY_STUDENTS.map((student) => {
+    // test: [{date: ..., scores: ...}]
+    let sumScores = 0;
+    const tests = periodicTests.filter((periodicTest) => {
+      return periodicTest.StudentID === student;
+    }).map((test) => {
+      sumScores += test.Score;
+      return {
+        date: test.TestID.Date,
+        score: test.Score,
+      };
+    });
+
+    return {
+      ...student,
+      tests,
+      averageScore: Math.round(sumScores / tests.length),
+    };
+  });
 
   const updateHandler = () => {
     setIsUpdating(true);
@@ -355,6 +357,16 @@ function ClassPeriodicTest() {
   const savePeriodicHandler = () => {
     setIsEditable(true);
   };
+
+  const updatePeriodicHandler = (value, studentID, date) => {
+    const index = periodicTests.findIndex(periodicTest => {
+      return periodicTest.StudentID.StudentID === studentID && periodicTest.TestID.Date.toString() === date
+    })
+
+    const periodicTestsCopy = [...periodicTests]
+    periodicTestsCopy[index].Score = parseInt(value)
+    setPeriodicTests(periodicTestsCopy)
+  }
 
   return (
     <Container className="bg-light p-4 rounded-4">
@@ -411,51 +423,7 @@ function ClassPeriodicTest() {
           </thead>
           <tbody>
             {students_test.map((sdtt) => (
-              <tr key={sdtt.StudentID}>
-                {/* Student info */}
-                <th>
-                  <div className={classes.imgDiv}>
-                    <img
-                      style={{
-                        height: "100%",
-                      }}
-                      src={sdtt.ImageURL}
-                      alt={sdtt.Name}
-                    ></img>
-                  </div>
-                  <div>
-                    <p className="mb-0 text-nowrap fw-semibold">{sdtt.Name}</p>
-                    <p className="mb-0 fw-light">{sdtt.StudentID}</p>
-                  </div>
-                </th>
-
-                {/* Average Score */}
-                <td>{sdtt.averageScore}</td>
-
-                {/* Scores by days */}
-                {sdtt.tests.map((test) => (
-                  <td>
-                    <input
-                      defaultValue={test.score}
-                      readOnly={!isUpdating}
-                      className="text-center bg-light border-0 w-100"
-                      style={{ outline: "none" }}
-                    />
-                  </td>
-                ))}
-
-                {/* Score before updating */}
-                {isUpdating && (
-                  <td id="newTestCol">
-                    <input
-                      defaultValue={0}
-                      readOnly={!isEditable}
-                      className="text-center bg-light border-0 w-100"
-                      style={{ outline: "none" }}
-                    />
-                  </td>
-                )}
-              </tr>
+              <PeriodicTableRow sdtt={sdtt} isEditable={isEditable} isUpdating={isUpdating} onChange={ updatePeriodicHandler } />
             ))}
           </tbody>
         </Table>
