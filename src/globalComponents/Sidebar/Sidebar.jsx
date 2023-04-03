@@ -104,7 +104,7 @@ export default function Sidebar() {
                                         lineHeight: "50px",
                                         // color: "#000000",
                                         fontWeight: "500",
-                                        fontSize: "18px",
+                                        fontSize: "15px",
         
                                         // fontFamily: ""
                                     }}
