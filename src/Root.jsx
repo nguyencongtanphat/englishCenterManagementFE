@@ -20,8 +20,6 @@ const Root = () => {
             <Outlet />
         </Col>
       </Row>
-      {/* <Footer /> */}
-      <div>footer</div>
     </Container>
   );
 };
