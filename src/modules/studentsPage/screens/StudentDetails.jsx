@@ -16,7 +16,7 @@ function ClassesAdd(){
             </Stack>
             <h3 className="mb-3"><b>Nguyễn Thành Trung</b></h3>
             {/* //body */}
-            <div className={`${styled['container']}`}>
+            <div className={styled['container']}>
                 {/* above */}
                 <div className={`${styled['container_above']}`}>
                     <div className={`${styled['details1']}`}>
