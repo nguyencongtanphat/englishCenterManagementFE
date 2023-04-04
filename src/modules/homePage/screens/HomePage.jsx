@@ -5,13 +5,14 @@ import React, { useState } from "react";
 import AppLineChart from "../../../globalComponents/LineChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
+import BreadCrumbs from "../../classesPage/components/BreadCrumbs";
 
 function HomePage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <Container fluid="md">
-      <p>Cente Dashboard</p>
+      <BreadCrumbs/>
       <Row>
         <Col>
           <h2>Cente Dashboard</h2>

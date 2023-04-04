@@ -2,20 +2,24 @@ import React from "react";
 import AppCircleChart from "../../../globalComponents/CirlceChart";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import ListStudentView from "./ListView";
+import AppCard from "../../../globalComponents/Card";
 
 function StudentCenterInfo() {
   return (
-    <Container className="mt-5">
-      <Row>
+    <Container className="my-3">
+      <Row >
         <Col xs={5}>
-          <Card className="p-6">
+          <AppCard className="p-6 h-full">
             <h3>Classify</h3>
             <AppCircleChart />
-          </Card>
+          </AppCard>
         </Col>
         <Col>
-          <h3>Top students view</h3>
-          <ListStudentView />
+          <AppCard className="p-6">
+            {" "}
+            <h3>Top students view</h3>
+            <ListStudentView />
+          </AppCard>
         </Col>
       </Row>
     </Container>
