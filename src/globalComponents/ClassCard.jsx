@@ -1,27 +1,27 @@
 import Card from "react-bootstrap/Card";
 
-function ClassCard({ classInfo }) {
-  const colorBg = [
-    "#1C64F2",
-    "#BC2FB6",
-    "#9B51E0",
-    "#F2C94C",
-    "#F2994A",
-    "#1BB0A7",
-    "#E83480",
-    "#27AE60",
-    "#2D9CDB",
-  ];
-  let indexColor = Math.floor(Math.random() * 10);
-  let bgColor =
-    colorBg[indexColor < colorBg.length ? indexColor : 0];
+function ClassCard({ classInfo, bgColor }) {
+  // const colorBg = [
+  //   "#1C64F2",
+  //   "#BC2FB6",
+  //   "#9B51E0",
+  //   "#F2C94C",
+  //   "#F2994A",
+  //   "#1BB0A7",
+  //   "#E83480",
+  //   "#27AE60",
+  //   "#2D9CDB",
+  // ];
+  // let indexColor = Math.floor(Math.random() * 10);
+  // let bgColor =
+  //   colorBg[indexColor < colorBg.length ? indexColor : 0];
   console.log(bgColor)
   const { id, className, teacher,  number, target, time } = classInfo;
   return (
     <Card
       key={id}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{ width: "190px", backgroundColor: bgColor }}
+      style={{backgroundColor: bgColor }}
       className="mb-2"
     >
       <Card.Body>
