@@ -7,7 +7,7 @@ const DUMMY_STUDENTS = [
     {
         id: 'cl01',
         name: 'Jennie Blackpink',
-        imageURL: 'https://file.tinnhac.com/resize/600x-/2020/06/17/20200617123908-fdf3.jpg',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -34,8 +34,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://symbols.vn/wp-content/uploads/2022/02/Hinh-Jennie-Blackpink-Dep-de-thuong-nhat.jpg',
+        name: 'Đoàn Quốc Bảo',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -62,8 +62,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        name: 'Nguyễn Thành Long',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -90,8 +90,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        name: 'Nguyễn Thành Trung',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -118,8 +118,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        name: 'Jisoo',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -146,8 +146,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        name: 'Tấn Phát',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -174,8 +174,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        name: 'Nhã Khuyên',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -202,8 +202,8 @@ const DUMMY_STUDENTS = [
     },
     {
         id: 'cl01',
-        name: 'Jennie Blackpink',
-        imageURL: 'https://hanoitop10.com/wp-content/uploads/2023/01/anh-jennie-blackpink-dep_11.jpg',
+        name: 'Lê Văn Thiện',
+        imageURL: 'https://i.imgur.com/oirOmyV.png',
         phone: '0902352835',
         studentId:'20521097',
         attendant: {
@@ -239,10 +239,8 @@ function ClassDashboard() {
                 />
                 <h3 className='p-4' >Overall</h3>
                 <div>
-                 <div className='d-flex justify-content-center' style={{ border:' solid 1px #f9fafb'}} >
-                    <AppLineChart/>
-                </div>
-                 <StudentCenterInfo/>    
+                <AppLineChart/>
+                <StudentCenterInfo/>    
                 </div>
             </div>
         </>
