@@ -11,23 +11,23 @@ function ClassesTable({ classes }) {
         <Row className="align-items-center">
           <Col>
             <Form className="mb-3" as={Row}>
-                <Form.Group as={Col} xs="auto">
-                  <Form.Label>Teacher</Form.Label>
-                  <Form.Select name="teacher">
-                    <option selected>All</option>
-                    <option value="tc01">Ms.Hoa</option>
-                    <option value="tc02">Mr.Hung</option>
-                    <option value="tc03">Mr.Chau</option>
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group as={Col} xs="auto">
-                  <Form.Label>Type</Form.Label>
-                  <Form.Select name="type">
-                    <option value="type01">Toeic Reading & Listening</option>
-                    <option value="type02">Toeic Writing & Speaking</option>
-                    <option value="type03">IELTS</option>
-                  </Form.Select>
-                </Form.Group>
+              <Form.Group as={Col} xs="auto">
+                <Form.Label>Teacher</Form.Label>
+                <Form.Select name="teacher">
+                  <option selected>All</option>
+                  <option value="tc01">Ms.Hoa</option>
+                  <option value="tc02">Mr.Hung</option>
+                  <option value="tc03">Mr.Chau</option>
+                </Form.Select>
+              </Form.Group>
+              <Form.Group as={Col} xs="auto">
+                <Form.Label>Type</Form.Label>
+                <Form.Select name="type">
+                  <option value="type01">Toeic Reading & Listening</option>
+                  <option value="type02">Toeic Writing & Speaking</option>
+                  <option value="type03">IELTS</option>
+                </Form.Select>
+              </Form.Group>
             </Form>
           </Col>
           <Col className="d-flex justify-content-end">
