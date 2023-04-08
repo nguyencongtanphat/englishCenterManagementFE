@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom';
 import styled from "../components/styleStd.module.css"
-import AppLineChart from "../../../globalComponents/LineChart";
+import AppLineChart from "../components/LineChart"
 import { Badge, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -16,7 +16,7 @@ function ClassesAdd(){
             </Stack>
             <h3 className="mb-3"><b>Nguyễn Thành Trung</b></h3>
             {/* //body */}
-            <div className={`${styled['container']}`}>
+            <div className={styled['container']}>
                 {/* above */}
                 <div className={`${styled['container_above']}`}>
                     <div className={`${styled['details1']}`}>

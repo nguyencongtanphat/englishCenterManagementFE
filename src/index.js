@@ -20,8 +20,13 @@ import StudentsPage from './modules/studentsPage/screens/StudentsPage'
 import ClassesRoot from './modules/classesPage/components/ClassesRoot';
 import NewStudent from './modules/studentsPage/screens/NewStudent';
 import StudentDetails from './modules/studentsPage/screens/StudentDetails';
+<<<<<<< HEAD
 import Login from './modules/loginPage/Login';
 import NewTeacher from './modules/teachersPage/NewTeacher';
+=======
+import TeachersPage from './modules/teachersPage/screens/TeachersPage';
+
+>>>>>>> dev
 const router = createBrowserRouter([{
   path: "/",
   element: < Root /> ,
@@ -90,6 +95,10 @@ const router = createBrowserRouter([{
     {
       path: "students/details",
       element: <StudentDetails/>
+    },
+    {
+      path: "teachers",
+      element: <TeachersPage/>
     }
   ],
 }, ]);

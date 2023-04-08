@@ -49,7 +49,7 @@ export default function SearchBar() {
 
     return (
     
-        <div>
+        <div style={{width:"548px", height:"32px"}}>
             <ReactSearchAutocomplete
                 items={testData}
                 placeholder="Search"
