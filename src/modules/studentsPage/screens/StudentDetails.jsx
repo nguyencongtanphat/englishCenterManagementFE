@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Stack from 'react-bootstrap/Stack';
 import { Link } from 'react-router-dom';
 import styled from "../components/styleStd.module.css"
-import AppLineChart from "../../../globalComponents/LineChart";
+import AppLineChart from "../components/LineChart"
 import { Badge, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
