@@ -2,6 +2,8 @@ import React from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import AppCard from "./Card";
 import ClassCard from "./ClassCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 
 function ClassList() {
   const classes = [
@@ -85,7 +87,10 @@ function ClassList() {
   return (
     <AppCard className="my-3 p-2">
       <Container>
-        <p style={{fontWeight:700, fontSize:"20px"}}>Class list</p>
+        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
+          <p style={{fontWeight:700, fontSize:"20px"}}>Class list</p>
+          <FontAwesomeIcon icon={faPlusCircle} style={{marginTop:"-16px"}}/>
+        </div>
         <Row>
           {classes.map((classInfo) => {
             if (index > colorsBg.length) index = 0;
