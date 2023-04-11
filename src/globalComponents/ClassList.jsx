@@ -85,7 +85,7 @@ function ClassList() {
   return (
     <AppCard className="my-3 p-2">
       <Container>
-        <h3>Class List</h3>
+        <p style={{fontWeight:700, fontSize:"20px"}}>Class list</p>
         <Row>
           {classes.map((classInfo) => {
             if (index > colorsBg.length) index = 0;

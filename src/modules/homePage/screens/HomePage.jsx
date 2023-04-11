@@ -6,16 +6,20 @@ import AppLineChart from "../../../globalComponents/LineChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
 import BreadCrumbs from "../../classesPage/components/BreadCrumbs";
+import Stack from 'react-bootstrap/Stack';
+import { Link } from 'react-router-dom'
 
 function HomePage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <Container fluid="md">
-      <BreadCrumbs/>
       <Row>
         <Col>
-          <h2>Cente Dashboard</h2>
+          <Stack direction="horizontal" gap={2} className="mt-3">
+              <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/"><small>Home</small></Link>
+          </Stack>
+          <h3 className="mb-3"><b>Dashboard</b></h3>
         </Col>
         <Col className="text-end">
           <DatePicker
