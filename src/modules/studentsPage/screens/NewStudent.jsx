@@ -15,6 +15,8 @@ function ClassesAdd(){
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
+                <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/"><small>Home</small></Link>
+                <small style={{color: "#6B7280"}}>{">"}</small>
                 <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/students"><small>Student List</small></Link>
                 <small style={{color: "#6B7280"}}>{">"}</small>
                 <Link  style={{color:"#6B7280", textDecoration:"none"}} to=""><small>New Student</small></Link>

@@ -6,23 +6,23 @@ import AppCard from "../../../globalComponents/Card";
 
 function StudentCenterInfo() {
   return (
-    <Container className="my-3">
+    <div className="my-3">
       <Row >
         <Col xs={5}>
           <AppCard className="p-6 h-full">
-            <h3>Classify</h3>
+            <p style={{fontWeight:700, fontSize:"20px"}}>Classify</p>
             <AppCircleChart />
           </AppCard>
         </Col>
         <Col>
           <AppCard className="p-6">
             {" "}
-            <h3>Top students view</h3>
+            <p style={{fontWeight:700, fontSize:"20px"}}>Top students</p>
             <ListStudentView />
           </AppCard>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }
 

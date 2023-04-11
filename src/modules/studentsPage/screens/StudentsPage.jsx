@@ -147,6 +147,8 @@ function ClassesPage() {
             <Row className='align-items-center'>
                 <Col>
                     <Stack direction="horizontal" gap={2} className="mt-3">
+                        <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/"><small>Home</small></Link>
+                        <small style={{color: "#6B7280"}}>{">"}</small>
                         <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small style={{color: "#6B7280"}}>Student List</small></Link>
                     </Stack>
                     <h3 className="mb-3"><b>Student List</b></h3>
