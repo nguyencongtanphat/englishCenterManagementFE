@@ -9,8 +9,8 @@ function ClassesRoot() {
   const pathname = location.pathname
   
   if (params.className) name = params.className
-  else if (pathname.includes('add')) name = 'Add class'
-  else name = 'Class list'
+  else if (pathname.includes('new')) name = 'New Class'
+  else name = 'Class List'
 
   return (
     <div className="px-3 position-relative">

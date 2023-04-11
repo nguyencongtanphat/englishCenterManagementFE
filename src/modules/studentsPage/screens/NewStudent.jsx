@@ -67,7 +67,7 @@ function ClassesAdd(){
                         <div className={`${styled['name']}`}>
                             <Form.Group controlId="formGridName" style={{width: "300px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Date of birth</Form.Label>
-                                <Form.Control type="date" value="01/01/2023" style={{fontSize: "14px", marginTop:"-4px"}}/>
+                                <Form.Control type="date" style={{fontSize: "14px", marginTop:"-4px"}}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "384px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Phone number</Form.Label>

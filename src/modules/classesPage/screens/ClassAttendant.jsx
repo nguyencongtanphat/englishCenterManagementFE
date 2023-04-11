@@ -174,7 +174,7 @@ function ClassAttendant() {
               {isUpdating && (
                 <th>
                   <button className="border-0 bg-light" onClick={addHandler}>
-                    <FontAwesomeIcon icon={faPlus} color="blue" />
+                    <FontAwesomeIcon icon={faPlus} color="dark" />
                   </button>
                 </th>
               )}

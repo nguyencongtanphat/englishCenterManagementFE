@@ -7,7 +7,7 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 export const routes = [
   { path: "/classes", breadcrumb: "Class List" },
   { path: "/classes/:className", breadcrumb: "Class Detail" },
-  { path: "/classes/addclasses", breadcrumb: "Add Class" },
+  { path: "/classes/new", breadcrumb: "New Class" },
   { path: "/classes/:className/dashboard", breadcrumb: "Dashboard" },
   { path: "/classes/:className/attendant", breadcrumb: "Attendant" },
   { path: "/classes/:className/periodic-test", breadcrumb: "Periodic Test" },

@@ -12,7 +12,7 @@ function ClassDashboardHeader() {
             <Row>
                 <div className="d-flex flex-row mb-3">
                     <div>
-                        <Link to="" style={{color:"black", textDecoration:"none"}}>Class Listxxx</Link> 
+                        <Link to="" style={{color:"black", textDecoration:"none"}}>Class List</Link> 
                     </div> {'>'}
                     <div>
                         <Link to="" style={{color:"black", textDecoration:"none"}}>Class Detail</Link>
@@ -24,7 +24,7 @@ function ClassDashboardHeader() {
             </Row>
             <Row>
                 <Col>
-                    <h3>TOEdddd700.1</h3>
+                    <h3>TOE700.1</h3>
                 </Col>
                 <Col lg='auto' className='border border-secondary rounded'>
                     <Button className='bg-black border border-white'>Daily</Button>
