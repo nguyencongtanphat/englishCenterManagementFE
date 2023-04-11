@@ -10,13 +10,13 @@ function ClassesRoot() {
   
   if (params.className) name = params.className
   else if (pathname.includes('add')) name = 'Add class'
-  else name = 'Classes List'
+  else name = 'Class list'
 
   return (
     <div className="px-3 position-relative">
       <div>
         <BreadCrumbs />
-        <h2 className="mt-3 mb-5">{name}</h2>
+            <h3 className="mb-3"><b>{name}</b></h3>
       </div>
       <div>
         <Outlet />

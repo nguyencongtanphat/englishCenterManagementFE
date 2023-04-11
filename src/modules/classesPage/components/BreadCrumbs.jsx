@@ -28,6 +28,7 @@ function BreadCrumbs() {
             style={{
               textDecoration: "none",
               color: "#1B64F2",
+              fontSize: "14px"
             }}
           >
             {breadcrumb}
@@ -36,7 +37,7 @@ function BreadCrumbs() {
             <FontAwesomeIcon
               icon={faChevronRight}
               className="me-3"
-              style={{ fontSize: "10px", marginTop: "8px", color: "#888" }}
+              style={{ fontSize: "10px", marginTop: "6px", color: "#888" }}
             ></FontAwesomeIcon>
           )}
         </>

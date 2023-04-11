@@ -5,16 +5,23 @@ import styled from "../components/styleStd.module.css"
 import AppLineChart from "../components/LineChart"
 import { Badge, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 
 function ClassesAdd(){
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
-            <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/"><small>Home</small></Link>
-                <small style={{color: "#6B7280"}}>{">"}</small>
-                <Link  style={{color:"black", textDecoration:"none"}} to="/students"><small style={{color: "#6B7280"}}>Student List</small></Link>
-                <small style={{color: "#6B7280"}}>{">"}</small>
-                <Link  style={{color:"black", textDecoration:"none"}} to=""><small style={{color: "#6B7280"}}>Student Details</small></Link>
+                <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Home</Link>
+                <FontAwesomeIcon
+                    icon={faChevronRight}
+                    className="me-3"
+                    style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
+                <Link key="Home" to="/students" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Student List</Link>
+                <FontAwesomeIcon
+                    icon={faChevronRight}
+                    className="me-3"
+                    style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
+                <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Student Details</Link>
             </Stack>
             <h3 className="mb-3"><b>Nguyễn Thành Trung</b></h3>
             {/* //body */}
