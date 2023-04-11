@@ -122,13 +122,14 @@ function ClassAttendant() {
   };
 
   return (
-    <Container className="bg-light p-4 rounded-4">
+    <Container className="bg-white p-4 rounded-4" style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
+    boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
       <Row className="align-items-center">
         <Col>
-          <h3>Attendant Checking</h3>
-          <p>
-            Total number of occurred lessons: <span className="fw-bold">{Arrays.length}</span>
-          </p>
+            <p className="mb-1" style={{fontSize:"20px", fontWeight:700}}>Attendant Checking</p>
+            <p style={{color:"#6B7280", fontSize:"14px"}}>
+            Total number of occurred lessons: <span className="fw-bold" style={{color:"black"}}>{Arrays.length}</span>
+            </p>
         </Col>
         <Col className="d-flex justify-content-end">
           {!isUpdating &&
@@ -153,11 +154,19 @@ function ClassAttendant() {
 
       </Row>
       <div className={classes['table-div']} id="tableDiv">
-        <Table bordered className={classes.table} >
+        <Table bordered className={classes.table}
+          hover
+          style={{
+            fontSize: 14,
+            borderCollapse: "collapse",
+            borderRadius: "1em",
+            overflow: "hidden",
+            borderColor: "#E5E7EB",
+          }}>
           <thead>
-            <tr>
+            <tr class="text-uppercase text-secondary">
               <th style={{maxWidth:'50px'}}>NAME</th>
-              <th>Present</th>
+              <th>PRESENT</th>
               {Arrays.map((date) => (
                 <th key={date}>{date}</th>
               ))}
@@ -165,7 +174,7 @@ function ClassAttendant() {
               {isUpdating && (
                 <th>
                   <button className="border-0 bg-light" onClick={addHandler}>
-                    <FontAwesomeIcon icon={faPlus} color="blue" />
+                    <FontAwesomeIcon icon={faPlus} color="dark" />
                   </button>
                 </th>
               )}

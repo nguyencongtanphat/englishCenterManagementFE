@@ -25,7 +25,7 @@ function StudentsTable({ std }) {
         <Row>
           <Form.Group as={Col} xs="auto">
             <Form.Select name="class" style={{ fontSize: "14px" }}>
-              <option idden>Class</option>
+              <option hidden>Class</option>
               <option value="tc01">TOEIC</option>
               <option value="tc02">IETLS</option>
               <option value="tc03">TOEFL</option>

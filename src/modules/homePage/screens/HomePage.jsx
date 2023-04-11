@@ -14,11 +14,18 @@ function HomePage() {
 
   return (
     <Container fluid="md">
-      <Row>
+      <Row className="mt-3">
         <Col>
-          <Stack direction="horizontal" gap={2} className="mt-3">
-              <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/"><small>Home</small></Link>
-          </Stack>
+        <Link
+            key="Home"
+            to="/"
+            className="me-3"
+            style={{
+              textDecoration: "none",
+              color: "#1B64F2",
+              fontSize: "14px"
+            }}
+          >Home</Link>
           <h3 className="mb-3"><b>Dashboard</b></h3>
         </Col>
         <Col className="text-end">

@@ -6,7 +6,7 @@ import classes from "./ClassDetailRoot.module.css";
 function ClassDetailRoot() {
   return (
     <>
-      <div className="bg-dark bg-opacity-10 p-3 rounded-4">
+      <div className="p-3 bg-[#F9FAFB]" style={{marginLeft:"-28px", marginRight:"-28px", borderRadius:"16px 16px 0 0"}}>
         <nav className={`${classes['class-navigator']} px-6`}>
           <ul className="list-unstyled d-flex justify-content-around gap-4">
             <li className="flex-grow-1 text-center">

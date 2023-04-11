@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { Button } from "react-bootstrap";
 import styled from "../components/styleStd.module.css"
 import { Col, Form, Row, Image, Modal} from 'react-bootstrap'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 
 function ClassesAdd(){
 
@@ -15,11 +17,17 @@ function ClassesAdd(){
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
-                <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/"><small>Home</small></Link>
-                <small style={{color: "#6B7280"}}>{">"}</small>
-                <Link  style={{color:"#6B7280", textDecoration:"none"}} to="/students"><small>Student List</small></Link>
-                <small style={{color: "#6B7280"}}>{">"}</small>
-                <Link  style={{color:"#6B7280", textDecoration:"none"}} to=""><small>New Student</small></Link>
+                <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Home</Link>
+                <FontAwesomeIcon
+                    icon={faChevronRight}
+                    className="me-3"
+                    style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
+                <Link key="Home" to="/students" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Student List</Link>
+                <FontAwesomeIcon
+                    icon={faChevronRight}
+                    className="me-3"
+                    style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
+                <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>New Student</Link>
             </Stack>
             <h3 className="mb-3"><b>New Student</b></h3>
             <div className={`${styled['form']}`}>
@@ -59,7 +67,7 @@ function ClassesAdd(){
                         <div className={`${styled['name']}`}>
                             <Form.Group controlId="formGridName" style={{width: "300px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Date of birth</Form.Label>
-                                <Form.Control type="date" value="01/01/2023" style={{fontSize: "14px", marginTop:"-4px"}}/>
+                                <Form.Control type="date" style={{fontSize: "14px", marginTop:"-4px"}}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "384px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Phone number</Form.Label>
