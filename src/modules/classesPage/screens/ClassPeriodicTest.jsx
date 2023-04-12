@@ -434,9 +434,9 @@ function ClassPeriodicTest() {
             borderColor: "#E5E7EB",
           }}>
           <thead>
-            <tr>
-              <th>Name</th>
-              <th>Average</th>
+          <tr class="text-uppercase text-secondary">
+              <th>NAME</th>
+              <th>AVERAGE</th>
               {testDates.map((date) => (
                 <th>{date}</th>
               ))}
