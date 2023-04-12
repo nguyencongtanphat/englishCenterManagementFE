@@ -20,7 +20,7 @@ const SidebarMenu =
             },
             {
                 "id": 2,
-                "title": "Student",
+                "title": "Students",
                 "icon": StudentIcon,
                 "route": "/students"
             },
@@ -32,12 +32,12 @@ const SidebarMenu =
             },
             {
                 "id": 4,
-                "title": "Teacher",
+                "title": "Teachers",
                 "icon": TeacherIcon,
                 "route": "/teachers"
             },{
                 "id": 5,
-                "title": "Certificate",
+                "title": "Certificates",
                 "icon": CertificateIcon,
                 "isEnd": true,
                 "route": "/certificates"
