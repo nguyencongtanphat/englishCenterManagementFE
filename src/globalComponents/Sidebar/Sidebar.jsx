@@ -41,7 +41,7 @@ export default function Sidebar() {
                 return (
                     <div className=''>
                         
-                        <div className='row sitebar-menu-item'
+                        <div className='row sitebar-menu-item' style={{marginTop: "8px"}}
                             key={index}
                             onMouseEnter={ () => {
                                 if(item.title === "Dashboard"){
@@ -84,7 +84,6 @@ export default function Sidebar() {
                                         padding: "0px",
                                         lineHeight: "50px",
                                         paddingLeft: "25px",
-                                        marginTop: "8px",
                                     }}                            
                                     
                                 >   
@@ -106,7 +105,6 @@ export default function Sidebar() {
                                         // color: "#000000",
                                         fontWeight: "500",
                                         fontSize: "15px",
-                                        marginTop: "8px"
                                         // fontFamily: ""
                                     }}
                                 >
