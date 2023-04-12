@@ -16,36 +16,36 @@ const SidebarMenu =
                 "id": 1,
                 "title": "Dashboard",
                 "icon": ChartPieIcon,
-                "route": "#"
+                "route": "/"
             },
             {
                 "id": 2,
                 "title": "Student",
                 "icon": StudentIcon,
-                "route": "#"
+                "route": "students"
             },
             {
                 "id": 3,
                 "title": "Classes",
                 "icon": ClassIcon,
-                "route": "#"
+                "route": "classes"
             },
             {
                 "id": 4,
                 "title": "Teacher",
                 "icon": TeacherIcon,
-                "route": "#"
+                "route": "teachers"
             },{
                 "id": 5,
                 "title": "Certificate",
                 "icon": CertificateIcon,
                 "isEnd": true,
-                "route": "#"
+                "route": "certificates"
             },{
                 "id": 6,
                 "title": "Help",
                 "icon": HelpIcon,
-                "route": "#"
+                "route": "help"
             }
         ]
     }
