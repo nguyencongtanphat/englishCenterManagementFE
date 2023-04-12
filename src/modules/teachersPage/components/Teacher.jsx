@@ -5,7 +5,6 @@ const TeacherList = ({ teachers }) => {
   return (
     <>
       <Table
-        striped
         bordered
         hover
         style={{
@@ -14,10 +13,14 @@ const TeacherList = ({ teachers }) => {
           borderRadius: "8px",
           overflow: "hidden",
           borderColor: "#E5E7EB",
+          marginLeft: "12px"
         }}
       >
         <thead>
-          <tr>
+            <tr
+              className="text-uppercase text-secondary"
+              style={{ backgroundColor: "#F9FAFB" }}
+            >
             <th>NAME</th>
             <th>PHONE</th>
             <th>EMAIL</th>
@@ -38,7 +41,7 @@ const TeacherList = ({ teachers }) => {
                 ></Image>
                 <div style={{ marginLeft: "8px" }}>
                   <div style={{ fontWeight: "600" }}>{teacher.name}</div>
-                  <div style={{ fontSize: "12px" }}>{teacher.msgv}</div>
+                  <div style={{ fontSize: "12px", color: "#6B7280" }}>{teacher.msgv}</div>
                 </div>
               </td>
               <td>{teacher.phone}</td>

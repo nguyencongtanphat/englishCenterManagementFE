@@ -1,16 +1,14 @@
 import React from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import AppCard from "./Card";
 import ClassCard from "./ClassCard";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 
 function ClassList() {
   const classes = [
     {
       id: "1",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -18,14 +16,14 @@ function ClassList() {
     {
       id: "2",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
     },
     {
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -33,7 +31,7 @@ function ClassList() {
     {
       id: "3",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -41,7 +39,7 @@ function ClassList() {
     {
       id: "4",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -49,7 +47,7 @@ function ClassList() {
     {
       id: "5",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -57,7 +55,7 @@ function ClassList() {
     {
       id: "6",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -65,7 +63,7 @@ function ClassList() {
     {
       id: "7",
       className: "TOE500.1",
-      teacher: "Mrs.Hoa",
+
       number: 45,
       target: "500+",
       time: "Jan 2nd - Jul 30th",
@@ -85,12 +83,9 @@ function ClassList() {
 
   let index = 0;
   return (
-    <AppCard className="my-3 p-2">
+    <AppCard className="">
       <Container>
-        <div style={{display:"flex", flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
-          <p style={{fontWeight:700, fontSize:"20px"}}>Class list</p>
-          <FontAwesomeIcon icon={faPlusCircle} style={{marginTop:"-16px"}}/>
-        </div>
+        <h3>Teaching Classes</h3>
         <Row>
           {classes.map((classInfo) => {
             if (index > colorsBg.length) index = 0;

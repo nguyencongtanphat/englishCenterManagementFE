@@ -24,7 +24,7 @@ const data = [
 const AppLineChart = () => {
   return (
     <AppCard className="p-6">
-      <p className="font-bold text-xl">Overall</p>
+      <p style={{fontWeight:700, fontSize:"20px"}}>Overall</p>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart
           className="mx-auto"

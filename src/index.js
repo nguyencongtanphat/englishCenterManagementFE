@@ -1,32 +1,27 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  createBrowserRouter,
-  RouterProvider
-} from "react-router-dom";
-import Root from './Root';
-import ErrorPage from './modules/errorPage/ErrorPage';
-import HomePage from './modules/homePage/screens/HomePage';
-import ClassesPage from './modules/classesPage/screens/ClassesPage';
-import ClassDetailRoot from './modules/classesPage/components/ClassDetailRoot';
-import ClassDashboard from './modules/classesPage/screens/ClassDashboard';
-import ClassAttendant from './modules/classesPage/screens/ClassAttendant';
-import ClassPeriodicTest from './modules/classesPage/screens/ClassPeriodicTest';
-import ClassHomework from './modules/classesPage/screens/ClassHomework';
-import ClassesAdd from './modules/classesPage/components/ClassesAdd';
-import StudentsPage from './modules/studentsPage/screens/StudentsPage'
-import ClassesRoot from './modules/classesPage/components/ClassesRoot';
-import NewStudent from './modules/studentsPage/screens/NewStudent';
-import StudentDetails from './modules/studentsPage/screens/StudentDetails';
-<<<<<<< HEAD
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Root from "./Root";
+import ErrorPage from "./modules/errorPage/ErrorPage";
+import HomePage from "./modules/homePage/screens/HomePage";
+import ClassesPage from "./modules/classesPage/screens/ClassesPage";
+import ClassDetailRoot from "./modules/classesPage/components/ClassDetailRoot";
+import ClassDashboard from "./modules/classesPage/screens/ClassDashboard";
+import ClassAttendant from "./modules/classesPage/screens/ClassAttendant";
+import ClassPeriodicTest from "./modules/classesPage/screens/ClassPeriodicTest";
+import ClassHomework from "./modules/classesPage/screens/ClassHomework";
+import ClassesAdd from "./modules/classesPage/components/ClassesAdd";
+import StudentsPage from "./modules/studentsPage/screens/StudentsPage";
+import ClassesRoot from "./modules/classesPage/components/ClassesRoot";
+import NewStudent from "./modules/studentsPage/screens/NewStudent";
+import StudentDetails from "./modules/studentsPage/screens/StudentDetails";
 import Login from './modules/loginPage/Login';
 import NewTeacher from './modules/teachersPage/NewTeacher';
-=======
-import TeachersPage from './modules/teachersPage/screens/TeachersPage';
+import TeachersPage from "./modules/teachersPage/screens/TeachersPage";
+import TeacherDetail from "./modules/teachersPage/screens/TeacherDetail";
 
->>>>>>> dev
 const router = createBrowserRouter([{
   path: "/",
   element: < Root /> ,
@@ -104,9 +99,4 @@ const router = createBrowserRouter([{
 }, ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render( <
-  RouterProvider router = {
-    router
-  }
-  />
-);
+root.render(<RouterProvider router={router} />);
