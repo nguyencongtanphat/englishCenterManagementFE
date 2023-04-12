@@ -84,12 +84,12 @@ export default function Sidebar() {
                                         padding: "0px",
                                         lineHeight: "50px",
                                         paddingLeft: "25px",
-                                        marginTop: "24px",
+                                        marginTop: "8px",
                                     }}                            
                                     
                                 >   
                                     {<div>
-                                        {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor} />}
+                                        {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor}/>}
                                         {item.title === "Students" && <StudentIcon id="Student" className="menu-icon" color={studentColor} />}
                                         {item.title === "Classes" && <ClassIcon id="Classes" className="menu-icon" color={classColor}/>}
                                         {item.title === "Teachers" && <TeacherIcon id="Teacher"  className="menu-icon" color={teacherColor} />}
