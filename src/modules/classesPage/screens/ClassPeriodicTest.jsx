@@ -456,7 +456,7 @@ function ClassPeriodicTest() {
       {isAddingPeriodic && (
         <UpdatePeriodicModal
           onCloseModal={closeAddHandler}
-          onSavePeriodic={savePeriodicHandler}
+          onSave={savePeriodicHandler}
         />
       )}
     </Container>
