@@ -29,7 +29,7 @@ function PeriodicTableRow({ sdtt, isUpdating, isEditable, onChange }) {
       <td>{sdtt.averageScore}</td>
 
       {/* Scores by days */}
-      {sdtt.tests.map((test) => (
+      {sdtt.perTests.map((test) => (
         <td>
           <input
             defaultValue={test.score}
