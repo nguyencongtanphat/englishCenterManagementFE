@@ -27,7 +27,7 @@ function ClassesAdd(){
                     icon={faChevronRight}
                     className="me-3"
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
-                <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>New Student</Link>
+                <Link key="Home" to="" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>New Student</Link>
             </Stack>
             <h3 className="mb-3"><b>New Student</b></h3>
             <div className={`${styled['form']}`}>
