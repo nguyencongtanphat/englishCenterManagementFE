@@ -41,7 +41,7 @@ export default function Sidebar() {
                 return (
                     <div className=''>
                         
-                        <div className='row sitebar-menu-item'
+                        <div className='row sitebar-menu-item' style={{marginTop: "8px"}}
                             key={index}
                             onMouseEnter={ () => {
                                 if(item.title === "Dashboard"){
@@ -84,12 +84,11 @@ export default function Sidebar() {
                                         padding: "0px",
                                         lineHeight: "50px",
                                         paddingLeft: "25px",
-                                        marginTop: "24px",
                                     }}                            
                                     
                                 >   
                                     {<div>
-                                        {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor} />}
+                                        {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor}/>}
                                         {item.title === "Students" && <StudentIcon id="Student" className="menu-icon" color={studentColor} />}
                                         {item.title === "Classes" && <ClassIcon id="Classes" className="menu-icon" color={classColor}/>}
                                         {item.title === "Teachers" && <TeacherIcon id="Teacher"  className="menu-icon" color={teacherColor} />}
@@ -106,7 +105,6 @@ export default function Sidebar() {
                                         // color: "#000000",
                                         fontWeight: "500",
                                         fontSize: "15px",
-                                        marginTop: "8px"
                                         // fontFamily: ""
                                     }}
                                 >
