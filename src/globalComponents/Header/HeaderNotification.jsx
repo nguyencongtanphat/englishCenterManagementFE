@@ -9,7 +9,7 @@ export default function HeaderNotification() {
             <a className="me-3 hidden-arrow" href="#" id="navbarDropdownMenuLink"
             role="button" data-mdb-toggle="dropdown" aria-expanded="false">
                 <img src={BellSVG} alt="bell"
-                    style={{lineHeight: '46px', height: '46px', padding: '12px'}}/>
+                    style={{lineHeight: '42px', height: '42px', padding: '12px'}}/>
                 {/* <span class="badge rounded-pill badge-notification bg-danger">1</span> */}
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

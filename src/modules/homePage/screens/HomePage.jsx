@@ -5,16 +5,28 @@ import React, { useState } from "react";
 import AppLineChart from "../../../globalComponents/LineChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
+import BreadCrumbs from "../../classesPage/components/BreadCrumbs";
+import Stack from 'react-bootstrap/Stack';
+import { Link } from 'react-router-dom'
 
 function HomePage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <Container fluid="md">
-      <p>Cente Dashboard</p>
-      <Row>
+      <Row className="mt-3">
         <Col>
-          <h2>Cente Dashboard</h2>
+        <Link
+            key="Home"
+            to="/"
+            className="me-3"
+            style={{
+              textDecoration: "none",
+              color: "#1B64F2",
+              fontSize: "14px"
+            }}
+          >Home</Link>
+          <h3 className="mb-3"><b>Dashboard</b></h3>
         </Col>
         <Col className="text-end">
           <DatePicker

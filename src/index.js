@@ -20,6 +20,7 @@ import StudentsPage from './modules/studentsPage/screens/StudentsPage'
 import ClassesRoot from './modules/classesPage/components/ClassesRoot';
 import NewStudent from './modules/studentsPage/screens/NewStudent';
 import StudentDetails from './modules/studentsPage/screens/StudentDetails';
+import TeachersPage from './modules/teachersPage/screens/TeachersPage';
 
 const router = createBrowserRouter([{
   path: "/",
@@ -40,7 +41,7 @@ const router = createBrowserRouter([{
           element: < ClassesPage />
         },
         {
-          path: "addclasses",
+          path: "new",
           element: < ClassesAdd />
         },
         {
@@ -81,6 +82,10 @@ const router = createBrowserRouter([{
     {
       path: "students/details",
       element: <StudentDetails/>
+    },
+    {
+      path: "teachers",
+      element: <TeachersPage/>
     }
   ],
 }, ]);

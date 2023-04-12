@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Button, Col, Container, Row, Table } from "react-bootstrap";
+import { Col, Container, Row, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPlusCircle } from "@fortawesome/fontawesome-free-solid";
-import { Link } from "react-router-dom";
+import { faDownload, faPlus } from "@fortawesome/fontawesome-free-solid";
 import classes from "./ClassPeriodicTest.module.css";
+import UpdatePeriodicModal from "../components/UpdatePeriodic";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import PeriodicTableRow from "../components/PeriodicTableRow";
+import { useEffect } from "react";
 
 const DUMMY_STUDENTS = [
   {
@@ -295,129 +298,167 @@ let DUMMY_PERIODIC_TESTS = [
   },
 ];
 
-// Populate foreign Fields of periodic tests
-DUMMY_PERIODIC_TESTS = DUMMY_PERIODIC_TESTS.map((periodic_test) => {
-  const student = DUMMY_STUDENTS.find(
-    (std) => std.StudentID === periodic_test.StudentID
-  );
-  const test = DUMMY_TESTS.find((test) => test.ID === periodic_test.TestID);
-  return {
-    Score: periodic_test.Score,
-    StudentID: student,
-    TestID: test,
-  };
-});
+function ClassPeriodicTest() {
+  const [tests, setTests] = useState(DUMMY_TESTS);
+  const [periodicTests, setPeriodicTests] = useState(DUMMY_PERIODIC_TESTS);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
+  const [isEditable, setIsEditable] = useState(false);
 
-const students_test = DUMMY_STUDENTS.map((student) => {
-  // test: [{date: ..., scores: ...}]
-  let sumScores = 0;
-  const tests = DUMMY_PERIODIC_TESTS.filter((periodic_test) => {
-    return periodic_test.StudentID === student;
-  }).map((test) => {
-    sumScores += test.Score;
+  // Populate foreign Fields of periodic tests
+  const periodicTestsPopulated = periodicTests.map((periodic_test) => {
+    const student = DUMMY_STUDENTS.find(
+      (std) => std.StudentID === periodic_test.StudentID
+    );
+    const test = tests.find((test) => test.ID === periodic_test.TestID);
     return {
-      date: test.TestID.Date,
-      score: test.Score,
+      Score: periodic_test.Score,
+      StudentID: student,
+      TestID: test,
     };
   });
 
-  return {
-    ...student,
-    tests,
-    averageScore: Math.round(sumScores / tests.length),
-  };
-});
+  const students_test = DUMMY_STUDENTS.map((student) => {
+    // test: [{date: ..., scores: ...}]
+    let sumScores = 0;
+    const perTests = periodicTestsPopulated
+      .filter((periodicTest) => {
+        return periodicTest.StudentID === student;
+      })
+      .map((test) => {
+        sumScores += test.Score;
+        return {
+          date: test.TestID.Date,
+          score: test.Score,
+        };
+      });
 
-function ClassPeriodicTest() {
-  const [isUpdating, setIsUpdating] = useState(false);
+    return {
+      ...student,
+      perTests,
+      averageScore: Math.round(sumScores / perTests.length),
+    };
+  });
+
+  const testDates = tests.map(
+    (test) => test.Date.getDate() + "/" + test.Date.getMonth()
+  );
 
   const updateHandler = () => {
-    setIsUpdating(true)
+    setIsUpdating(true);
+    setTimeout(() => {
+      const newTestCol = document.getElementById("newTestCol");
+      newTestCol.scrollIntoView({
+        behavior: "smooth",
+      });
+    }, 100);
   };
 
-  const saveHandler = () => {
-    setIsUpdating(false)
-  }
+  const addHandler = () => {
+    setIsAddingPeriodic(true);
+  };
+
+  const closeAddHandler = () => {
+    setIsAddingPeriodic(false);
+  };
+
+  const savePeriodicHandler = (date, score) => {
+    const newTest = {
+      ID: `test_${new Date(date).toISOString()}`,
+      Date: new Date(date),
+      RequiredScore: score === "" ? null : parseInt(score),
+    };
+    setTests((prevTests) => [...prevTests, newTest]);
+    setIsAddingPeriodic(false);
+    setIsEditable(true);
+    setIsUpdating(true);
+  };
+
+  const updatePeriodicHandler = (value, studentID, date) => {
+    const index = periodicTestsPopulated.findIndex((periodicTestPopulated) => {
+      return (
+        periodicTestPopulated.StudentID.StudentID === studentID &&
+        periodicTestPopulated.TestID.Date.toString() === date
+      );
+    });
+
+    const periodicTestsCopy = [...periodicTests];
+    periodicTestsCopy[index].Score = parseInt(value);
+    setPeriodicTests(periodicTestsCopy);
+  };
+
+  const completeUpdateHandler = () => {
+    setIsEditable(false);
+    setIsUpdating(false);
+  };
 
   return (
-    <Container className="bg-light p-4 rounded-4">
+    <Container className="bg-white p-4 rounded-4" style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
+    boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
       <Row className="align-items-center">
         <Col>
-          <h3>Periodic Test Score</h3>
-          <p>
-            Total number of periodic test:{" "}
-            <span className="fw-bold">{DUMMY_TESTS.length}</span>
+          <p className="mb-1" style={{fontSize:"20px", fontWeight:700}}>Periodic Test Score</p>
+          <p style={{color:"#6B7280", fontSize:"14px"}}>
+            Total number of periodic test: <span className="fw-bold" style={{color:"black"}}>{DUMMY_TESTS.length}</span>
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          <Button
-            onClick={updateHandler}
-            className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none"
-          >
-            <FontAwesomeIcon icon={faPlusCircle} />
-            <span className="ps-2">Update</span>
-          </Button>
+          {!isUpdating && (
+            <button
+              onClick={updateHandler}
+              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+              <span className="ps-2">Update</span>
+            </button>
+          )}
+          {isUpdating && (
+            <button
+              onClick={completeUpdateHandler}
+              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+            >
+              <FontAwesomeIcon icon={faDownload} />
+              <span className="ps-2">Save</span>
+            </button>
+          )}
         </Col>
       </Row>
-      <div style={{ overflowX: "scroll" }}>
+      <div className={classes["table-div"]} id="tableDiv">
         <Table className={classes.table} bordered>
           <thead>
             <tr>
               <th>Name</th>
               <th>Average</th>
-              <th>5/3</th>
-              <th>8/3</th>
-              <th>11/3</th>
-              <th>14/3</th>
-              <th>17/3</th>
-              <th>21/3</th>
-              <th>24/3</th>
+              {testDates.map((date) => (
+                <th>{date}</th>
+              ))}
               {isUpdating && (
                 <th>
-                  <Button style={{backgroundColor: "white", borderColor: "white"}} onClick={saveHandler}>
-                    <FontAwesomeIcon icon={faPlus} color="blue"/>
-                  </Button>
+                  <button className="border-0 bg-light" onClick={addHandler}>
+                    <FontAwesomeIcon icon={faPlus} color="blue" />
+                  </button>
                 </th>
               )}
             </tr>
           </thead>
           <tbody>
             {students_test.map((sdtt) => (
-              <tr key={sdtt.StudentID}>
-
-                {/* Student info */}
-                <th>
-                  <div className={classes.imgDiv}>
-                    <img
-                      style={{
-                        height: "100%",
-                      }}
-                      src={sdtt.ImageURL}
-                      alt={sdtt.Name}
-                    ></img>
-                  </div>
-                  <div>
-                    <p className="mb-0 text-nowrap fw-semibold">{sdtt.Name}</p>
-                    <p className="mb-0 fw-light">{sdtt.StudentID}</p>
-                  </div>
-                </th>
-
-                {/* Average Score */}
-                <td>{sdtt.averageScore}</td>
-
-                {/* Scores by days */}
-                {sdtt.tests.map((test) => (
-                  <td>{test.score}</td>
-                ))}
-
-                {/* Score before updating */}
-                {isUpdating && <td>0</td>}
-
-              </tr>
+              <PeriodicTableRow
+                sdtt={sdtt}
+                isEditable={isEditable}
+                isUpdating={isUpdating}
+                onChange={updatePeriodicHandler}
+              />
             ))}
           </tbody>
         </Table>
       </div>
+      {isAddingPeriodic && (
+        <UpdatePeriodicModal
+          onCloseModal={closeAddHandler}
+          onSave={savePeriodicHandler}
+        />
+      )}
     </Container>
   );
 }

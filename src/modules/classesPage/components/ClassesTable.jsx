@@ -3,46 +3,53 @@ import { Col, Container, Form, Row, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faPlusCircle } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "../../studentsPage/components/styleStd.module.css"
 
 function ClassesTable({ classes }) {
   return (
-    <>
+    <div>
       <Container>
         <Row className="align-items-center">
-          <Col>
+          <Col style={{fontSize:"14px"}}>
             <Form className="mb-3" as={Row}>
-                <Form.Group as={Col} xs="auto">
-                  <Form.Label>Teacher</Form.Label>
-                  <Form.Select name="teacher">
-                    <option selected>All</option>
-                    <option value="tc01">Ms.Hoa</option>
-                    <option value="tc02">Mr.Hung</option>
-                    <option value="tc03">Mr.Chau</option>
-                  </Form.Select>
-                </Form.Group>
-                <Form.Group as={Col} xs="auto">
-                  <Form.Label>Type</Form.Label>
-                  <Form.Select name="type">
-                    <option value="type01">Toeic Reading & Listening</option>
-                    <option value="type02">Toeic Writing & Speaking</option>
-                    <option value="type03">IELTS</option>
-                  </Form.Select>
-                </Form.Group>
+              <Form.Group as={Col} xs="auto">
+                <Form.Select name="teacher" style={{ fontSize: "14px" }}>
+                  <option hidden>Teacher</option>
+                  <option value="tc01">TOEIC</option>
+                  <option value="tc02">IETLS</option>
+                  <option value="tc03">TOEFL</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group as={Col} xs="auto">
+                <Form.Select name="type" style={{ fontSize: "14px" }}>
+                  <option hidden>Type</option>
+                  <option value="tc01">TOEIC Reading & Listening</option>
+                  <option value="tc02">TOEIC Writing & Speaking</option>
+                  <option value="tc03">IETLS</option>
+                </Form.Select>
+              </Form.Group>
             </Form>
           </Col>
           <Col className="d-flex justify-content-end">
-            <Link
-              to="/classes/addclasses"
-              className="bg-primary d-flex align-items-center text-light py-1 px-3 rounded-2 text-decoration-none w-auto"
-            >
-              <FontAwesomeIcon icon={faPlusCircle} />
-              <span className="ps-2">Add Class</span>
-            </Link>
+          <Link to='new' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
+                        <FontAwesomeIcon icon={faPlusCircle}/>
+                        <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
+                    </Link>
           </Col>
         </Row>
       </Container>
-
-      <Table bordered hover>
+      <div className={`${styled["form"]}`}>
+      <Table bordered
+          hover
+          style={{
+            fontSize: 14,
+            borderCollapse: "collapse",
+            borderRadius: "1em",
+            overflow: "hidden",
+            borderColor: "#E5E7EB",
+            backgroundColor: "white"
+          }}>
         <thead>
           <tr className="text-uppercase text-secondary">
             <th>Name</th>
@@ -71,7 +78,8 @@ function ClassesTable({ classes }) {
           ))}
         </tbody>
       </Table>
-    </>
+      </div>
+    </div>
   );
 }
 

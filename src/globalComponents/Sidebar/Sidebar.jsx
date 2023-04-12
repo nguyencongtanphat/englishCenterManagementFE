@@ -79,18 +79,19 @@ export default function Sidebar() {
                             <a href={item.route} >
                                 <div className='col-3'
                                     style={{
-                                        height: "50px",
+                                        height: "32px",
                                         position: "relative",
                                         padding: "0px",
                                         lineHeight: "50px",
-                                        paddingLeft: "25px"
+                                        paddingLeft: "25px",
+                                        marginTop: "24px",
                                     }}                            
                                     
                                 >   
                                     {<div>
                                         {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor} />}
                                         {item.title === "Student" && <StudentIcon id="Student" className="menu-icon" color={studentColor} />}
-                                        {item.title === "Classes" && <ClassIcon id="Classes" className="menu-icon" color={classColor} />}
+                                        {item.title === "Classes" && <ClassIcon id="Classes" className="menu-icon" color={classColor}/>}
                                         {item.title === "Teacher" && <TeacherIcon id="Teacher"  className="menu-icon" color={teacherColor} />}
                                         {item.title === "Certificate" && <CertificateIcon id="Certificate" className="menu-icon" color={certificateColor} />}
                                         {item.title === "Help" && <HelpIcon id="Help" className="menu-icon" color={helpColor} />}
@@ -104,8 +105,8 @@ export default function Sidebar() {
                                         lineHeight: "50px",
                                         // color: "#000000",
                                         fontWeight: "500",
-                                        fontSize: "18px",
-        
+                                        fontSize: "15px",
+                                        marginTop: "8px"
                                         // fontFamily: ""
                                     }}
                                 >

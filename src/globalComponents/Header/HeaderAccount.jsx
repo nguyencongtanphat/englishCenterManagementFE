@@ -18,8 +18,8 @@ export default function HeaderAccount() {
         <div class="dropdown">
             <button class="btn bg-dark dropdown-toggle text-white" type="button" id="dropdownMenuButton"
                 data-mdb-toggle="dropdown" aria-expanded="false" 
-                style={{width: "100px", height: "46px", fontWeight: "600", borderRadius: "24px"}}>
-                <span style={{marginRight: "2px"}}> Admin </span>
+                style={{width:"100px", height: "44px", fontWeight: "600", borderRadius: "100px"}}>
+                <span style={{marginRight: "2px", fontSize:"14px", fontWeight:600}}> Admin </span>
             </button>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
