@@ -22,13 +22,13 @@ const SidebarMenu =
                 "id": 2,
                 "title": "Student",
                 "icon": StudentIcon,
-                "route": "#"
+                "route": "/students"
             },
             {
                 "id": 3,
                 "title": "Classes",
                 "icon": ClassIcon,
-                "route": "#"
+                "route": "/classes"
             },
             {
                 "id": 4,
