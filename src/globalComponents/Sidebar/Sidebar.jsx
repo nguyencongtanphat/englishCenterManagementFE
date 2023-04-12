@@ -90,10 +90,10 @@ export default function Sidebar() {
                                 >   
                                     {<div>
                                         {item.title === "Dashboard" && <ChartPieIcon id="Dashboard" className="menu-icon" color={dashboardColor} />}
-                                        {item.title === "Student" && <StudentIcon id="Student" className="menu-icon" color={studentColor} />}
+                                        {item.title === "Students" && <StudentIcon id="Student" className="menu-icon" color={studentColor} />}
                                         {item.title === "Classes" && <ClassIcon id="Classes" className="menu-icon" color={classColor}/>}
-                                        {item.title === "Teacher" && <TeacherIcon id="Teacher"  className="menu-icon" color={teacherColor} />}
-                                        {item.title === "Certificate" && <CertificateIcon id="Certificate" className="menu-icon" color={certificateColor} />}
+                                        {item.title === "Teachers" && <TeacherIcon id="Teacher"  className="menu-icon" color={teacherColor} />}
+                                        {item.title === "Certificates" && <CertificateIcon id="Certificate" className="menu-icon" color={certificateColor} />}
                                         {item.title === "Help" && <HelpIcon id="Help" className="menu-icon" color={helpColor} />}
                                     </div>}
                                     {/* <CertificateIcon color={"blue"}/>  */}

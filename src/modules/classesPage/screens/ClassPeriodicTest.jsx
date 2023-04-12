@@ -399,7 +399,7 @@ function ClassPeriodicTest() {
         <Col>
           <p className="mb-1" style={{fontSize:"20px", fontWeight:700}}>Periodic Test Score</p>
           <p style={{color:"#6B7280", fontSize:"14px"}}>
-            Total number of periodic test: <span className="fw-bold" style={{color:"black"}}>{DUMMY_TESTS.length}</span>
+            Total number of periodic tests: <span className="fw-bold" style={{color:"black"}}>{DUMMY_TESTS.length}</span>
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
@@ -424,7 +424,15 @@ function ClassPeriodicTest() {
         </Col>
       </Row>
       <div className={classes["table-div"]} id="tableDiv">
-        <Table className={classes.table} bordered>
+      <Table bordered className={classes.table}
+          hover
+          style={{
+            fontSize: 14,
+            borderCollapse: "collapse",
+            borderRadius: "1em",
+            overflow: "hidden",
+            borderColor: "#E5E7EB",
+          }}>
           <thead>
             <tr>
               <th>Name</th>
