@@ -1,7 +1,7 @@
 import classes from "./UpdatePeriodic.module.css";
 import ReactDOM from "react-dom";
 import { Form } from "react-bootstrap";
-import { useRef } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 
 const Backdrop = (props) => {
@@ -17,18 +17,35 @@ const ModalOverlay = (props) => {
 };
 
 const UpdatePeriodicModal = (props) => {
-  const dateRef = useRef()
-  const scoreRef = useRef()
-  const [formIsValid, setFormIsValid] = useState()
+  const [date, setDate] = useState(new Date());
+  const [score, setScore] = useState("");
+  const [formIsValid, setFormIsValid] = useState();
 
   const saveHandler = (event) => {
-    event.preventDefault()
-    if (dateRef.current.value === '' || scoreRef.current.value === '') {
-      setFormIsValid(false)
+    event.preventDefault();
+    console.log(date, score);
+    props.onSavePeriodic(date, score)
+  };
+
+  useEffect(() => {
+    if (
+      new Date(date).getDate() < new Date().getDate() ||
+      parseInt(score) <= 0 ||
+      parseInt(score) >= 990
+    ) {
+      setFormIsValid(false);
     } else {
-      setFormIsValid(true)
+      setFormIsValid(true);
     }
-  }
+  }, [date, score]);
+
+  const dateChangeHandler = (event) => {
+    setDate(event.target.value);
+  };
+
+  const scoreChangeHandler = (event) => {
+    setScore(event.target.value);
+  };
 
   return (
     <>
@@ -39,19 +56,24 @@ const UpdatePeriodicModal = (props) => {
       {ReactDOM.createPortal(
         <ModalOverlay>
           <h4 className="text-center">Additional Request</h4>
-          {!formIsValid &&
+          {!formIsValid && (
             <p className="text-danger">Invalid inputs! Try again</p>
-          }
+          )}
           <Form className="mt-2">
             <Form.Group className="mb-3">
               <Form.Label>
                 Pick a date for the periodic test of your class:
               </Form.Label>
-              <Form.Control required type="date" ref={dateRef}/>
+              <Form.Control required type="date" onChange={dateChangeHandler} />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Input a required score of this test</Form.Label>
-              <Form.Control type="number" min="0" ref={scoreRef}/>
+              <Form.Control
+                type="number"
+                min="0"
+                value={score}
+                onChange={scoreChangeHandler}
+              />
             </Form.Group>
             <div className="d-flex gap-2 justify-content-end">
               <button
@@ -60,7 +82,10 @@ const UpdatePeriodicModal = (props) => {
               >
                 Cancle
               </button>
-              <button className="w-25 py-1 border-0 rounded-2 bg-black text-white" onClick={saveHandler}>
+              <button
+                className="w-25 py-1 border-0 rounded-2 bg-black text-white"
+                onClick={saveHandler}
+              >
                 Save
               </button>
             </div>
