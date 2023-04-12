@@ -10,7 +10,7 @@ const ClassesStudentList = ({dumyStudent}) => {
     <div style={{borderRadius:"10px"}}>
       <Row>
           <Col>
-            <h3 style={{padding:"20px 30px"}}>Student list</h3>
+            <p style={{fontWeight:700, fontSize:"20px"}}>Student list</p>
           </Col>
           <Col lg='auto' className='pt-4 pb-4 d-flex'>
             {/* <Button className='bg-black border border-white'>Daily</Button> */}
@@ -26,7 +26,7 @@ const ClassesStudentList = ({dumyStudent}) => {
         <Table bordered hover style={{ fontSize: 14, borderCollapse: 'collapse', borderRadius: '1em', overflow: 'hidden', borderColor: '#E5E7EB'}}>
             <thead>
                 <tr className='text-uppercase text-secondary'>
-                    <th>#Name</th>
+                    <th>Name</th>
                     <th>Phone</th>
                     <th>Attendant</th>
                     <th>Periodic Test</th>

@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
 
 function ClassCard({ classInfo, bgColor }) {
@@ -22,15 +23,18 @@ function ClassCard({ classInfo, bgColor }) {
       key={id}
       text={bgColor === "light" ? "dark" : "white"}
       style={{backgroundColor: bgColor }}
-      className="mb-2"
+      className="mb-3"
     >
       <Card.Body>
-        <Card.Title className="text-center"> {className} </Card.Title>
-        <Card.Text className="text-center">
+        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"8px"}}>
+        <FontAwesomeIcon icon="fa-solid fa-book-open" style={{width:"16px", marginTop:"-4px"}}/>
+        <Card.Title className="text-center" style={{fontSize:"18px", fontWeight:700}}> {className} </Card.Title>
+        </div>
+        <Card.Text className="text-center" style={{fontSize:"14px", fontWeight:400, marginBottom:"4px"}}>
           {teacher} | {number} students
         </Card.Text>
-        <Card.Text className="text-center">Target: {target}</Card.Text>
-        <Card.Text className="text-center">{time}</Card.Text>
+        <Card.Text className="text-center" style={{fontSize:"14px", fontWeight:400, marginBottom:"4px"}}>Target: {target}</Card.Text>
+        <Card.Text className="text-center" style={{fontSize:"14px", fontWeight:400, marginBottom:"4px"}}>{time}</Card.Text>
       </Card.Body>
     </Card>
   );

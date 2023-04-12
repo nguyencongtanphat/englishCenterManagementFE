@@ -393,13 +393,13 @@ function ClassPeriodicTest() {
   };
 
   return (
-    <Container className="bg-light p-4 rounded-4">
+    <Container className="bg-white p-4 rounded-4" style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
+    boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
       <Row className="align-items-center">
         <Col>
-          <h3>Periodic Test Score</h3>
-          <p>
-            Total number of periodic test:
-            <span className="fw-bold">{DUMMY_TESTS.length}</span>
+          <p className="mb-1" style={{fontSize:"20px", fontWeight:700}}>Periodic Test Score</p>
+          <p style={{color:"#6B7280", fontSize:"14px"}}>
+            Total number of periodic test: <span className="fw-bold" style={{color:"black"}}>{DUMMY_TESTS.length}</span>
           </p>
         </Col>
         <Col className="d-flex justify-content-end">

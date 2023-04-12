@@ -233,11 +233,13 @@ const DUMMY_STUDENTS = [
 function ClassDashboard() {
     return (
         <>
-            <div style={{backgroundColor:"#F9FAFB", borderRadius:"10px", marginTop:"10px"}}>
+            <div style={{backgroundColor:"#F9FAFB", borderRadius:"10px", marginTop:"10px", marginLeft:"12px"}}>
+                <div style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
+                    boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
                 <ClassesStudentList
                    dumyStudent= {DUMMY_STUDENTS}
                 />
-                <h3 className='p-4' >Overall</h3>
+                </div>
                 <div>
                 <AppLineChart/>
                 <StudentCenterInfo/>    
