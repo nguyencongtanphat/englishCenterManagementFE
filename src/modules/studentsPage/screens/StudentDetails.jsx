@@ -79,7 +79,7 @@ function ClassesAdd(){
                                     <label style={{fontSize: "12px", color: "#6B7280"}}>Attendance</label>
                                     <div>
                                         <label style={{fontSize: "16px", fontWeight:400}}>Present:</label>
-                                        <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>20/20 lessions</label>
+                                        <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>20/20 lessons</label>
                                     </div>
                                 </div>
                                 <div>
@@ -108,8 +108,8 @@ function ClassesAdd(){
                                 <div className={`${styled['detailss']}`}>
                                     <label style={{fontSize: "12px", color: "#6B7280"}}>Homework</label>
                                     <div>
-                                        <label style={{fontSize: "16px", fontWeight:400}}>Completed:</label>
-                                        <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>24/26 HW</label>
+                                        <label style={{fontSize: "16px", fontWeight:400}}>Score:</label>
+                                        <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>97/100 points</label>
                                     </div>
                                 </div>
                                 <div>

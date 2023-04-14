@@ -113,7 +113,7 @@ function StudentsTable({ std }) {
                 </td>
                 <td>
                   {_std.homework}%<br />
-                  <label style={{ color: "#6B7280" }}>Completed: 20/30</label>
+                  <label style={{ color: "#6B7280" }}>Score: 90/100</label>
                 </td>
                 <td>
                   <h6>
