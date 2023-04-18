@@ -21,82 +21,98 @@ import Login from './modules/loginPage/Login';
 import NewTeacher from './modules/teachersPage/NewTeacher';
 import TeachersPage from "./modules/teachersPage/screens/TeachersPage";
 import TeacherDetail from "./modules/teachersPage/screens/TeacherDetail";
+import { store } from "./app/store";
+import { Provider } from "react-redux";
+import { Counter } from "./features/counter/Counter";
 
-const router = createBrowserRouter([{
-  path: "/",
-  element: < Root /> ,
-  errorElement: < ErrorPage /> ,
-  children: [{
-      path: "/",
-      element: < HomePage /> ,
-      errorElement: < ErrorPage /> ,
-    },
-    {
-      path: "classes",
-      element: <ClassesRoot/>,
-      children: [
-        {
-          index: true,
-          path: "",
-          element: < ClassesPage />
-        },
-        {
-          path: "addclasses",
-          element: < ClassesAdd />
-        },
-        {
-          path: ":className",
-          element: < ClassDetailRoot /> ,
-          children: [{
-              index: true,
-              element: < ClassDashboard />
-            },
-            {
-              path: 'dashboard',
-              element: < ClassDashboard />
-            },
-            {
-              path: 'attendant',
-              element: < ClassAttendant />
-            },
-            {
-              path: 'periodic-test',
-              element: < ClassPeriodicTest />
-            },
-            {
-              path: 'homework',
-              element: < ClassHomework />
-            },
-          ]
-        }
-      ]
-    },
-    {
-      path: "students",
-      element: < StudentsPage />
-    },
-    {
-      path: "login",
-      element: < Login />
-    },
-    {
-      path: "newteacher",
-      element: < NewTeacher />
-    },
-    {
-      path: "students/new",
-      element: < NewStudent />
-    },
-    {
-      path: "students/details",
-      element: <StudentDetails/>
-    },
-    {
-      path: "teachers",
-      element: <TeachersPage/>
-    }
-  ],
-}, ]);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "counter",
+        element: <Counter />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "classes",
+        element: <ClassesRoot />,
+        children: [
+          {
+            index: true,
+            path: "",
+            element: <ClassesPage />,
+          },
+          {
+            path: "addclasses",
+            element: <ClassesAdd />,
+          },
+          {
+            path: ":className",
+            element: <ClassDetailRoot />,
+            children: [
+              {
+                index: true,
+                element: <ClassDashboard />,
+              },
+              {
+                path: "dashboard",
+                element: <ClassDashboard />,
+              },
+              {
+                path: "attendant",
+                element: <ClassAttendant />,
+              },
+              {
+                path: "periodic-test",
+                element: <ClassPeriodicTest />,
+              },
+              {
+                path: "homework",
+                element: <ClassHomework />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "students",
+        element: <StudentsPage />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "newteacher",
+        element: <NewTeacher />,
+      },
+      {
+        path: "students/new",
+        element: <NewStudent />,
+      },
+      {
+        path: "students/details",
+        element: <StudentDetails />,
+      },
+      {
+        path: "teachers",
+        element: <TeachersPage />,
+      },
+    ],
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);
