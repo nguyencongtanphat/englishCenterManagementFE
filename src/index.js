@@ -21,6 +21,9 @@ import Login from "./modules/loginPage/Login";
 import NewTeacher from "./modules/teachersPage/NewTeacher";
 import TeachersPage from "./modules/teachersPage/screens/TeachersPage";
 import TeacherDetail from "./modules/teachersPage/screens/TeacherDetail";
+import { store } from "./app/store";
+import { Provider } from "react-redux";
+import { Counter } from "./features/counter/Counter";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +34,11 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: "counter",
+        element: <Counter />,
         errorElement: <ErrorPage />,
       },
       {
@@ -98,14 +106,13 @@ const router = createBrowserRouter([
         path: "teachers",
         element: <TeachersPage />,
       },
-
-      {
-        path: "teachers/detail",
-        element: <TeacherDetail />,
-      },
     ],
   },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);
