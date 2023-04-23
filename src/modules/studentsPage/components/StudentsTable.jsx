@@ -11,6 +11,8 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "./styleStd.module.css";
+import deleteSVG from "../../../assets/images/global/delete.svg";
+import editSVG from "../../../assets/images/global/edit.svg";
 
 function StudentsTable({ std }) {
   let navigate = useNavigate();
@@ -74,6 +76,7 @@ function StudentsTable({ std }) {
               <th>Periodic Tests</th>
               <th>Homework</th>
               <th>Evaluation</th>
+              <th></th>
             </tr>
           </thead>
           <tbody style={{ backgroundColor: "white" }} onClick={routeChange}>
@@ -121,6 +124,11 @@ function StudentsTable({ std }) {
                       {_std.evaluation.value}
                     </Badge>
                   </h6>
+                </td>
+                <td>
+                  <button><img src={editSVG} alt="edit"/></button>
+                  <br></br>
+                  <button><img src={deleteSVG} alt="delete"/></button>
                 </td>
               </tr>
             ))}
