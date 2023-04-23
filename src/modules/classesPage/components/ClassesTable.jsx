@@ -32,7 +32,7 @@ function ClassesTable({ classes }) {
             </Form>
           </Col>
           <Col className="d-flex justify-content-end">
-          <Link to='new' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
+          <Link to='add' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
                     </Link>

@@ -6,6 +6,7 @@ import styled from "../components/styleStd.module.css"
 import { Col, Form, Row, Image, Modal} from 'react-bootstrap'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
+import BreadCrumbs from "../../classesPage/components/BreadCrumbs";
 
 function ClassesAdd(){
 

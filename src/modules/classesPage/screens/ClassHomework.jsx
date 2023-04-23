@@ -362,10 +362,11 @@ function ClassHomework() {
     setIsAddingHomework(false);
   };
 
-  const saveHomeworkHandler = (date, score) => {
+  const saveHomeworkHandler = (date, testId, score) => {
     const newTest = {
       ID: `test_${new Date(date).toISOString()}`,
       Date: new Date(date),
+      TestID: testId,
       RequiredScore: score === "" ? null : parseInt(score),
     };
     setTests((prevTests) => [...prevTests, newTest]);
@@ -393,14 +394,28 @@ function ClassHomework() {
   };
 
   return (
-    <Container className="bg-white p-4 rounded-4" style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
-    boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
+    <Container
+      className="bg-white p-4 rounded-4"
+      style={{
+        borderRadius: "16px",
+        padding: "24px",
+        backgroundColor: "white",
+        marginBottom: "16px",
+        boxShadow:
+          "0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)",
+      }}
+    >
       <Row className="align-items-center">
         <Col>
-            <p className="mb-1" style={{fontSize:"20px", fontWeight:700}}>Homework Checking</p>
-            <p style={{color:"#6B7280", fontSize:"14px"}}>
-            Total number of homework test: <span className="fw-bold" style={{color:"black"}}>{DUMMY_TESTS.length}</span>
-            </p>
+          <p className="mb-1" style={{ fontSize: "20px", fontWeight: 700 }}>
+            Homework Checking
+          </p>
+          <p style={{ color: "#6B7280", fontSize: "14px" }}>
+            Total number of homework test:{" "}
+            <span className="fw-bold" style={{ color: "black" }}>
+              {DUMMY_TESTS.length}
+            </span>
+          </p>
         </Col>
         <Col className="d-flex justify-content-end">
           {!isUpdating && (
@@ -424,7 +439,9 @@ function ClassHomework() {
         </Col>
       </Row>
       <div className={classes["table-div"]} id="tableDiv">
-      <Table bordered className={classes.table}
+        <Table
+          bordered
+          className={classes.table}
           hover
           style={{
             fontSize: 14,
@@ -432,7 +449,8 @@ function ClassHomework() {
             borderRadius: "1em",
             overflow: "hidden",
             borderColor: "#E5E7EB",
-          }}>
+          }}
+        >
           <thead>
             <tr class="text-uppercase text-secondary">
               <th>NAME</th>
@@ -463,6 +481,8 @@ function ClassHomework() {
       </div>
       {isAddingHomework && (
         <UpdateHomeworkModal
+          tests={tests}
+          existingTests={tests}
           onCloseModal={closeAddHandler}
           onSave={saveHomeworkHandler}
         />
