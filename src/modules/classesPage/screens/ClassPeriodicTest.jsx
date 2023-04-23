@@ -362,10 +362,11 @@ function ClassPeriodicTest() {
     setIsAddingPeriodic(false);
   };
 
-  const savePeriodicHandler = (date, score) => {
+  const savePeriodicHandler = (date, testId, score) => {
     const newTest = {
       ID: `test_${new Date(date).toISOString()}`,
       Date: new Date(date),
+      TestID: testId,
       RequiredScore: score === "" ? null : parseInt(score),
     };
     setTests((prevTests) => [...prevTests, newTest]);
@@ -463,6 +464,8 @@ function ClassPeriodicTest() {
       </div>
       {isAddingPeriodic && (
         <UpdatePeriodicModal
+          tests={tests}
+          existingTests={tests}
           onCloseModal={closeAddHandler}
           onSave={savePeriodicHandler}
         />
