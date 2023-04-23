@@ -21,7 +21,7 @@ import Login from "./modules/loginPage/Login";
 import NewTeacher from "./modules/teachersPage/NewTeacher";
 import TeachersPage from "./modules/teachersPage/screens/TeachersPage";
 import TeacherDetail from "./modules/teachersPage/screens/TeacherDetail";
-import { store } from "./app/store";
+import { store } from "./store";
 import { Provider } from "react-redux";
 import { Counter } from "./features/counter/Counter";
 
