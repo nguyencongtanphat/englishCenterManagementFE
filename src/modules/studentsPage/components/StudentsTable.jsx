@@ -15,12 +15,9 @@ import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 
 function StudentsTable({ std }) {
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `details`;
-    navigate(path);
-  };
 
+  let navigate = useNavigate();
+  
   return (
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
@@ -79,9 +76,10 @@ function StudentsTable({ std }) {
               <th></th>
             </tr>
           </thead>
-          <tbody style={{ backgroundColor: "white" }} onClick={routeChange}>
+          <tbody style={{ backgroundColor: "white" }}>
             {std.map((_std) => (
-              <tr key={_std.id}>
+              <tr key={_std.id} onClick={()=>{navigate(`/students/${_std._id}`);
+            }}>
                 <td>
                   <Container>
                     <Row>

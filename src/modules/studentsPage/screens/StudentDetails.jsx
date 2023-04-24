@@ -6,8 +6,31 @@ import AppLineChart from "../components/LineChart"
 import { Badge, Image } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import StudentService from "../../../service.js";
 
 function ClassesAdd(){
+
+    const [stdInfo, setStdInfo] = useState({});
+    let { studentId } = useParams();
+    console.log('StudentID: ',studentId);
+
+    useEffect(() => {
+        retrieveStudentDetails(studentId);
+    }, []);
+    
+    const retrieveStudentDetails = (id) => {
+        StudentService.get(id)
+        .then(response => {
+            console.log('Student Details: ',response.data.ResponseResult.Result);
+            setStdInfo(response.data.ResponseResult.Result);
+        })
+        .catch(e => {
+            console.log('Error: ',e);
+        });
+    }
+
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
@@ -31,33 +54,33 @@ function ClassesAdd(){
                     <div className={`${styled['details1']}`}>
                         <p style={{fontSize: "20px", fontWeight: 600}}>Information</p>
                         <div className={`${styled['avt_details']}`}>
-                            <Image src="https://i.imgur.com/DizC5X0.png" roundedCircle="true" width="64px" height="64px"></Image>
+                            <Image src={stdInfo.ImageURL} roundedCircle="true" width="64px" height="64px"></Image>
                             <div className={`${styled['name_details']}`}>
-                                <label style={{fontSize: "16px", fontWeight: "600"}}>Nguyễn Thành Trung</label>
-                                <label style={{color: "#6B7280"}}>ID: 20520334</label>
+                                <label style={{fontSize: "16px", fontWeight: "600"}}>{stdInfo.Name}</label>
+                                <label style={{color: "#6B7280"}}>ID: {stdInfo.StudentID}</label>
                             </div>
                         </div>
                         <div className={`${styled['alot_details']}`}>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-calendar" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>01/07/2002</label>
+                                <label style={{color: "#6B7280"}}>{stdInfo.DateOfBirthday}</label>
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-phone" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>0839132695</label>
+                                <label style={{color: "#6B7280"}}>{stdInfo.PhoneNumber}</label>
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-envelope" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>nttrung01072002@gmail.com</label>
+                                <label style={{color: "#6B7280"}}>{stdInfo.Email}</label>
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-book-open" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>TOE500.1</label>
+                                <label style={{color: "#6B7280"}}>{stdInfo.TypeClass}</label>
                             </div>
                             <div className={`${styled['score']}`}>
                                 <div className={`${styled['incom']}`}>
                                     <label style={{color: "#6B7280"}}>Income</label>
-                                    <label style={{color: "#6B7280", fontSize: "24px"}}>350</label>
+                                    <label style={{color: "#6B7280", fontSize: "24px"}}>{stdInfo.ScoreIncome}</label>
                                 </div>
 
                                 <div>
@@ -66,7 +89,7 @@ function ClassesAdd(){
 
                                 <div className={`${styled['desire']}`}>
                                     <label style={{color: "#6B7280"}}>Desire</label>
-                                    <label style={{color: "#6B7280", fontSize: "24px"}}>700</label>
+                                    <label style={{color: "#6B7280", fontSize: "24px"}}>{stdInfo.ScoreDesire}</label>
                                 </div>
                             </div>
                         </div>
