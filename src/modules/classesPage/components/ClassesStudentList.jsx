@@ -2,6 +2,8 @@ import {React, useState} from 'react'
 import { Container, Row, Col, Table, Badge, Image, Button} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import DatePicker from 'react-datepicker';
+import deleteSVG from "../../../assets/images/global/delete.svg";
+import editSVG from "../../../assets/images/global/edit.svg";
 
 const ClassesStudentList = ({dumyStudent}) => {
   const [selectedDate, setSelectedDate]= useState(new Date());
@@ -32,6 +34,7 @@ const ClassesStudentList = ({dumyStudent}) => {
                     <th>Periodic Test</th>
                     <th>Homework</th>
                     <th>Evaluation</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +70,11 @@ const ClassesStudentList = ({dumyStudent}) => {
                         <td>
                           <h6><Badge pill bg={item.evaluation.type}>{item.evaluation.value}</Badge></h6>
                         </td>
+                        <td>
+                          <button><img src={editSVG} alt="edit"/></button>
+                          <br></br>
+                          <button><img src={deleteSVG} alt="delete"/></button>
+                      </td>
                     </tr>)
                 }
             </tbody>
