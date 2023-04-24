@@ -64,16 +64,18 @@ function ClassesTable({ classes }) {
             <tr key={_class.id}>
               <td>
                 <Link
-                  to={_class.name}
+                  to={_class.Name}
                   className="text-decoration-none text-dark fw-semibold"
                 >
-                  {_class.name}
+                  {_class.Name}
                 </Link>
               </td>
-              <td>{_class.teacher.name}</td>
-              <td>{_class.studentQuantity}</td>
-              <td>{_class.term}</td>
-              <td>{_class.type.name}</td>
+              {/* <td>{_class.teacher.Name}</td>
+              <td>{_class.studentQuantity}</td> */}
+              <td>Ms.Hoa</td>
+              <td>35</td>
+              <td>{_class.TermForm}</td>
+              <td>{_class.Type}</td>
             </tr>
           ))}
         </tbody>

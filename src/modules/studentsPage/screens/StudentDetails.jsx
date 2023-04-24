@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import StudentService from "../../../service.js";
+import { apiServices } from '../../../service.js';
 
 function ClassesAdd(){
 
@@ -21,7 +21,7 @@ function ClassesAdd(){
     }, []);
     
     const retrieveStudentDetails = (id) => {
-        StudentService.get(id)
+        apiServices.studentService.get(id)
         .then(response => {
             console.log('Student Details: ',response.data.ResponseResult.Result);
             setStdInfo(response.data.ResponseResult.Result);

@@ -5,7 +5,8 @@ import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 import StudentsTable from '../components/StudentsTable'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
-import StudentService from "../../../service.js";
+import {apiServices} from "../../../service.js";
+
 
 
 const DUMMY_STUDENTS = [
@@ -152,7 +153,7 @@ function ClassesPage() {
     }, []);
     
     const retrieveStudents = () => {
-        StudentService.getAll()
+        apiServices.studentService.getAll()
         .then(response => {
             console.log('Student List: ',response.data.ResponseResult.Result);
             setStudents(response.data.ResponseResult.Result);
