@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { Col, Container, Row, Stack } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 import StudentsTable from '../components/StudentsTable'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
+import StudentService from "../../../service.js";
+
 
 const DUMMY_STUDENTS = [
     {
@@ -143,6 +145,23 @@ const DUMMY_STUDENTS = [
 ]
 
 function ClassesPage() {
+    const [students, setStudents] = useState([]);
+
+    useEffect(() => {
+        retrieveStudents();
+    }, []);
+    
+    const retrieveStudents = () => {
+        StudentService.getAll()
+        .then(response => {
+            console.log('Student List: ',response.data.ResponseResult.Result);
+            setStudents(response.data.ResponseResult.Result);
+        })
+        .catch(e => {
+            console.log('Error: ',e);
+        });
+    }
+
     return (
         <Container  style={{fontSize: "14px", marginTop: "1px"}} className='mx-1'>
             <Row className='align-items-center'>
@@ -165,7 +184,7 @@ function ClassesPage() {
                 </Col>
             </Row>
             <Row>
-                <StudentsTable std={DUMMY_STUDENTS}/>
+                <StudentsTable std={students}/>
             </Row>
             
         </Container>

@@ -15,12 +15,9 @@ import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 
 function StudentsTable({ std }) {
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `details`;
-    navigate(path);
-  };
 
+  let navigate = useNavigate();
+  
   return (
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
@@ -79,49 +76,50 @@ function StudentsTable({ std }) {
               <th></th>
             </tr>
           </thead>
-          <tbody style={{ backgroundColor: "white" }} onClick={routeChange}>
+          <tbody style={{ backgroundColor: "white" }}>
             {std.map((_std) => (
-              <tr key={_std.id}>
+              <tr key={_std.id} onClick={()=>{navigate(`/students/${_std._id}`);
+            }}>
                 <td>
                   <Container>
                     <Row>
                       <Col md="auto">
                         <Image
-                          src={_std.avatar}
+                          src={_std.ImageURL}
                           roundedCircle="true"
                           width="40px"
                           height="40px"
                         ></Image>
                       </Col>
                       <Col>
-                        <b>{_std.name}</b>
+                        <b>{_std.Name}</b>
                         <br />
-                        <label style={{ color: "#6B7280" }}>{_std.mshv}</label>
+                        <label style={{ color: "#6B7280" }}>{_std.StudentID}</label>
                       </Col>
                     </Row>
                   </Container>
                 </td>
 
                 <td style={{ width: "100px", backgroundColor: "white" }}>
-                  {_std.class.name}
+                  {_std.TypeClass}
                 </td>
-                <td>{_std.phone}</td>
+                <td>{_std.PhoneNumber}</td>
                 <td>
-                  {_std.attendent}%<br />
+                  90%<br />
                   <label style={{ color: "#6B7280" }}>Present: 20/20</label>
                 </td>
                 <td>
-                  {_std.test}%<br />
+                  80%<br />
                   <label style={{ color: "#6B7280" }}>Score: 650/700</label>
                 </td>
                 <td>
-                  {_std.homework}%<br />
+                  95%<br />
                   <label style={{ color: "#6B7280" }}>Score: 90/100</label>
                 </td>
                 <td>
                   <h6>
-                    <Badge pill bg={_std.evaluation.type}>
-                      {_std.evaluation.value}
+                    <Badge pill bg="success">
+                      Good
                     </Badge>
                   </h6>
                 </td>
