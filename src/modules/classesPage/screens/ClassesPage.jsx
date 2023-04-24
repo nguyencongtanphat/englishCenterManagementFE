@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ClassesTable from '../components/ClassesTable'
-import { apiServices } from '../../../service.js';
-
+import {ClassService} from "../../../service.js";
 
 const DUMMY_CLASSES = [
     {
@@ -99,7 +98,7 @@ const DUMMY_CLASSES = [
 function ClassesPage() {
     const [data, setData] = useState([]);
     useEffect(() => {
-        apiServices.classService.getAll()
+        ClassService.getAll()
         .then((res) => {
             console.log('Student List: ',res.data.ResponseResult.Result);
             setData(res.data.ResponseResult.Result);

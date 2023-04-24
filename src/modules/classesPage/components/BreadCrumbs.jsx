@@ -21,7 +21,7 @@ function BreadCrumbs() {
   return (
     <nav className="d-flex pt-3">
       {breadcrumbs.map(({ match, breadcrumb }, index) => (
-        <>
+        <div key={Math.random()}>
           <Link
             key={match.pathname}
             to={match.pathname}
@@ -41,7 +41,7 @@ function BreadCrumbs() {
               style={{ fontSize: "10px", marginTop: "6px", color: "#888" }}
             ></FontAwesomeIcon>
           )}
-        </>
+        </div>
       ))}
     </nav>
   );

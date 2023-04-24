@@ -3,8 +3,7 @@ import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
 // import StudentService from "../../../service.js";
-import { apiServices } from '../../../service.js';
-
+import StudentService from "../../../service.js"
 // const DUMMY_STUDENTS = [
 //     {
 //         id: 'cl01',
@@ -235,7 +234,7 @@ import { apiServices } from '../../../service.js';
 function ClassDashboard() {
     const [data, setData] = useState([]);
     useEffect(() => {
-        apiServices.studentService.getAll()
+        StudentService.getAll()
         .then((res) => {
             console.log('Student List: ',res.data.ResponseResult.Result);
             setData(res.data.ResponseResult.Result);

@@ -74,7 +74,11 @@ function ClassesTable({ classes }) {
               <td>{_class.studentQuantity}</td> */}
               <td>Ms.Hoa</td>
               <td>35</td>
-              <td>{_class.TermForm}</td>
+              <td>
+              <td>
+                {`${_class.TermForm} - ${_class.TermTo}`}
+              </td>
+              </td>
               <td>{_class.Type}</td>
             </tr>
           ))}
