@@ -10,8 +10,8 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import StudentService from "../../../service.js";
 
-function ClassesAdd(){
-
+function ClassesAdd() {
+    
     const [stdInfo, setStdInfo] = useState({});
     let { studentId } = useParams();
     console.log('StudentID: ',studentId);
