@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ClassesTable from '../components/ClassesTable'
+import {ClassService} from "../../../service.js";
 
 const DUMMY_CLASSES = [
     {
@@ -95,8 +96,18 @@ const DUMMY_CLASSES = [
 ]
 
 function ClassesPage() {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        ClassService.getAll()
+        .then((res) => {
+            console.log('Student List: ',res.data.ResponseResult.Result);
+            setData(res.data.ResponseResult.Result);
+        })
+        .catch(err => console.log(err));
+    }, []);
+    
     return (
-        <ClassesTable classes={DUMMY_CLASSES}/>
+        <ClassesTable classes={data}/>
     )
 }
 
