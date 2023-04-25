@@ -10,6 +10,8 @@ import BreadCrumbs from "../../classesPage/components/BreadCrumbs";
 import { useRef } from "react";
 import StudentService from "../../../service.js";
 import axios from "axios";
+import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
+import { storage } from "../../../firebase";
 
 function ClassesAdd(){
     const firstName = useRef("");
@@ -20,20 +22,48 @@ function ClassesAdd(){
     const scoreIncome = useRef("");
     const scoreDesire = useRef("");
     const classType = useRef("");
-
+    const [imageUpload, setImageUpload] = useState(null);
     const [show, setShow] = useState(false);
     const [classList, setClassList] = useState([]);
     const [choosenClass, setChoosenClass] = useState();
     const [studentIn, setStudentIn] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     var radios = document.getElementsByName('group');
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState(null);
 
+    const uploadImage = () => {
+        const imageRef = ref(storage, `${imageUpload.name}`);
+        uploadBytes(imageRef, imageUpload)
+          .then(() => {
+            getDownloadURL(imageRef)
+              .then((url) => {
+                setUrl(url);
+              })
+              .catch((error) => {
+                console.log(error.message, "error getting the image url");
+              });
+            setImage(null);
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+    };
+
+    const sleep = async (milliseconds) => {
+        await new Promise(resolve => {
+            return setTimeout(resolve, milliseconds)
+        });
+    };
+    
+    
     const saveHandler = async () => {
+        const id = "STD" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
+        uploadImage();
         try {
             const studentInfo = {
-                ImageURL: 'https://i.imgur.com/yDAjcqg.jpg',
+                StudentID: id,
                 FirstName: firstName.current.value,
                 LastName: lastName.current.value,
                 Email: email.current.value,
@@ -77,9 +107,11 @@ function ClassesAdd(){
             }
           }
         const classChosen = classList[i];
+        while (url==null) {await sleep(1000);}
         console.log('Class Choosen: ',classChosen);
         const apiNewStudent = { 
             ...studentIn,
+            ImageURL: url,
             ClassID: classChosen._id,
             NameClass: classChosen.ClassID,
         }
@@ -112,7 +144,8 @@ function ClassesAdd(){
                                 <div className={`${styled['avt']}`}>
                                     <Image src="https://i.imgur.com/1baFFao.png" roundedCircle="true" width="48px" height="48px"></Image>
                                     <Form.Group controlId="formFileSm">
-                                        <Form.Control type="file" size="sm" style={{fontSize: "14px", color: "#6B7280"}} accept=".jpg, .png"/>
+                                        <Form.Control type="file" size="sm" style={{fontSize: "14px", color: "#6B7280"}} accept=".jpg, .png"
+                                            onChange={(event) => setImageUpload(event.target.files[0])}/>
                                     </Form.Group>
                                 </div>
                             </Row>
@@ -210,7 +243,7 @@ function ClassesAdd(){
                                 <div>
                                     {classList.map((type) => (
                                     <div style={{display:"flex", flexDirection:"column"}}>
-                                        <label style={{fontWeight:500,fontSize:"14px",marginTop:"12px"}}>{type.ClassID} - Mrs. Hoa</label>
+                                        <label style={{fontWeight:500,fontSize:"14px",marginTop:"12px"}}>{type.ClassID} - {type.TeacherName}</label>
                                         <label style={{fontWeight:400,fontSize:"14px",color:"#6B7280", marginBottom:"12px"}}>{type.ScoreTarget}+ | 12 students | 14th Sep - 15th Nov</label>
                                         <div className={`${styled['border_itemm']}`}></div>
                                     </div>    ))}
