@@ -23,12 +23,17 @@ function ClassesAdd(){
 
     const [show, setShow] = useState(false);
     const [classList, setClassList] = useState([]);
+    const [choosenClass, setChoosenClass] = useState();
+    const [studentIn, setStudentIn] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    var radios = document.getElementsByName('group');
 
     const saveHandler = async () => {
         try {
             const studentInfo = {
+                ImageURL: 'https://i.imgur.com/yDAjcqg.jpg',
                 FirstName: firstName.current.value,
                 LastName: lastName.current.value,
                 Email: email.current.value,
@@ -38,7 +43,9 @@ function ClassesAdd(){
                 DateOfBirthday: dob.current.value,
                 PhoneNumber: phoneNumber.current.value,
             };
+            setStudentIn(studentInfo)
             console.log('Student Info: ',studentInfo);
+
         } catch (e) {
             console.log('Lỗi: ',e);
         }
@@ -56,6 +63,28 @@ function ClassesAdd(){
             console.log('Error: ',e);
         });
         handleShow();
+    }
+
+    const handleAdd = async () => {
+        for (var i = 0, length = radios.length; i < length; i++) {
+            
+            if (radios[i].checked) {
+              // do whatever you want with the checked radio
+              setChoosenClass(i);
+          
+              // only one radio can be logically checked, don't check the rest
+              break;
+            }
+          }
+        const classChosen = classList[i];
+        console.log('Class Choosen: ',classChosen);
+        const apiNewStudent = { 
+            ...studentIn,
+            ClassID: classChosen._id,
+            NameClass: classChosen.ClassID,
+        }
+        console.log('API new student: ', apiNewStudent);
+        axios.post('http://localhost:3001/api/v1/students', apiNewStudent);
     }
 
     return(
@@ -166,14 +195,12 @@ function ClassesAdd(){
                         <Row>
                             <Col style={{width:"32px", marginTop:"20px"}}>
                                 <Form>
-                                    {['1', '2'].map((type) => (
+                                    {classList.map((type) => (
                                         <div key={`inline-${type}`} style={{marginBottom:"44px"}}>
                                         <Form.Check
                                             inline
-                                            name="group1"
+                                            name="group"
                                             type='radio'
-                                            id={`inline-${type}-1`
-                                            }
                                         />
                                         </div>
                                     ))}
@@ -181,10 +208,10 @@ function ClassesAdd(){
                             </Col>
                             <Col>
                                 <div>
-                                    {['1', '2'].map((type) => (
+                                    {classList.map((type) => (
                                     <div style={{display:"flex", flexDirection:"column"}}>
-                                        <label style={{fontWeight:500,fontSize:"14px",marginTop:"12px"}}>TOE700.3 - Mrs Hoa</label>
-                                        <label style={{fontWeight:400,fontSize:"14px",color:"#6B7280", marginBottom:"12px"}}>700+ | 12 students | 14th Sep - 15th Nov</label>
+                                        <label style={{fontWeight:500,fontSize:"14px",marginTop:"12px"}}>{type.ClassID} - Mrs. Hoa</label>
+                                        <label style={{fontWeight:400,fontSize:"14px",color:"#6B7280", marginBottom:"12px"}}>{type.ScoreTarget}+ | 12 students | 14th Sep - 15th Nov</label>
                                         <div className={`${styled['border_itemm']}`}></div>
                                     </div>    ))}
                                 </div>
@@ -196,7 +223,7 @@ function ClassesAdd(){
                         <Button variant="secondary" style={{backgroundColor:"transparent", borderColor:"transparent"}} onClick={handleClose}>
                             <label style={{color: "#9CA3AF", fontSize:"14px"}}>Cancel</label>
                         </Button>
-                        <Button variant="dark" onClick={handleClose} style={{paddingInline: "16px"}}>
+                        <Button variant="dark" onClick={handleAdd} style={{paddingInline: "16px"}}>
                             <label style={{fontSize:"14px", fontWeight:"bold"}}>Add</label>
                         </Button>
                     </div>

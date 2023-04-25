@@ -101,7 +101,7 @@ function StudentsTable({ std }) {
                 </td>
 
                 <td style={{ width: "100px", backgroundColor: "white" }}>
-                  {_std.TypeClass}
+                  {_std.NameClass}
                 </td>
                 <td>{_std.PhoneNumber}</td>
                 <td>
