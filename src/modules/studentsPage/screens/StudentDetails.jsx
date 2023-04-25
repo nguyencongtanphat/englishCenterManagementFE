@@ -46,7 +46,7 @@ function ClassesAdd() {
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
                 <Link key="Home" to="" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Student Details</Link>
             </Stack>
-            <h3 className="mb-3"><b>Nguyễn Thành Trung</b></h3>
+            <h3 className="mb-3"><b>{stdInfo.Name}</b></h3>
             {/* //body */}
             <div className={styled['container']}>
                 {/* above */}
