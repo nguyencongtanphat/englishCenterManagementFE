@@ -75,7 +75,7 @@ function ClassesAdd() {
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-book-open" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>{stdInfo.TypeClass}</label>
+                                <label style={{color: "#6B7280"}}>{stdInfo.NameClass}</label>
                             </div>
                             <div className={`${styled['score']}`}>
                                 <div className={`${styled['incom']}`}>

@@ -9,10 +9,15 @@ class StudentService {
     return axios.get(`http://localhost:3001/api/v1/students/${id}`)
   }
 
+  getClassesRecommend() {
+      return axios.get(`http://localhost:3001/api/v1/classes`)
+  }
+
   getStudentsByClass(classId) {
     return axios.get(`http://localhost:3001/api/v1/students?classId=IELTS90`)
   }
 }
+
 export default new StudentService();
 
 export class ClassService {
