@@ -147,13 +147,12 @@ const DUMMY_STUDENTS = [
 
 function ClassesPage() {
     const [students, setStudents] = useState([]);
-
-    useEffect(() => {
+    useEffect( () => {
         retrieveStudents();
     }, []);
     
-    const retrieveStudents = () => {
-        StudentService.getAll()
+    const retrieveStudents =  () => {
+        StudentService.getStudentReportOverview()
         .then(response => {
             console.log('Student List: ',response.data.ResponseResult.Result);
             setStudents(response.data.ResponseResult.Result);
@@ -162,6 +161,8 @@ function ClassesPage() {
             console.log('Error: ',e);
         });
     }
+
+
 
     return (
         <Container  style={{fontSize: "14px", marginTop: "1px"}} className='mx-1'>

@@ -16,6 +16,24 @@ class StudentService {
   getStudentsByClass(classId) {
     return axios.get(`http://localhost:3001/api/v1/students?classId=IELTS90`)
   }
+
+  getStudentReportOverview(){
+    return axios.get(`http://localhost:3001/api/v1/student-report/total`)
+  }
+
+  getStudentReportDailyMonthly({studentId = null, month = null, year = null, date = null} = {}){
+    let queryStr = ""
+    if(month)
+      queryStr += "&month=" + month
+    if(year)
+      queryStr += "&year=" + year
+    if(date)
+      queryStr += "&date=" + date
+    return axios.get(`http://localhost:3001/api/v1/student-report/?studentid=`+ studentId + queryStr)
+  }
+  getStudentReportTotal(studentId){
+    return axios.get(`http://localhost:3001/api/v1/student-report/monthly/`+ studentId)
+  }
 }
 
 export default new StudentService();
