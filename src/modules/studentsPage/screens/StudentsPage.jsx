@@ -8,6 +8,7 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import StudentService from "../../../service.js";
 
 
+
 const DUMMY_STUDENTS = [
     {
         id: 'cl01',

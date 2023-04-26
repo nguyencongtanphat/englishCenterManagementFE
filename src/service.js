@@ -15,6 +15,17 @@ class StudentService {
 }
 export default new StudentService();
 
+export class ClassService {
+  static getAll() {
+    return axios.get(`http://localhost:3001/api/v1/class`);
+  }
+
+  static get(id) {
+    return axios.get(`http://localhost:3001/api/v1/class/${id}`);
+  }
+}
+
+
 export class StatisticsService {
   // replace TOE700.1 with classId later
   static getAttendances(classId) {
@@ -44,3 +55,4 @@ export class TestsService {
     return axios.get(`http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`)
   }
 }
+

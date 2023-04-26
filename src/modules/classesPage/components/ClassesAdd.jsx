@@ -145,9 +145,7 @@ function ClassesAdd(){
                                 </Form.Group>
                         </div>
                     </Row>
-                    
-
-                    
+          
                     <Row>
                         <span style={{marginBottom:'8px', fontWeight:"500"}}>Term</span>
                         <Col>

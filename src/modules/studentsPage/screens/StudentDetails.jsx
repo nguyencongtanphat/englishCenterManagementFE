@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import StudentService from "../../../service.js";
+import StudentService from '../../../service.js';
 
 function ClassesAdd() {
     

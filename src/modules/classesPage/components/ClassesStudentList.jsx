@@ -1,9 +1,12 @@
 import {React, useState} from 'react'
 import { Container, Row, Col, Table, Badge, Image, Button} from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import DatePicker from 'react-datepicker';
+import deleteSVG from "../../../assets/images/global/delete.svg";
+import editSVG from "../../../assets/images/global/edit.svg";
 
-const ClassesStudentList = ({dumyStudent}) => {
+const ClassesStudentList = ({std}) => {
+  let navigate = useNavigate();
   const [selectedDate, setSelectedDate]= useState(new Date());
 
   return (
@@ -13,7 +16,6 @@ const ClassesStudentList = ({dumyStudent}) => {
             <p style={{fontWeight:700, fontSize:"20px"}}>Student list</p>
           </Col>
           <Col lg='auto' className='pt-4 pb-4 d-flex'>
-            {/* <Button className='bg-black border border-white'>Daily</Button> */}
             <button style={{color:'white', padding:'5px', borderRadius:'6px', backgroundColor:'black'}}>Daily</button>
             <button className='btn-sm' style={{paddingLeft:'15px'}}>
               <DatePicker
@@ -32,41 +34,64 @@ const ClassesStudentList = ({dumyStudent}) => {
                     <th>Periodic Test</th>
                     <th>Homework</th>
                     <th>Evaluation</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {
-                    dumyStudent.map(item => <tr key={item.id}>
+                    std.map(_std => <tr key={_std.id} onClick={()=>{navigate(`/students/${_std._id}`);
+                  }} >
                         <td>
                           <Container>
                             <Link to={'/students'} className='text-decoration-none text-dark'>
                               <Row>
                                   <Col md="auto">
-                                    <Image src={item.imageURL} roundedCircle="true" width="40px" height="50px">
+                                    <Image src={_std.ImageURL} roundedCircle="true" width="40px" height="50px">
                                     </Image>
                                   </Col>
-                                  
-                                  <Col><b>{item.name}</b><br/>{item.studentId}</Col>
+                                  <Col><b>{_std.Name}</b><br/>{_std.StudentID}</Col>
                               </Row>
                             </Link>
                           </Container>
                         </td>
-                        <td>{item.phone}</td>
-                        <td>
-                          <div>{item.attendant.persent}%</div>
-                          <div className='text-secondary'>Present: {item.attendant.present}</div>
+                        <td>{_std.PhoneNumber}</td>
+                        {/* <td>
+                          <div>{_std.attendant.persent}%</div>
+                          <div className='text-secondary'>Present: {_std.attendant.present}</div>
                         </td>
                         <td>
-                          <div>{item.periodicTest.persent}%</div>
-                          <div className='text-secondary'>Score: {item.periodicTest.score}</div>
+                          <div>{_std.periodicTest.persent}%</div>
+                          <div className='text-secondary'>Score: {_std.periodicTest.score}</div>
                         </td>
                         <td>
-                          <div>{item.homework.persent}%</div>
-                          <div className='text-secondary'>Completed: {item.homework.completed}</div>
+                          <div>{_std.homework.persent}%</div>
+                          <div className='text-secondary'>Completed: {_std.homework.completed}</div>
                         </td>
                         <td>
-                          <h6><Badge pill bg={item.evaluation.type}>{item.evaluation.value}</Badge></h6>
+                          <h6><Badge pill bg={_std.evaluation.type}>{_std.evaluation.value}</Badge></h6>
+                        </td> */}
+                        <td>
+                          90%<br />
+                          <label style={{ color: "#6B7280" }}>Present: 20/20</label>
                         </td>
+                        <td>
+                          80%<br />
+                          <label style={{ color: "#6B7280" }}>Score: 650/700</label>
+                        </td>
+                        <td>
+                          95%<br />
+                          <label style={{ color: "#6B7280" }}>Score: 90/100</label>
+                        </td>
+                        <td>
+                          <h6>
+                            <Badge pill bg="success">Good</Badge>
+                          </h6>
+                        </td>
+                        <td>
+                          <button><img src={editSVG} alt="edit"/></button>
+                          <br></br>
+                          <button><img src={deleteSVG} alt="delete"/></button>
+                      </td>
                     </tr>)
                 }
             </tbody>
