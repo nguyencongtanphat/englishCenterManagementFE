@@ -21,13 +21,13 @@ const UpdatePeriodicModal = (props) => {
   const [date, setDate] = useState(new Date());
   // test base on date choose
   const [tests, setTests] = useState(props.tests);
-  const [testChosen, setTestChosen] = useState("");
+  const [testChosen, setTestChosen] = useState(tests[0]);
   const [score, setScore] = useState("");
   const [error, setError] = useState(null);
 
   const saveHandler = (event) => {
     event.preventDefault();
-    if (testChosen.length === 0) {
+    if (testChosen === null) {
       setError("You must choose test before save");
     }
     if (!error) {
@@ -42,20 +42,21 @@ const UpdatePeriodicModal = (props) => {
       setError("Date must be before today!");
     } else {
       const isExist = props.existingTests.find((test) => {
-        return test.Date.toDateString() === new Date(dateChosen).toDateString();
+        return new Date(test.Date).toDateString() === new Date(dateChosen).toDateString();
       });
       if (isExist) {
         setError("Date already exist!");
         setTests([]);
       } else {
         const testsOfDate = props.tests.filter((test) => {
-          // console.log(test.Date.toDateString(), new Date(dateChosen).toDateString())
+          console.log(new Date(test.Date).toDateString() ,new Date(dateChosen).toDateString())
           return (
-            test.Date.toDateString() === new Date(dateChosen).toDateString()
+            new Date(test.Date).toDateString() ===
+            new Date(dateChosen).toDateString()
           );
         });
         if (testsOfDate.length === 1) {
-          setTestChosen(testsOfDate[0].ID);
+          setTestChosen(testsOfDate[0]);
           setError(null);
         }
         if (testsOfDate.length === 0) {
@@ -69,7 +70,8 @@ const UpdatePeriodicModal = (props) => {
   };
 
   const testChangeHandler = (event) => {
-    setTestChosen(event.target.value);
+    const _testChosen = tests.find(test => test._id = event.target.value)
+    setTestChosen(_testChosen);
   };
 
   const scoreChangeHandler = (event) => {
@@ -108,13 +110,13 @@ const UpdatePeriodicModal = (props) => {
               <Form.Select
                 aria-label="Default select example"
                 onChange={testChangeHandler}
-                value={testChosen}
+                value={testChosen._id}
                 disabled={tests.length === 1}
               >
                 {tests.map((test) => {
                   return (
                     <option value={test.ID} key={test.ID}>
-                      {test.Title + " - " + test.Date.toDateString()}
+                      {test.Title + " - " + new Date(test.Date).toDateString()}
                     </option>
                   );
                 })}
