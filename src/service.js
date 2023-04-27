@@ -68,14 +68,20 @@ export class StatisticsService {
       tests
     })
   }
+
+  static postHomeworkTest(homeworks) {
+    return axios.post(`http://localhost:3001/api/v1/statistics/homework/TOE700.1`, {
+      homeworks
+    })
+  }
 }
 
 export class TestsService {
   static getHomework(classId) {
     return axios.get(`http://localhost:3001/api/v1/tests/homework/TOE700.1`)
   }
+
   static getPeriodicTests(classId) {
     return axios.get(`http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`)
   }
 }
-
