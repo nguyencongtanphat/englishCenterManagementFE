@@ -46,8 +46,8 @@ function StudentsTable({ std }) {
               name="type"
               style={{ fontSize: "14px", borderColor: "black" }}
             >
-              <option value="type01">Daily</option>
-              <option selected>Monthly: November</option>
+              <option value="type01">Date</option>
+              <option selected>Month: November</option>
             </Form.Select>
           </Form.Group>
         </Row>
@@ -108,15 +108,15 @@ function StudentsTable({ std }) {
                 </td>
                 <td>{_std.Student.PhoneNumber}</td>
                 <td>
-                  { _std.TotalResult.TotalReport !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalAttented / _std.TotalResult.TotalReport)) * 100)).toString() : "0"} %<br />
+                  { _std.TotalResult.TotalReport !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalAttented / _std.TotalResult.TotalReport)) * 100)).toString() : "0"}%<br />
                   <label style={{ color: "#6B7280" }}>Present: {_std.TotalResult.TotalAttented}/{_std.TotalResult.TotalReport}</label>
                 </td>
                 <td>
-                  { _std.TotalResult.TotalTestScoreRequired !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalTestScore / _std.TotalResult.TotalTestScoreRequired)) * 100)).toString() : "0"} %<br />
+                  { _std.TotalResult.TotalTestScoreRequired !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalTestScore / _std.TotalResult.TotalTestScoreRequired)) * 100)).toString() : "0"}%<br />
                   <label style={{ color: "#6B7280" }}>Score: {_std.TotalResult.TotalTestScore}/{_std.TotalResult.TotalTestScoreRequired}</label>
                 </td>
                 <td>
-                { _std.TotalResult.TotalHomeworkScoreRequired !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalHomeworkScore / _std.TotalResult.TotalHomeworkScoreRequired)) * 100)).toString() : "0"} %<br />
+                { _std.TotalResult.TotalHomeworkScoreRequired !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalHomeworkScore / _std.TotalResult.TotalHomeworkScoreRequired)) * 100)).toString() : "0"}%<br />
                   <label style={{ color: "#6B7280" }}>Score: {_std.TotalResult.TotalHomeworkScore}/{_std.TotalResult.TotalHomeworkScoreRequired}</label>
                 </td>
                 <td>
