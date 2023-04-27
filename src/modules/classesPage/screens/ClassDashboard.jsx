@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
-// import StudentService from "../../../service.js";
 import StudentService from "../../../service.js"
 // const DUMMY_STUDENTS = [
 //     {
@@ -232,12 +231,13 @@ import StudentService from "../../../service.js"
 // ]
 
 function ClassDashboard() {
-    const [data, setData] = useState([]);
+    const [students, setStudents] = useState([]);
     useEffect(() => {
-        StudentService.getAll()
+        // StudentService.getAll()
+        StudentService.getStudentReportOverview()
         .then((res) => {
             console.log('Student List: ',res.data.ResponseResult.Result);
-            setData(res.data.ResponseResult.Result);
+            setStudents(res.data.ResponseResult.Result);
         })
         .catch(err => console.log(err));
     }, []);
@@ -248,7 +248,7 @@ function ClassDashboard() {
             <div style={{backgroundColor:"#F9FAFB", borderRadius:"10px", marginTop:"10px", marginLeft:"12px"}}>
                 <div style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
                     boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
-                <ClassesStudentList std = {data}/>
+                <ClassesStudentList std = {students}/>
                 </div>
                 <div>
                 <AppLineChart/>
