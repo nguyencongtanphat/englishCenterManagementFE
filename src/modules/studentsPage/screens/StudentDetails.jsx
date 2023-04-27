@@ -74,7 +74,7 @@ function ClassesAdd() {
         let data = []
         try{
             console.log(reportInfo)
-            if(filterType == filterTypeOption.daily || filterType == filterTypeOption.monthly ){
+            if(filterType === filterTypeOption.daily || filterType === filterTypeOption.monthly ){
                 reportInfo.Reports?.map(report => {
                     let rep = {
                         name: report.Date.slice(0, 10),
@@ -82,10 +82,10 @@ function ClassesAdd() {
                     }
                     data.push(rep)
                 })
-                if(filterType == filterTypeOption.daily)
+                if(filterType === filterTypeOption.daily)
                     setChartMean({name: selectedDate})
             }
-            else if(filterType == filterTypeOption.total){
+            else if(filterType === filterTypeOption.total){
                 reportInfo.Reports?.map(report => {
                     let rep = {
                         name: report._id.Month + "/" + report._id.Year,
@@ -132,13 +132,17 @@ function ClassesAdd() {
     const onChange = (event) => {
       const value = event.target.value;
       setSelectValue(value);
-      if (value=="Date"){
+      if (value==="Date"){
         setVisibilityDate(true); setVisibilityMonth(false);
       } else 
-        if (value=="Month"){
+        if (value==="Month"){
             setVisibilityDate(false); setVisibilityMonth(true);
         } else 
-            { setVisibilityDate(false); setVisibilityMonth(false); }
+            { 
+                setVisibilityDate(false); 
+                setVisibilityMonth(false); 
+                retrieveFilterType(filterTypeOption.total)
+            }
     };
 
     if(!isLoading)
@@ -274,10 +278,10 @@ function ClassesAdd() {
                                     <div>
                                         <label style={{fontSize: "16px", fontWeight:400}}>Present:</label>
                                         <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>
-                                            {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                            {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                             <>{reportInfo.Result?.TotalAttented}/{reportInfo.Result?.TotalReport} lessons </>
                                             }
-                                            {(filterType == filterTypeOption.daily) &&
+                                            {(filterType === filterTypeOption.daily) &&
                                                 <>{
                                                 reportInfo.Result?.Attendance === true ? "Attended" : (
                                                     reportInfo.Result?.Attendance === false ? "Absent" : " - " 
@@ -291,10 +295,10 @@ function ClassesAdd() {
                                 </div>
                                 <div>
                                     <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>
-                                        {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                        {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                             <>{ getPercent(reportInfo.Result?.TotalAttented, reportInfo.Result?.TotalReport)}% </>
                                         }
-                                        {(filterType == filterTypeOption.daily) &&
+                                        {(filterType === filterTypeOption.daily) &&
                                            <></>
                                         }
                                     </label>
@@ -310,10 +314,10 @@ function ClassesAdd() {
                                         <label style={{fontSize: "16px", fontWeight:400}}>Score:</label>
                                         <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>
                                             
-                                            {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                            {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                             <>{reportInfo.Result?.TotalTestScore}/{reportInfo?.Result?.TotalTestScoreRequired} points </>
                                             }
-                                            {(filterType == filterTypeOption.daily) &&
+                                            {(filterType === filterTypeOption.daily) &&
                                             <>{reportInfo.Result?.TestScore !== -1 ? reportInfo.Result?.TestScore : 0} points</>
                                             }
                                         </label>
@@ -321,10 +325,10 @@ function ClassesAdd() {
                                 </div>
                                 <div>
                                     <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>
-                                        {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                        {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                             <>{ getPercent(reportInfo.Result?.TotalTestScore, reportInfo.Result?.TotalTestScoreRequired)}%</>
                                         }
-                                        {(filterType == filterTypeOption.daily) &&
+                                        {(filterType === filterTypeOption.daily) &&
                                             <>{ getPercent(reportInfo.Result?.TestScore, 100)}%</>
                                         }
                                     </label>
@@ -340,10 +344,10 @@ function ClassesAdd() {
                                         <label style={{fontSize: "16px", fontWeight:400}}>Score:</label>
                                         <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>
                                             
-                                            {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                            {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                                 <>{reportInfo.Result?.TotalHomeworkScore}/{reportInfo.Result?.TotalHomeworkScoreRequired} points </>
                                             }
-                                            {(filterType == filterTypeOption.daily) &&
+                                            {(filterType === filterTypeOption.daily) &&
                                                 <>{reportInfo.Result?.HomeworkScore !== -1 ? reportInfo.Result?.HomeworkScore : 0} points</>
                                             }
                                         </label>
@@ -351,10 +355,10 @@ function ClassesAdd() {
                                 </div>
                                 <div>
                                     <label style={{fontSize: "16px", fontWeight:600, marginLeft: "4px"}}>
-                                        {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                        {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                             <>{ getPercent(reportInfo.Result?.TotalHomeworkScore, reportInfo.Result?.TotalHomeworkScoreRequired)}%</>
                                         }
-                                        {(filterType == filterTypeOption.daily) &&
+                                        {(filterType === filterTypeOption.daily) &&
                                             <>{ getPercent(reportInfo.Result?.HomeworkScore, 100)}%</>
                                         }
                                     </label>
@@ -364,10 +368,10 @@ function ClassesAdd() {
                             <div className={`${styled['final_item']}`}>
                                 <label style={{width: "223px", fontSize: "16px", fontWeight:400}}>Overall:</label>
                                 <label style={{color: "#238723", textAlign: "right", fontSize: "24px", fontWeight: "600"}}>
-                                    {(filterType == filterTypeOption.monthly || filterType == filterTypeOption.total) &&
+                                    {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                         <>{getTotalPercent(reportInfo.Result?.TotalHomeworkScore, reportInfo.Result?.TotalHomeworkScoreRequired, reportInfo.Result?.TotalTestScore, reportInfo.Result?.TotalTestScoreRequired, reportInfo.Result?.TotalAttented, reportInfo.Result?.TotalReport).toString()}%</>
                                     }
-                                    {(filterType == filterTypeOption.daily) &&
+                                    {(filterType === filterTypeOption.daily) &&
                                         <>{ getTotalPercent(0, 0, reportInfo.Result?.HomeworkScore, reportInfo.Result?.HomeworkScoreRequired , reportInfo.Result?.TestScore, reportInfo.Result?.TestScoreRequired)}%</>
                                     }
                                 </label>
