@@ -12,9 +12,6 @@ import StudentService, {
   StatisticsService,
   TestsService,
 } from "../../../service.js";
-import { useSearchParams } from "react-router-dom";
-import moment from "moment";
-import axios from "axios";
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -24,45 +21,10 @@ function ClassPeriodicTest() {
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
-  // const [studentTest, setStudentTest] = useState([]);
-  // const [testDates, setTestDates] = useState([]);
-
   const params = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const getTests = (classId) => {
-    TestsService.getPeriodicTests(classId)
-      .then((res) => {
-        setTests(res.data.ResponseResult.Result);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
-
-  const getStudents = (classId) => {
-    StudentService.getStudentsByClass(classId)
-      .then((res) => {
-        setStudents(res.data.ResponseResult.Result);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
-
-  const getPeriodicTests = (classId) => {
-    StatisticsService.getPeriodicTests(classId)
-      .then((res) => {
-        setPeriodicTests(res.data.ResponseResult.Result);
-      })
-      .catch((err) => {
-        throw err;
-      });
-  };
 
   useEffect(() => {
     const { classId } = params;
-
     TestsService.getPeriodicTests(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -109,10 +71,19 @@ function ClassPeriodicTest() {
     };
   });
 
-  const testDates = tests.map(
-    (test) =>
-      new Date(test.Date).getDate() + "/" + new Date(test.Date).getMonth()
-  );
+  let existingTests = [];
+  periodicTests.forEach((periodicTest) => {
+    if (
+      existingTests.findIndex(
+        (existingTest) =>
+          JSON.stringify(existingTest) === JSON.stringify(periodicTest.TestID)
+      ) === -1
+    ) {
+      existingTests.push(periodicTest.TestID);
+    }
+  });
+
+  const testDates = existingTests.map((test) => new Date(test.Date));
 
   const updateHandler = () => {
     setIsUpdating(true);
@@ -133,13 +104,18 @@ function ClassPeriodicTest() {
   };
 
   const savePeriodicHandler = (date, testId, score) => {
-    const newTest = {
-      ID: `test_${new Date(date).toISOString()}`,
-      Date: new Date(date),
-      TestID: testId,
-      RequiredScore: score === "" ? null : parseInt(score),
-    };
-    setTests((prevTests) => [...prevTests, newTest]);
+    let newPeriodicTests = [];
+    students.forEach((student) => {
+      const newPeriodicTest = {
+        Date: new Date(date),
+        Score: 0,
+        TestID: testId,
+        StudentID: student,
+        RequiredScore: score === "" ? null : parseInt(score),
+      };
+      newPeriodicTests.push(newPeriodicTest);
+    });
+    setPeriodicTests((prevTests) => [...prevTests, ...newPeriodicTests]);
     setIsAddingPeriodic(false);
     setIsEditable(true);
     setIsUpdating(true);
@@ -149,7 +125,7 @@ function ClassPeriodicTest() {
     const index = periodicTests.findIndex((periodicTest) => {
       return (
         periodicTest.StudentID.StudentID === studentID &&
-        periodicTest.TestID.Date.toString() === date
+        periodicTest.TestID.Date === date
       );
     });
 
@@ -158,9 +134,10 @@ function ClassPeriodicTest() {
     setPeriodicTests(periodicTestsCopy);
   };
 
-  const completeUpdateHandler = () => {
+  const completeUpdateHandler = async () => {
     setIsEditable(false);
     setIsUpdating(false);
+    await StatisticsService.postHomeworkTest(periodicTests);
   };
 
   return (
@@ -181,9 +158,9 @@ function ClassPeriodicTest() {
             Periodic Test Score
           </p>
           <p style={{ color: "#6B7280", fontSize: "14px" }}>
-            Total number of periodic tests:{" "}
+            Total number of periodic tests:
             <span className="fw-bold" style={{ color: "black" }}>
-              {tests.length}
+              {existingTests.length}
             </span>
           </p>
         </Col>
@@ -226,7 +203,9 @@ function ClassPeriodicTest() {
               <th>NAME</th>
               <th>AVERAGE</th>
               {testDates.map((date) => (
-                <th key={Math.random()}>{date}</th>
+                <th key={Math.random()}>
+                  {date.getDate() + "/" + date.getMonth()}
+                </th>
               ))}
               {isUpdating && (
                 <th>
@@ -253,7 +232,7 @@ function ClassPeriodicTest() {
       {isAddingPeriodic && (
         <UpdatePeriodicModal
           tests={tests}
-          existingTests={tests}
+          existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={savePeriodicHandler}
         />

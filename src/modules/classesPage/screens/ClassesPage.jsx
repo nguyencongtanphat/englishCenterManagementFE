@@ -100,7 +100,7 @@ function ClassesPage() {
     useEffect(() => {
         ClassService.getAll()
         .then((res) => {
-            console.log('Student List: ',res.data.ResponseResult.Result);
+            // console.log('Student List: ',res.data.ResponseResult.Result);
             setData(res.data.ResponseResult.Result);
         })
         .catch(err => console.log(err));
