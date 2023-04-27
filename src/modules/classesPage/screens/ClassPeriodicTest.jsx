@@ -12,9 +12,6 @@ import StudentService, {
   StatisticsService,
   TestsService,
 } from "../../../service.js";
-import { useSearchParams } from "react-router-dom";
-import moment from "moment";
-import axios from "axios";
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -23,9 +20,6 @@ function ClassPeriodicTest() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-
-  // const [existingTests, setExistingTests] = useState([]);
-  // const [testDates, setTestDates] = useState([]);
 
   const params = useParams();
 
@@ -49,8 +43,7 @@ function ClassPeriodicTest() {
 
     StatisticsService.getPeriodicTests(classId)
       .then((res) => {
-        setPeriodicTests(res.data.ResponseResult.Result.tests);
-        // setExistingTests(res.data.ResponseResult.Result.existingTests);
+        setPeriodicTests(res.data.ResponseResult.Result);
       })
       .catch((err) => {
         throw err;
@@ -128,7 +121,7 @@ function ClassPeriodicTest() {
     setIsUpdating(true);
   };
 
-  const updatePeriodicHandler = async (value, studentID, date) => {
+  const updatePeriodicHandler = (value, studentID, date) => {
     const index = periodicTests.findIndex((periodicTest) => {
       return (
         periodicTest.StudentID.StudentID === studentID &&
@@ -139,12 +132,12 @@ function ClassPeriodicTest() {
     const periodicTestsCopy = [...periodicTests];
     periodicTestsCopy[index].Score = parseInt(value);
     setPeriodicTests(periodicTestsCopy);
-    await StatisticsService.postPeriodicTest(periodicTests)
   };
 
-  const completeUpdateHandler = () => {
+  const completeUpdateHandler = async () => {
     setIsEditable(false);
     setIsUpdating(false);
+    await StatisticsService.postHomeworkTest(periodicTests);
   };
 
   return (
@@ -165,9 +158,9 @@ function ClassPeriodicTest() {
             Periodic Test Score
           </p>
           <p style={{ color: "#6B7280", fontSize: "14px" }}>
-            Total number of periodic tests:{" "}
+            Total number of periodic tests:
             <span className="fw-bold" style={{ color: "black" }}>
-              {tests.length}
+              {existingTests.length}
             </span>
           </p>
         </Col>
