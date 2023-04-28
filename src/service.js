@@ -2,19 +2,19 @@ import axios from "axios";
 
 class StudentService {
   getAll() {
-    return axios.get(`http://localhost:3001/api/v1/students`)
+    return axios.get(`http://localhost:3001/api/v1/students`);
   }
 
   get(id) {
-    return axios.get(`http://localhost:3001/api/v1/students/${id}`)
+    return axios.get(`http://localhost:3001/api/v1/students/${id}`);
   }
 
   getClassesRecommend() {
-      return axios.get(`http://localhost:3001/api/v1/classes`)
+    return axios.get(`http://localhost:3001/api/v1/classes`);
   }
 
   getStudentsByClass(classId) {
-    return axios.get(`http://localhost:3001/api/v1/students?classId=TOE700.1`)
+    return axios.get(`http://localhost:3001/api/v1/students?classId=TOE700.1`);
   }
 }
 
@@ -30,34 +30,51 @@ export class ClassService {
   }
 }
 
-
 export class StatisticsService {
   // replace TOE700.1 with classId later
   static getAttendances(classId) {
-    return axios.get(`http://localhost:3001/api/v1/statistics/attendances/TOE700.1`)
+    return axios.get(
+      `http://localhost:3001/api/v1/statistics/attendances/TOE700.1`
+    );
   }
 
   static getHomework(classId) {
-    return axios.get(`http://localhost:3001/api/v1/statistics/homework/TOE700.1`)
+    return axios.get(
+      `http://localhost:3001/api/v1/statistics/homework/TOE700.1`
+    );
   }
 
   static getPeriodicTests(classId) {
-    return axios.get(`http://localhost:3001/api/v1/statistics/tests/TOE700.1`)
+    return axios.get(`http://localhost:3001/api/v1/statistics/tests/TOE700.1`);
   }
 
   static postPeriodicTest(tests) {
-    return axios.post(`http://localhost:3001/api/v1/statistics/tests/TOE700.1`, {
-      tests
-    })
+    return axios.post(
+      `http://localhost:3001/api/v1/statistics/tests/TOE700.1`,
+      {
+        tests,
+      }
+    );
   }
 }
 
 export class TestsService {
   static getHomework(classId) {
-    return axios.get(`http://localhost:3001/api/v1/tests/homework/TOE700.1`)
+    return axios.get(`http://localhost:3001/api/v1/tests/homework/TOE700.1`);
   }
   static getPeriodicTests(classId) {
-    return axios.get(`http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`)
+    return axios.get(
+      `http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`
+    );
   }
 }
 
+//Teacher:
+export class TeacherService {
+  static getAll() {
+    return axios.get(`http://localhost:3001/api/v1/teacher`);
+  }
+  static get(id) {
+    return axios.get(`http://localhost:3001/api/v1/teacher/${id}`);
+  }
+}
