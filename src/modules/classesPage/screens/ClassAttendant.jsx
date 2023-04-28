@@ -1,87 +1,84 @@
-import  React, {useState} from 'react'
-import { Container, Row, Col, Table, Form} from 'react-bootstrap';
+import React, { useState } from "react";
+import { Container, Row, Col, Table, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDownload, faPlus } from "@fortawesome/fontawesome-free-solid";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import classes from "./ClassPeriodicTest.module.css";
 import UpdateAttendantModal from "../components/UpdateAttendant";
-
-const DUMMY_STUDENTS = [
-  {
-    StudentID: "20520334",
-    Name: "Nguyễn Thành Trung",
-    ImageURL:
-      "https://images.pexels.com/photos/837358/pexels-photo-837358.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    attendance: [],
-    present: 0
-  },
-  {
-    StudentID: "20521948",
-    Name: "Nguyễn Đỗ Nhã Khuyên",
-    ImageURL:
-      "https://images.pexels.com/photos/3772503/pexels-photo-3772503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    attendance: [],
-    present: 0
-  },
-  {
-    StudentID: "20521949",
-    Name: "Nguyễn Công Tấn Phát",
-    ImageURL:
-      "https://images.pexels.com/photos/234507/pexels-photo-234507.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    attendance: [],
-    present: 0
-  },
-  {
-    StudentID: "20521950",
-    Name: "Lê Văn Thiện",
-    ImageURL:
-      "https://images.pexels.com/photos/953125/pexels-photo-953125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    attendance: [],
-    present: 0
-  },
-  {
-    StudentID: "20521097",
-    Name: "Đoàn Quốc Bảo",
-    ImageURL:
-      "https://static-images.vnncdn.net/files/publish/2022/6/11/avajisoo-961.jpg?width=600",
-    attendance: [],
-    present: 0
-  },
-  {
-    StudentID: "20521952",
-    Name: "Lưu Thượng Vỹ",
-    ImageURL:
-      "https://images.pexels.com/photos/3616652/pexels-photo-3616652.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    attendance: [],
-    present: 0
-  },
-  {
-    StudentID: "20521932",
-    Name: "Nguyễn Thành Long",
-    ImageURL:
-      "https://media.doisongphapluat.com/thumb_x1280x857/media/trieu-phuong-linh/2023/02/15/jisoo-blackpink-va-khoi-tai-san-khung21.png",
-    attendance: [],
-    present: 0
-  },
-];
-
-
-const Arrays =['5/3','8/3', '11/3', '15/3','18/3','21/3','24/3'];
+import { useEffect } from "react";
+import { useParams } from "react-router";
+import StudentService, { StatisticsService } from "../../../service.js";
+import AttendanceTableRow from "../components/AttendanceTableRow";
 
 function ClassAttendant() {
-
+  const [students, setStudents] = useState([]);
+  const [attendances, setAttendances] = useState([]);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingAttendant, setIsAddingAttendant] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
 
+  const params = useParams();
+
+  useEffect(() => {
+    const { classId } = params;
+
+    StudentService.getStudentsByClass(classId)
+      .then((res) => {
+        setStudents(res.data.ResponseResult.Result);
+      })
+      .catch((err) => {
+        throw err;
+      });
+
+    StatisticsService.getAttendances(classId)
+      .then((res) => {
+        setAttendances(res.data.ResponseResult.Result);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  }, []);
+
+  const studentAttendance = students.map((student) => {
+    let presents = 0;
+    const _attendances = attendances
+      .filter((attendance) => {
+        return attendance.StudentID._id === student._id;
+      })
+      .map((attendance) => {
+        if (attendance.Attendance === true) presents++;
+        return {
+          date: attendance.Date,
+          attendance: attendance.Attendance,
+        };
+      });
+
+    return {
+      ...student,
+      attendances: _attendances,
+      presents,
+    };
+  });
+
+  let existingDates = [];
+  attendances.forEach((attendance) => {
+    if (
+      existingDates.findIndex((date) => {
+        return new Date(date).getTime() === new Date(attendance.Date).getTime();
+      }) === -1
+    ) {
+      existingDates.push(new Date(attendance.Date));
+    }
+  });
+
   const updateHandler = () => {
     setIsUpdating(true);
     setTimeout(() => {
-      const newCheckCol = document.getElementById("newCheckCol");
+      const newCheckCol = document.getElementById("newAttendanceCol");
       newCheckCol.scrollIntoView({
-        behavior: 'smooth'
+        behavior: "smooth",
       });
-    }, 100)
+    }, 100);
   };
 
   const addHandler = () => {
@@ -92,47 +89,68 @@ function ClassAttendant() {
     setIsAddingAttendant(false);
   };
 
-  const savePeriodicHandler = () => {
+  const saveAttendanceHandler = (date) => {
+    let newAttandances = [];
+    students.forEach((student) => {
+      const newAttandance = {
+        Date: new Date(date),
+        Attendance: false,
+        StudentID: student,
+      };
+      newAttandances.push(newAttandance);
+    });
+    setAttendances((prevAttendances) => [...prevAttendances, ...newAttandances]);
+    setIsAddingAttendant(false);
     setIsEditable(true);
+    setIsUpdating(true);
   };
 
-// ---------------------XỬ LÍ CHECKBOX--------------------
-  const [students, setStudents] = useState(DUMMY_STUDENTS);
-
-  const [currentSession,] = useState(1);
-
-  const handleAttendanceChange = (e, studentId) => {
-    const checked = e.target.checked;
-    const updatedStudents = students.map((student) => {
-      if (student.StudentID === studentId) {
-        const updatedAttendance = [...student.attendance];
-        updatedAttendance[currentSession - 1] = checked;
-        let updatedPresent = student.present;
-        if (checked) {
-          updatedPresent += 1;
-        } else {
-          updatedPresent -= 1;
-        }
-        return { ...student, attendance: updatedAttendance, present: updatedPresent };
-      } else {
-        return student;
-      }
+  const updateAttendanceHandler = (value, studentID, date) => {
+    const index = attendances.findIndex((attendance) => {
+      return (
+        attendance.StudentID.StudentID === studentID &&
+        new Date(attendance.Date).toDateString() ===
+          new Date(date).toDateString()
+      );
     });
-    setStudents(updatedStudents);
+
+    const attendancesCopy = [...attendances];
+    attendancesCopy[index].Attendance = value;
+    setAttendances(attendancesCopy);
+  };
+
+  const completeUpdateHandler = async () => {
+    setIsEditable(false);
+    setIsUpdating(false);
+    await StatisticsService.postAttendances(attendances)
   };
 
   return (
-    <Container className="bg-white p-4 rounded-4" style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
-    boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
+    <Container
+      className="bg-white p-4 rounded-4"
+      style={{
+        borderRadius: "16px",
+        padding: "24px",
+        backgroundColor: "white",
+        marginBottom: "16px",
+        boxShadow:
+          "0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)",
+      }}
+    >
       <Row className="align-items-center">
         <Col>
-            <p className="mb-1" style={{fontSize:"20px", fontWeight:700}}>Attendant Checking</p>
-            <p style={{color:"#6B7280", fontSize:"14px"}}>
-            Total number of occurred lessons: <span className="fw-bold" style={{color:"black"}}>{Arrays.length}</span>
-            </p>
+          <p className="mb-1" style={{ fontSize: "20px", fontWeight: 700 }}>
+            Attendant Checking
+          </p>
+          <p style={{ color: "#6B7280", fontSize: "14px" }}>
+            Total number of occurred lessons:{" "}
+            <span className="fw-bold" style={{ color: "black" }}>
+              {existingDates.length}
+            </span>
+          </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          {!isUpdating &&
+          {!isUpdating && (
             <button
               onClick={updateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
@@ -140,10 +158,10 @@ function ClassAttendant() {
               <FontAwesomeIcon icon={faPenToSquare} />
               <span className="ps-2">Update</span>
             </button>
-          }
+          )}
           {isUpdating && (
             <button
-              onClick={updateHandler}
+              onClick={completeUpdateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
             >
               <FontAwesomeIcon icon={faDownload} />
@@ -151,10 +169,11 @@ function ClassAttendant() {
             </button>
           )}
         </Col>
-
       </Row>
-      <div className={classes['table-div']} id="tableDiv">
-        <Table bordered className={classes.table}
+      <div className={classes["table-div"]} id="tableDiv">
+        <Table
+          bordered
+          className={classes.table}
           hover
           style={{
             fontSize: 14,
@@ -162,15 +181,18 @@ function ClassAttendant() {
             borderRadius: "1em",
             overflow: "hidden",
             borderColor: "#E5E7EB",
-          }}>
+          }}
+        >
           <thead>
             <tr class="text-uppercase text-secondary">
-              <th style={{maxWidth:'50px'}}>NAME</th>
+              <th style={{ maxWidth: "50px" }}>NAME</th>
               <th>PRESENT</th>
-              {Arrays.map((date) => (
-                <th key={date}>{date}</th>
+              {existingDates.map((date) => (
+                <th key={Math.random()}>
+                  {date.getDate() + "/" + date.getMonth()}
+                </th>
               ))}
-             
+
               {isUpdating && (
                 <th>
                   <button className="border-0 bg-light" onClick={addHandler}>
@@ -180,58 +202,29 @@ function ClassAttendant() {
               )}
             </tr>
           </thead>
-          <tbody style={{fontSize:'14px'}} >
-          {students.map((student) => (
-            <tr key={student.StudentID}>
-              <th>
-                  <div className={classes.imgDiv}>
-                    <img
-                      style={{
-                        height: "100%",
-                      }}
-                      src={student.ImageURL}
-                      alt={student.Name}
-                    ></img>
-                  </div>
-                  <div>
-                    <p className="mb-0 text-nowrap fw-bold">{student.Name}</p>
-                    <p className="mb-0 fw-light">{student.StudentID}</p>
-                  </div>
-                </th>
-              
-              <td>{student.present}</td>
-
-              {Arrays.map((_, i) => (
-                <td key={i}>
-                  <Form.Check
-                    type="checkbox"
-                    onChange={(e) => handleAttendanceChange(e, student.StudentID)}
-                  />
-                </td>
-              ))}
-
-              {isUpdating && (
-              <td id="newCheckCol">
-                <input
-                  readOnly={!isEditable}
-                  className="form-check-input"
-                />
-              </td>
-              )}
-            </tr>
-          ))}
+          <tbody>
+            {studentAttendance.map((sdta) => (
+              <AttendanceTableRow
+                key={Math.random()}
+                sdta={sdta}
+                isEditable={isEditable}
+                isUpdating={isUpdating}
+                onChange={updateAttendanceHandler}
+              />
+            ))}
           </tbody>
         </Table>
       </div>
 
       {isAddingAttendant && (
         <UpdateAttendantModal
+          existingDates={existingDates}
           onCloseModal={closeAddHandler}
-          onSavePeriodic={savePeriodicHandler}
+          onSave={saveAttendanceHandler}
         />
       )}
     </Container>
-  )
+  );
 }
 
-export default ClassAttendant
+export default ClassAttendant;
