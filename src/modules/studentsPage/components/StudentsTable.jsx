@@ -14,8 +14,11 @@ import styled from "./styleStd.module.css";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 
-function StudentsTable({ std }) {
+function mathRound(number){
+  return Math.round((number) * 100)/100
+}
 
+function StudentsTable({ std }) {
   let navigate = useNavigate();
   
   return (
@@ -43,8 +46,8 @@ function StudentsTable({ std }) {
               name="type"
               style={{ fontSize: "14px", borderColor: "black" }}
             >
-              <option value="type01">Daily</option>
-              <option selected>Monthly: November</option>
+              <option value="type01">Date</option>
+              <option selected>Month: November</option>
             </Form.Select>
           </Form.Group>
         </Row>
@@ -78,49 +81,66 @@ function StudentsTable({ std }) {
           </thead>
           <tbody style={{ backgroundColor: "white" }}>
             {std.map((_std) => (
-              <tr key={_std.id} onClick={()=>{navigate(`/students/${_std._id}`);
+              <tr key={_std.id} onClick={()=>{navigate(`/students/${_std.Student._id}`);
             }}>
                 <td>
                   <Container>
                     <Row>
                       <Col md="auto">
                         <Image
-                          src={_std.ImageURL}
+                          src={_std.Student.ImageURL}
                           roundedCircle="true"
                           width="40px"
                           height="40px"
                         ></Image>
                       </Col>
                       <Col>
-                        <b>{_std.Name}</b>
+                        <b>{_std.Student.Name}</b>
                         <br />
-                        <label style={{ color: "#6B7280" }}>{_std.StudentID}</label>
+                        <label style={{ color: "#6B7280" }}>{_std.Student.StudentID}</label>
                       </Col>
                     </Row>
                   </Container>
                 </td>
 
                 <td style={{ width: "100px", backgroundColor: "white" }}>
-                  {_std.NameClass}
+                  {_std.Student.NameClass}
                 </td>
-                <td>{_std.PhoneNumber}</td>
+                <td>{_std.Student.PhoneNumber}</td>
                 <td>
-                  90%<br />
-                  <label style={{ color: "#6B7280" }}>Present: 20/20</label>
-                </td>
-                <td>
-                  80%<br />
-                  <label style={{ color: "#6B7280" }}>Score: 650/700</label>
+                  { _std.TotalResult.TotalReport !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalAttented / _std.TotalResult.TotalReport)) * 100)).toString() : "0"}%<br />
+                  <label style={{ color: "#6B7280" }}>Present: {_std.TotalResult.TotalAttented}/{_std.TotalResult.TotalReport}</label>
                 </td>
                 <td>
-                  95%<br />
-                  <label style={{ color: "#6B7280" }}>Score: 90/100</label>
+                  { _std.TotalResult.TotalTestScoreRequired !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalTestScore / _std.TotalResult.TotalTestScoreRequired)) * 100)).toString() : "0"}%<br />
+                  <label style={{ color: "#6B7280" }}>Score: {_std.TotalResult.TotalTestScore}/{_std.TotalResult.TotalTestScoreRequired}</label>
+                </td>
+                <td>
+                { _std.TotalResult.TotalHomeworkScoreRequired !== 0 ? mathRound((parseFloat((_std.TotalResult.TotalHomeworkScore / _std.TotalResult.TotalHomeworkScoreRequired)) * 100)).toString() : "0"}%<br />
+                  <label style={{ color: "#6B7280" }}>Score: {_std.TotalResult.TotalHomeworkScore}/{_std.TotalResult.TotalHomeworkScoreRequired}</label>
                 </td>
                 <td>
                   <h6>
-                    <Badge pill bg="success">
-                      Good
-                    </Badge>
+                    {_std.TotalResult.Evaluation === "Good" &&
+                      <Badge pill bg="success">
+                        {_std.TotalResult.Evaluation}
+                      </Badge>
+                    }
+                    {_std.TotalResult.Evaluation === "Medium" &&
+                      <Badge pill bg="warning">
+                        {_std.TotalResult.Evaluation}
+                      </Badge>
+                    }
+                    {_std.TotalResult.Evaluation === "Not-Good" &&
+                      <Badge pill bg="danger">
+                        {_std.TotalResult.Evaluation}
+                      </Badge>
+                    }
+                    {_std.TotalResult.Evaluation === "Non" &&
+                      <Badge pill bg="secondary">
+                        {_std.TotalResult.Evaluation}
+                      </Badge>
+                    }
                   </h6>
                 </td>
                 <td>

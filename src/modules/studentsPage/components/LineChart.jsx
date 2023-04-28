@@ -7,18 +7,12 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  ReferenceDot,
 } from "recharts";
 
-const data = [
-  { name: "01 Apr", score: 80 },
-  { name: "02 Apr", score: 90 },
-  { name: "04 Apr", score: 60 },
-  { name: "05 Apr", score: 70 },
-  { name: "06 Apr", score: 80 },
-  { name: "07 Apr", score: 50 },
-];
 
-const AppLineChart = () => {
+
+const AppLineChart = ({data}) => {
   return (
     <LineChart 
       width={900}
