@@ -1,11 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Form, Row, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faPlusCircle } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "../../studentsPage/components/styleStd.module.css"
+import deleteSVG from "../../../assets/images/global/delete.svg";
+import editSVG from "../../../assets/images/global/edit.svg";
+import axios from 'axios';
 
 function ClassesTable({ classes }) {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const monthNames = [
+      'Jan', 'Feb', 'Mar',
+      'Apr', 'May', 'Jun', 'Jul',
+      'Aug', 'Sep', 'Oct',
+      'Nov', 'Dec'
+    ];
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+  
+    return `${monthNames[monthIndex]} ${day} ${year}`;
+  };
+  
+  // Handle Delete Class
+  const [classList, setClassList] = useState([]);
+  const [classDeleted, setClassDeleted] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('http://localhost:3001/api/v1/class');
+      setClassList(result.data);
+    };
+    fetchData();
+  }, [classDeleted]);
+
+  const deleteHandler = async (Id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3001/api/v1/class/${Id}`);
+      console.log(response.data.message);
+      if (Array.isArray(classList)) {
+        setClassList(classList.filter((cls) => cls._id !== Id));
+      }
+      setClassDeleted(prevState => !prevState);
+      window.location.reload();
+      alert('Xóa class thành công!');
+    } 
+    catch (error) {
+      console.log(error);
+      alert('Đã có lỗi xảy ra khi xóa class!');
+    }
+  };
+  
   return (
     <div>
       <Container>
@@ -56,30 +103,36 @@ function ClassesTable({ classes }) {
             <th>Teacher</th>
             <th>Num of Student</th>
             <th>Term</th>
-            <th>Type</th>
+            <th>Type ID</th>
           </tr>
         </thead>
         <tbody>
           {classes.map((_class) => (
-            <tr key={_class.id}>
+            <tr key={_class._id}>
               <td>
                 <Link
-                  to={_class.Name}
+                  to={_class.Name + '/dashboard'}
                   className="text-decoration-none text-dark fw-semibold"
                 >
-                  {_class.Name}
+                  {_class.ClassID} <br/>
+                  <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>
                 </Link>
               </td>
               {/* <td>{_class.teacher.Name}</td>
               <td>{_class.studentQuantity}</td> */}
-              <td>Ms.Hoa</td>
+              <td>{_class.TeacherName}</td>
               <td>35</td>
               <td>
               <td>
-                {`${_class.TermForm} - ${_class.TermTo}`}
+                {`${formatDate(_class.TermFrom)} - ${formatDate(_class.TermTo)}`}
               </td>
               </td>
               <td>{_class.Type}</td>
+              <td>
+                  <button><img src={editSVG} alt="edit"/></button>
+                  <br></br>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_class._id)} /></button>
+                </td>
             </tr>
           ))}
         </tbody>

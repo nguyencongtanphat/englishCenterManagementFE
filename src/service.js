@@ -46,6 +46,10 @@ export class ClassService {
   static get(id) {
     return axios.get(`http://localhost:3001/api/v1/class/${id}`);
   }
+  
+  static create(data) {
+    return axios.post(`http://localhost:3001/api/v1/class`, data);
+  }
 }
 
 
