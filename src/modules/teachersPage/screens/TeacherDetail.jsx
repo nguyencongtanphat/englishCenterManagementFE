@@ -1,11 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { React, useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Container, Col, Row, Image } from "react-bootstrap";
 import styled from "./style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ClassList from "../components/ClassList";
+import { TeacherService } from "../../../service.js";
 
-function TeacherDetail({ teachers }) {
+function TeacherDetail() {
+  // Gọi API:
+  const [teacher, setTeacher] = useState({});
+  const { id } = useParams();
+  console.log("StudentID: ", id);
+  useEffect(() => {
+    TeacherService.get(id)
+      .then((res) => {
+        setTeacher(res.data.ResponseResult.Result);
+      })
+      .catch((err) => console.log(err));
+  }, [id]);
+
   return (
     <>
       {/* Filter */}
@@ -30,16 +43,18 @@ function TeacherDetail({ teachers }) {
               <p style={{ fontSize: "20px", fontWeight: 600 }}>Information</p>
               <div className={`${styled["avt_details"]}`}>
                 <Image
-                  src="https://i.imgur.com/DizC5X0.png"
+                  src={teacher.ImageURL}
                   roundedCircle="true"
                   width="64px"
                   height="64px"
                 ></Image>
                 <div className={`${styled["name_details"]}`}>
                   <label style={{ fontSize: "16px", fontWeight: "600" }}>
-                    Nguyễn Thùy Trang
+                    {teacher.Name}
                   </label>
-                  <label style={{ color: "#6B7280" }}>ID: 1000</label>
+                  <label style={{ color: "#6B7280" }}>
+                    ID: {teacher.TeacherID}
+                  </label>
                 </div>
               </div>
               <div className={`${styled["alot_details"]}`}>
@@ -48,28 +63,34 @@ function TeacherDetail({ teachers }) {
                     icon="fa-solid fa-calendar"
                     style={{ color: "#6B7280" }}
                   />
-                  <label style={{ color: "#6B7280" }}>19/05/2002</label>
+                  <label style={{ color: "#6B7280" }}>
+                    {teacher.DateOfBirth}
+                  </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-phone"
                     style={{ color: "#6B7280" }}
                   />
-                  <label style={{ color: "#6B7280" }}>0999999999</label>
+                  <label style={{ color: "#6B7280" }}>
+                    {teacher.PhoneNumber}
+                  </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-envelope"
                     style={{ color: "#6B7280" }}
                   />
-                  <label style={{ color: "#6B7280" }}>trangnt@gmail.com</label>
+                  <label style={{ color: "#6B7280" }}>{teacher.Email}</label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-graduation-cap"
                     style={{ color: "#6B7280" }}
                   />
-                  <label style={{ color: "#6B7280" }}>IETLS</label>
+                  <label style={{ color: "#6B7280" }}>
+                    {teacher.Certificate}
+                  </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
