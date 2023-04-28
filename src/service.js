@@ -62,6 +62,12 @@ export class StatisticsService {
   static getPeriodicTests(classId) {
     return axios.get(`http://localhost:3001/api/v1/statistics/tests/TOE700.1`)
   }
+  
+  static postAttendances(attendances) {
+    return axios.post(`http://localhost:3001/api/v1/statistics/attendances/TOE700.1`, {
+      attendances
+    })
+  }
 
   static postPeriodicTest(tests) {
     return axios.post(`http://localhost:3001/api/v1/statistics/tests/TOE700.1`, {

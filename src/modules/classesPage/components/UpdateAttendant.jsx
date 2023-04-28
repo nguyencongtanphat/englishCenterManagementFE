@@ -1,7 +1,9 @@
+import classes from "./UpdatePeriodic.module.css";
 import ReactDOM from "react-dom";
 import { Form } from "react-bootstrap";
-import { useRef,useState } from "react";
-import classes from "./UpdatePeriodic.module.css";
+import { useEffect } from "react";
+import { useState } from "react";
+import moment from "moment/moment";
 
 const Backdrop = (props) => {
   return <div onClick={props.onClick} className={classes.backdrop}></div>;
@@ -15,19 +17,35 @@ const ModalOverlay = (props) => {
   );
 };
 
-const UpdateAttendantModal = (props) => {
-  const dateRef = useRef()
-  const scoreRef = useRef()
-  const [formIsValid, setFormIsValid] = useState()
+const UpdatePeriodicModal = (props) => {
+  const [date, setDate] = useState(new Date());
+  const [error, setError] = useState(null);
 
   const saveHandler = (event) => {
-    event.preventDefault()
-    if (dateRef.current.value === '' || scoreRef.current.value === '') {
-      setFormIsValid(false)
-    } else {
-      setFormIsValid(true)
+    event.preventDefault();
+    if (!error) {
+      props.onSave(date);
     }
-  }
+  };
+
+  const dateChangeHandler = (event) => {
+    const dateChosen = event.target.value;
+    setDate(dateChosen);
+
+    if (new Date(dateChosen).getTime() > new Date().getTime()) {
+      setError("Date must be before today!");
+    } else {
+      const isExist = props.existingDates.find((date) => {
+        return new Date(date).toDateString() === new Date(dateChosen).toDateString();
+      });
+      if (isExist) {
+        setError("Date already exist!");
+      } else {
+        setError(null)
+        setDate(dateChosen);
+      }
+    }
+  };
 
   return (
     <>
@@ -38,17 +56,19 @@ const UpdateAttendantModal = (props) => {
       {ReactDOM.createPortal(
         <ModalOverlay>
           <h4 className="text-center">Additional Request</h4>
-          {!formIsValid &&
-            <p className="text-danger">Invalid inputs! Try again</p>
-          }
+          {error && <p className="text-danger">{error}</p>}
           <Form className="mt-2">
             <Form.Group className="mb-3">
               <Form.Label>
-                Pick a date for the attendant test of your class:
+                Pick a date for the periodic test of your class:
               </Form.Label>
-              <Form.Control required type="date" ref={dateRef}/>
+              <Form.Control
+                required
+                type="date"
+                value={moment(date).format("YYYY-MM-DD")}
+                onChange={dateChangeHandler}
+              />
             </Form.Group>
-            
             <div className="d-flex gap-2 justify-content-end">
               <button
                 className="w-25 py-1 border-0 rounded-2 bg-white text-dark text-opacity-50"
@@ -56,7 +76,10 @@ const UpdateAttendantModal = (props) => {
               >
                 Cancle
               </button>
-              <button className="w-25 py-1 border-0 rounded-2 bg-black text-white" onClick={saveHandler}>
+              <button
+                className="w-25 py-1 border-0 rounded-2 bg-black text-white"
+                onClick={saveHandler}
+              >
                 Save
               </button>
             </div>
@@ -68,4 +91,4 @@ const UpdateAttendantModal = (props) => {
   );
 };
 
-export default UpdateAttendantModal;
+export default UpdatePeriodicModal;
