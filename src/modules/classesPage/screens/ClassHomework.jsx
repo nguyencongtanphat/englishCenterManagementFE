@@ -12,6 +12,8 @@ import StudentService, {
   StatisticsService,
   TestsService,
 } from "../../../service.js";
+import NoStudent from "../components/NoStudent";
+import { faTimes } from "@fortawesome/fontawesome-free-solid";
 
 function ClassHomework() {
   const [tests, setTests] = useState([]);
@@ -22,9 +24,9 @@ function ClassHomework() {
   const [isEditable, setIsEditable] = useState(false);
 
   const params = useParams();
+  const { classId } = params;
 
   useEffect(() => {
-    const { classId } = params;
     TestsService.getHomework(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -50,38 +52,52 @@ function ClassHomework() {
       });
   }, []);
 
-  const studentTest = students.map((student) => {
-    let sumScores = 0;
-    const periTests = homeworkTests
-      .filter((homeworkTest) => {
-        return homeworkTest.StudentID._id === student._id;
-      })
-      .map((homeworkTest) => {
-        sumScores += homeworkTest.Score;
+  let studentTest;
+  if (!students) studentTest = [];
+  else {
+    studentTest = students.map((student) => {
+      let sumScores = 0;
+      if (homeworkTests === null) {
         return {
-          date: homeworkTest.HomeworkID.Date,
-          score: homeworkTest.Score,
+          ...student,
+          periTests: [],
+          averageScore: 0,
         };
-      });
+      } else {
+        const periTests = homeworkTests
+          .filter((homeworkTest) => {
+            return homeworkTest.StudentID._id === student._id;
+          })
+          .map((homeworkTest) => {
+            sumScores += homeworkTest.Score;
+            return {
+              date: homeworkTest.HomeworkID.Date,
+              score: homeworkTest.Score,
+            };
+          });
 
-    return {
-      ...student,
-      periTests,
-      averageScore: Math.round(sumScores / periTests.length),
-    };
-  });
+        return {
+          ...student,
+          periTests,
+          averageScore: Math.round(sumScores / periTests.length),
+        };
+      }
+    });
+  }
 
   let existingTests = [];
-  homeworkTests.forEach((homeworkTest) => {
-    if (
-      existingTests.findIndex((existingTest) => {
-        // console.log(existingTest._id === homeworkTest.HomeworkID._id)
-        return existingTest._id === homeworkTest.HomeworkID._id;
-      }) === -1
-    ) {
-      existingTests.push(homeworkTest.HomeworkID);
-    }
-  });
+  if (homeworkTests) {
+    homeworkTests.forEach((homeworkTest) => {
+      if (
+        existingTests.findIndex((existingTest) => {
+          // console.log(existingTest._id === homeworkTest.HomeworkID._id)
+          return existingTest._id === homeworkTest.HomeworkID._id;
+        }) === -1
+      ) {
+        existingTests.push(homeworkTest.HomeworkID);
+      }
+    });
+  }
 
   const testDates = existingTests.map((test) => new Date(test.Date));
 
@@ -137,7 +153,19 @@ function ClassHomework() {
   const completeUpdateHandler = async () => {
     setIsEditable(false);
     setIsUpdating(false);
-    await StatisticsService.postHomeworkTest(homeworkTests);
+    await StatisticsService.postHomeworkTest(classId, homeworkTests);
+  };
+
+  const deleteHomeworkHandler = async (date) => {
+    setHomeworkTests((prevHomework) => {
+      return [...prevHomework].filter((homework) => {
+        return (
+          new Date(homework.Date).toDateString() !==
+          new Date(date).toDateString()
+        );
+      });
+    });
+    await StatisticsService.deleteHomework(classId, date);
   };
 
   return (
@@ -169,6 +197,7 @@ function ClassHomework() {
             <button
               onClick={updateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+              disabled={students.length === 0}
             >
               <FontAwesomeIcon icon={faPenToSquare} />
               <span className="ps-2">Update</span>
@@ -185,50 +214,69 @@ function ClassHomework() {
           )}
         </Col>
       </Row>
-      <div className={classes["table-div"]} id="tableDiv">
-        <Table
-          bordered
-          className={classes.table}
-          hover
-          style={{
-            fontSize: 14,
-            borderCollapse: "collapse",
-            borderRadius: "1em",
-            overflow: "hidden",
-            borderColor: "#E5E7EB",
-          }}
-        >
-          <thead>
-            <tr class="text-uppercase text-secondary">
-              <th>NAME</th>
-              <th>AVERAGE</th>
-              {testDates.map((date) => (
-                <th key={Math.random()}>
-                  {date.getDate() + "/" + date.getMonth()}
-                </th>
+
+      {students.length > 0 && (
+        <div className={classes["table-div"]} id="tableDiv">
+          <Table
+            bordered
+            className={classes.table}
+            hover
+            style={{
+              fontSize: 14,
+              borderCollapse: "collapse",
+              borderRadius: "1em",
+              overflow: "hidden",
+              borderColor: "#E5E7EB",
+            }}
+          >
+            <thead>
+              <tr class="text-uppercase text-secondary">
+                <th>NAME</th>
+                <th>AVERAGE</th>
+                {testDates.map((date) => (
+                  <th key={Math.random()}>
+                    <span style={{ marginRight: "4px" }}>
+                      {date.getDate() + "/" + date.getMonth()}
+                    </span>
+                    {isUpdating && (
+                      <button
+                        onClick={() => deleteHomeworkHandler(date)}
+                        style={{
+                          padding: "4px",
+                          backgroundColor: "#fff",
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                    )}
+                  </th>
+                ))}
+                {isUpdating && (
+                  <th>
+                    <button className="border-0 bg-light" onClick={addHandler}>
+                      <FontAwesomeIcon icon={faPlus} color="blue" />
+                    </button>
+                  </th>
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              {studentTest.map((sdtt) => (
+                <HomeworkTableRow
+                  key={Math.random()}
+                  sdtt={sdtt}
+                  isEditable={isEditable}
+                  isUpdating={isUpdating}
+                  onChange={updateHomeworkHandler}
+                />
               ))}
-              {isUpdating && (
-                <th>
-                  <button className="border-0 bg-light" onClick={addHandler}>
-                    <FontAwesomeIcon icon={faPlus} color="blue" />
-                  </button>
-                </th>
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            {studentTest.map((sdtt) => (
-              <HomeworkTableRow
-                key={Math.random()}
-                sdtt={sdtt}
-                isEditable={isEditable}
-                isUpdating={isUpdating}
-                onChange={updateHomeworkHandler}
-              />
-            ))}
-          </tbody>
-        </Table>
-      </div>
+            </tbody>
+          </Table>
+        </div>
+      )}
+
+      {students.length === 0 && <NoStudent />}
+
       {isAddingHomework && (
         <UpdateHomeworkModal
           tests={tests}
