@@ -33,8 +33,8 @@ class StudentService {
     if (date) queryStr += "&date=" + date;
     return axios.get(
       `http://localhost:3001/api/v1/student-report/?studentid=` +
-        studentId +
-        queryStr
+      studentId +
+      queryStr
     );
   }
   getStudentReportTotal(studentId) {
@@ -77,27 +77,55 @@ export class StatisticsService {
   static getPeriodicTests(classId) {
     return axios.get(`http://localhost:3001/api/v1/statistics/tests/TOE700.1`);
   }
-  
-  static postAttendances(attendances) {
+
+  static postAttendances(classId, attendances) {
     return axios.post(`http://localhost:3001/api/v1/statistics/attendances/TOE700.1`, {
       attendances
     })
   }
 
-  static postPeriodicTest(tests) {
+  static postPeriodicTest(classId, tests) {
     return axios.post(
-      `http://localhost:3001/api/v1/statistics/tests/TOE700.1`,
-      {
+      `http://localhost:3001/api/v1/statistics/tests/TOE700.1`, {
         tests,
       }
     );
   }
 
-  static postHomeworkTest(homeworks) {
+  static postHomeworkTest(classId, homeworks) {
     return axios.post(
-      `http://localhost:3001/api/v1/statistics/homework/TOE700.1`,
-      {
+      `http://localhost:3001/api/v1/statistics/homework/TOE700.1`, {
         homeworks,
+      }
+    );
+  }
+
+  static deleteAttendance(classId, date) {
+    return axios.delete(
+      `http://localhost:3001/api/v1/statistics/attendances/TOE700.1`, {
+        data: {
+          date
+        }
+      }
+    );
+  }
+
+  static deletePeriodicTest(classId, date) {
+    return axios.delete(
+      `http://localhost:3001/api/v1/statistics/tests/TOE700.1`, {
+        data: {
+          date
+        }
+      }
+    );
+  }
+
+  static deleteHomework(classId, date) {
+    return axios.delete(
+      `http://localhost:3001/api/v1/statistics/homework/TOE700.1`, {
+        data: {
+          date
+        }
       }
     );
   }
