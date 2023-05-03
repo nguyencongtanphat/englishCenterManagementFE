@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Col,
   Form,
@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "./styleStd.module.css";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
+import axios from 'axios';
 
 function mathRound(number){
   return Math.round((number) * 100)/100
@@ -21,27 +22,71 @@ function mathRound(number){
 function StudentsTable({ std }) {
   let navigate = useNavigate();
   
+  // Handle Delete Student
+  const [studentList, setStudentList] = useState([]);
+  const [studentDeleted, setStudentDeleted] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('http://localhost:3001/api/v1/students');
+      setStudentList(result.data);
+    };
+    fetchData();
+  }, [studentDeleted]);
+
+  const deleteHandler = async (Id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3001/api/v1/students/${Id}`);
+      console.log(response.data.message);
+      if (Array.isArray(studentList)) {
+        setStudentList(studentList.filter((stdd) => stdd._id !== Id));
+      }
+      setStudentDeleted(prevState => !prevState);
+      window.location.reload();
+      alert('Xóa học viên thành công!');
+    } 
+    catch (error) {
+      console.log(error);
+      alert('Đã có lỗi xảy ra khi xóa học viên!');
+    }
+  };
+
+  // Handle Filter by Type Class
+  const [active, setActive] = useState(false);
+  const stdFilter = std;
+  const onChange = (event) => {
+    const value = event.target.value;
+    if (value == "TC00") {
+      setActive(false);
+    }
+    else if (value == "TC01" || value == "TC02" || value == "TC03" || value == "TC04"){
+      setActive(true);
+    }
+  };
+
   return (
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
         <Row>
           <Form.Group as={Col} xs="auto">
-            <Form.Select name="class" style={{ fontSize: "14px" }}>
-              <option hidden>Class</option>
-              <option value="tc01">TOEIC</option>
-              <option value="tc02">IETLS</option>
-              <option value="tc03">TOEFL</option>
+            <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}} onChange={onChange}>
+              <option value="TC00" hidden>Class Type</option>
+              <option value="TC01">TOEIC Reading & Listening</option>
+              <option value="TC02">TOEIC Speaking & Writing</option>
+              <option value="TC03">IETLS</option>
+              <option value="TC04">TOEFL</option>
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} xs="auto">
             <Form.Select name="type" style={{ fontSize: "14px" }}>
               <option hidden>Evaluation</option>
-              <option value="type01">Good</option>
-              <option value="type02">Medium</option>
-              <option value="type03">Not-good</option>
+              <option value="Eva01">Good</option>
+              <option value="Eva02">Medium</option>
+              <option value="Eva03">Not-good</option>
+              <option value="Eva03">Non</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} xs="auto">
+          {/* <Form.Group as={Col} xs="auto">
             <Form.Select
               name="type"
               style={{ fontSize: "14px", borderColor: "black" }}
@@ -49,7 +94,7 @@ function StudentsTable({ std }) {
               <option value="type01">Date</option>
               <option selected>Month: November</option>
             </Form.Select>
-          </Form.Group>
+          </Form.Group> */}
         </Row>
       </Form>
       <div className={`${styled["form"]}`}>
@@ -81,9 +126,8 @@ function StudentsTable({ std }) {
           </thead>
           <tbody style={{ backgroundColor: "white" }}>
             {std.map((_std) => (
-              <tr key={_std.id} onClick={()=>{navigate(`/students/${_std.Student._id}`);
-            }}>
-                <td>
+              <tr key={_std.id}>
+                <td onClick={()=>{navigate(`/students/${_std.Student._id}`);}}>
                   <Container>
                     <Row>
                       <Col md="auto">
@@ -146,7 +190,7 @@ function StudentsTable({ std }) {
                 <td>
                   <button><img src={editSVG} alt="edit"/></button>
                   <br></br>
-                  <button><img src={deleteSVG} alt="delete"/></button>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_std.Student._id)} /></button>
                 </td>
               </tr>
             ))}
