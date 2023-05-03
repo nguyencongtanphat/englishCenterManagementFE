@@ -65,8 +65,14 @@ function ClassesTable({ classes }) {
     axios
       .get("http://localhost:3001/api/v1/class/")
       .then((res) => {
-        setTeachers(res.data.ResponseResult.Result);
-        setDisplayedClasses(res.data.ResponseResult.Result);
+        //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
+        const allTeachers = res.data.ResponseResult.Result;
+        const uniqueTeachers = allTeachers.filter((teacher, index, self) =>
+          index === self.findIndex((t) => t.TeacherName === teacher.TeacherName)
+        );
+
+        setTeachers(uniqueTeachers);
+        setDisplayedClasses(allTeachers);
         console.log('Data result');
         console.log(res.data.ResponseResult.Result);
       })
