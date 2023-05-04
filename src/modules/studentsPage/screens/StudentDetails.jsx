@@ -78,7 +78,7 @@ function ClassesAdd() {
                 reportInfo.Reports?.map(report => {
                     let rep = {
                         name: report.Date.slice(0, 10),
-                        score: report.TotalScore
+                        score: getTotalPercent(0, 0, report.HomeworkScore, report.HomeworkScoreRequired, report.TestScore, report.TestScoreRequired)
                     }
                     data.push(rep)
                 })
@@ -88,8 +88,8 @@ function ClassesAdd() {
             else if(filterType === filterTypeOption.total){
                 reportInfo.Reports?.map(report => {
                     let rep = {
-                        name: report._id.Month + "/" + report._id.Year,
-                        score: report.TotalScore
+                        name: report._id.Month.toString() + "/" + report._id.Year.toString(),
+                        score:  getTotalPercent(0, 0, report.HomeworkScore, report.HomeworkScoreRequired, report.TestScore, report.TestScoreRequired)
                     }
                     data.push(rep)
                 })
