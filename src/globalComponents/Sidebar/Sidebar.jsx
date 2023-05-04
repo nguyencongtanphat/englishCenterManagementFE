@@ -46,13 +46,14 @@ export default function Sidebar() {
                             onMouseEnter={ () => {
                                 if(item.title === "Dashboard"){
                                     setDashboardColor("#1C64F2")
-                                }else if(item.title=== "Student"){
+                                }else if(item.title=== "Students"){
                                     setStudentColor("#1C64F2")
                                 }else if(item.title=== "Classes"){
                                     setClassColor("#1C64F2")
-                                }else if(item.title=== "Teacher"){
+                                }else if(item.title=== "Teachers"){
                                     setTeacherColor("#1C64F2")
-                                }else if(item.title=== "Certificate"){
+                                }else if(item.title=== "Certificates"){
+                                    
                                     setCertificateColor("#1C64F2")
                                 }else if(item.title==="Help"){
                                     setHelpColor("#1C64F2")
@@ -63,13 +64,13 @@ export default function Sidebar() {
                             onMouseLeave={ () => {
                                 if(item.title === "Dashboard"){
                                     setDashboardColor("#000000")
-                                }else if(item.title=== "Student"){
+                                }else if(item.title=== "Students"){
                                     setStudentColor("#000000")
                                 }else if(item.title=== "Classes"){
                                     setClassColor("#000000")
-                                }else if(item.title=== "Teacher"){
+                                }else if(item.title=== "Teachers"){
                                     setTeacherColor("#000000")
-                                }else if(item.title=== "Certificate"){
+                                }else if(item.title=== "Certificates"){
                                     setCertificateColor("#000000")
                                 }else if(item.title==="Help"){
                                     setHelpColor("#000000")
