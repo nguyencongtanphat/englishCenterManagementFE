@@ -54,47 +54,114 @@ function StudentsTable({ std }) {
   // Handle Filter by Type Class
   const [active, setActive] = useState(false);
   const stdFilter = std;
+
   const onChange = (event) => {
     const value = event.target.value;
-    if (value == "TC00") {
+    setFilClass(value);
+    if (value === "TC00" || value === "") {
       setActive(false);
+      //setDisplayedStudents(std);
+      return;
     }
-    else if (value == "TC01" || value == "TC02" || value == "TC03" || value == "TC04"){
-      setActive(true);
-    }
+    setActive(true);
+    axios
+      .get(
+        `http://localhost:3001/api/v1/student-report/total?evaluation=${filEva}&classId=${value}`
+      )
+      .then((response) => {
+        console.log('Filter by Class: ',response.data.ResponseResult.Result);
+        setDisplayedStudents(response.data.ResponseResult.Result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  const [active_2, setActive_2] = useState(false);
+
+  const onChange_2 = (event) => {
+    const value = event.target.value;
+    setFilEva(value);
+    if (value === "None" || value === "") {
+      setActive_2(false);
+      return;
+    }
+    setActive_2(true);
+    axios
+      .get(
+        `http://localhost:3001/api/v1/student-report/total?evaluation=${value}&classId=${filClass}`
+      )
+      .then((response) => {
+        console.log('Filter by Evaluation: ',response.data.ResponseResult.Result);
+        setDisplayedStudents(response.data.ResponseResult.Result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const [classes, setClasses] = useState([]);
+  const [filClass, setFilClass] = useState("");
+  const [filEva, setFilEva] = useState("");
+  const [displayedStudents, setDisplayedStudents] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/api/v1/student-report/total')
+      .then((res) => {
+        //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
+        setDisplayedStudents(res.data.ResponseResult.Result);
+        console.log('Data Result');
+        console.log(res.data.ResponseResult.Result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/v1/students/")
+      .then((res) => {
+        //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
+        const allClasses = res.data.ResponseResult.Result;
+        const uniqueClasses = allClasses.filter((c, index, self) =>
+          index === self.findIndex((t) => t.NameClass === c.NameClass)
+        );
+        setClasses(uniqueClasses);
+        setDisplayedStudents(std);
+        console.log('Data Result: ',classes);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
         <Row>
           <Form.Group as={Col} xs="auto">
-            <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}} onChange={onChange}>
-              <option value="TC00" hidden>Class Type</option>
-              <option value="TC01">TOEIC Reading & Listening</option>
-              <option value="TC02">TOEIC Speaking & Writing</option>
-              <option value="TC03">IETLS</option>
-              <option value="TC04">TOEFL</option>
+            <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}}
+            onChange={onChange}>
+              <option value="TC00" hidden>Class</option>
+                  {classes.map((clss) => (
+                    <option key={clss.id} value={clss.ClassID}>
+                      {clss.NameClass}
+                    </option>
+                  ))}
             </Form.Select>
           </Form.Group>
           <Form.Group as={Col} xs="auto">
-            <Form.Select name="type" style={{ fontSize: "14px" }}>
-              <option hidden>Evaluation</option>
-              <option value="Eva01">Good</option>
-              <option value="Eva02">Medium</option>
-              <option value="Eva03">Not-good</option>
-              <option value="Eva03">Non</option>
+            <Form.Select name="type" style={{ fontSize: "14px", borderColor: active_2 ? "black" : "none"}}
+            onChange={onChange_2}>
+              <option hidden value="None">Evaluation</option>
+              <option value="Good">Good</option>
+              <option value="Medium">Medium</option>
+              <option value="Not-good">Not-good</option>
+              <option value="Non">Non</option>
             </Form.Select>
           </Form.Group>
-          {/* <Form.Group as={Col} xs="auto">
-            <Form.Select
-              name="type"
-              style={{ fontSize: "14px", borderColor: "black" }}
-            >
-              <option value="type01">Date</option>
-              <option selected>Month: November</option>
-            </Form.Select>
-          </Form.Group> */}
         </Row>
       </Form>
       <div className={`${styled["form"]}`}>
@@ -125,7 +192,7 @@ function StudentsTable({ std }) {
             </tr>
           </thead>
           <tbody style={{ backgroundColor: "white" }}>
-            {std.map((_std) => (
+            {displayedStudents.map((_std) => (
               <tr key={_std.id}>
                 <td onClick={()=>{navigate(`/students/${_std.Student._id}`);}}>
                   <Container>
