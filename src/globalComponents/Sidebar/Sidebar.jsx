@@ -79,11 +79,12 @@ export default function Sidebar() {
                             <a href={item.route} >
                                 <div className='col-3'
                                     style={{
-                                        height: "32px",
+                                        height: "50px",
                                         position: "relative",
                                         padding: "0px",
                                         lineHeight: "50px",
                                         paddingLeft: "25px",
+                                        paddingTop: "15px"
                                     }}                            
                                     
                                 >   
