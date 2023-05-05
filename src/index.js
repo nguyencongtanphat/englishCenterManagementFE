@@ -55,7 +55,7 @@ const router = createBrowserRouter([
             element: <ClassesAdd />,
           },
           {
-            path: ":className",
+            path: ":classId",
             element: <ClassDetailRoot />,
             children: [
               {

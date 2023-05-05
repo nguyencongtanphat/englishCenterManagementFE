@@ -111,7 +111,7 @@ function ClassesTable({ classes }) {
             <tr key={_class._id}>
               <td>
                 <Link
-                  to={_class.Name + '/dashboard'}
+                  to={_class.ClassID + '/dashboard'}
                   className="text-decoration-none text-dark fw-semibold"
                 >
                   {_class.ClassID} <br/>

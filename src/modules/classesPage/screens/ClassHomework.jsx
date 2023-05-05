@@ -52,9 +52,8 @@ function ClassHomework() {
       });
   }, []);
 
-  let studentTest;
-  if (!students) studentTest = [];
-  else {
+  let studentTest = [];
+  if (students.length && students.length > 0) {
     studentTest = students.map((student) => {
       let sumScores = 0;
       if (homeworkTests === null) {
@@ -193,11 +192,10 @@ function ClassHomework() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          {!isUpdating && (
+          {!isUpdating && students.length > 0 && (
             <button
               onClick={updateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-              disabled={students.length === 0}
             >
               <FontAwesomeIcon icon={faPenToSquare} />
               <span className="ps-2">Update</span>
@@ -236,7 +234,7 @@ function ClassHomework() {
                 {testDates.map((date) => (
                   <th key={Math.random()}>
                     <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + date.getMonth()}
+                      {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {isUpdating && (
                       <button

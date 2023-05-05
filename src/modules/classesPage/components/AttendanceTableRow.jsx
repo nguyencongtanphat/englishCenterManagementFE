@@ -36,7 +36,7 @@ function AttendanceTableRow({ sdta, isUpdating, isEditable, onChange }) {
             type="checkbox"
             defaultChecked={att.attendance}
             data-date={att.date}
-            readOnly={!isUpdating}
+            disabled={!isUpdating}
             onChange={changeHandler}
           />
         </td>
