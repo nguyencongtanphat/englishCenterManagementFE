@@ -13,7 +13,7 @@ import StudentService, {
   TestsService,
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
 
 function ClassHomework() {
   const [tests, setTests] = useState([]);
@@ -53,10 +53,10 @@ function ClassHomework() {
   }, []);
 
   let studentTest = [];
-  if (students.length && students.length > 0) {
+  if (students.length > 0) {
     studentTest = students.map((student) => {
       let sumScores = 0;
-      if (homeworkTests === null) {
+      if (homeworkTests === null || homeworkTests.length === 0) {
         return {
           ...student,
           periTests: [],
@@ -239,12 +239,8 @@ function ClassHomework() {
                     {isUpdating && (
                       <button
                         onClick={() => deleteHomeworkHandler(date)}
-                        style={{
-                          padding: "4px",
-                          backgroundColor: "#fff",
-                        }}
                       >
-                        <FontAwesomeIcon icon={faTimes} />
+                        <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
                   </th>

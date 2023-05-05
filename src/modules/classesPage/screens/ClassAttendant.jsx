@@ -10,7 +10,7 @@ import { useParams } from "react-router";
 import StudentService, { StatisticsService } from "../../../service.js";
 import AttendanceTableRow from "../components/AttendanceTableRow";
 import NoStudent from "../components/NoStudent";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
 
 function ClassAttendant() {
   const [students, setStudents] = useState([]);
@@ -230,12 +230,8 @@ function ClassAttendant() {
                     {isUpdating && (
                       <button
                         onClick={() => deleteAttendanceHandler(date)}
-                        style={{
-                          padding: "4px",
-                          backgroundColor: "#fff",
-                        }}
                       >
-                        <FontAwesomeIcon icon={faTimes} />
+                        <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
                   </th>
