@@ -9,7 +9,7 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { useRef } from "react";
 import axios from "axios";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
-import { storage } from "/../../firebase.js";
+import { storage } from "../../firebase.js"
 function TeacherAdd(){
     const [teacherIn, setTeacherIn] = useState([]);
     const firstNameRef = useRef("");
