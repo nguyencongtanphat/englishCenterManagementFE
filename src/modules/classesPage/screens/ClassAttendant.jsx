@@ -40,9 +40,8 @@ function ClassAttendant() {
       });
   }, []);
 
-  let studentAttendance;
-  if (!students) studentAttendance = [];
-  else {
+  let studentAttendance = [];
+  if (students.length > 0) {
     studentAttendance = students.map((student) => {
       let presents = 0;
       if (attendances === null) {
@@ -137,6 +136,7 @@ function ClassAttendant() {
     const attendancesCopy = [...attendances];
     attendancesCopy[index].Attendance = value;
     setAttendances(attendancesCopy);
+    console.log(attendances)
   };
 
   const completeUpdateHandler = async () => {
@@ -182,11 +182,10 @@ function ClassAttendant() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          {!isUpdating && (
+          {!isUpdating && students.length > 0 && (
             <button
               onClick={updateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-              disabled={students.length === 0}
             >
               <FontAwesomeIcon icon={faPenToSquare} />
               <span className="ps-2">Update</span>
@@ -225,7 +224,7 @@ function ClassAttendant() {
                 {existingDates.map((date) => (
                   <th key={Math.random()}>
                     <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + date.getMonth()}
+                      {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {/* Style will be customized later */}
                     {isUpdating && (
