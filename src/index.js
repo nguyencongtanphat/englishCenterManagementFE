@@ -4,6 +4,7 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./Root";
+import Introduction from "./modules/introPage/Introduction";
 import ErrorPage from "./modules/errorPage/ErrorPage";
 import HomePage from "./modules/homePage/screens/HomePage";
 import ClassesPage from "./modules/classesPage/screens/ClassesPage";
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+  path: "/introduction",
+    element: <Introduction/>,
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
