@@ -88,7 +88,13 @@ function ClassesAdd(){
                         <Col>
                             <Form.Group controlId="formTypeID">
                                 <Form.Label style={{fontWeight:"500"}}>Type</Form.Label>
-                                <Form.Control type="text" placeholder="Ex: TOE21" style={{fontSize: "14px", marginTop:"-4px"}} ref={typeRef}/>
+                                {/* <Form.Control type="text" placeholder="Ex: TOE21" style={{fontSize: "14px", marginTop:"-4px"}} ref={typeRef}/> */}
+                                <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"-4px"}} ref={typeRef}>
+                                    <option value="TC01">TOEIC Reading & Listening</option>
+                                    <option value="TC02">TOEIC Writing & Speaking</option>
+                                    <option value="TC03">IELTS</option>
+                                    <option value="TC04">TOEFL</option>
+                                </Form.Select>
                                 </Form.Group>
                         </Col>
                         <Col>
