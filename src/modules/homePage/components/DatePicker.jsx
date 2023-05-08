@@ -1,19 +1,26 @@
 import React from "react";
 import { useState } from "react";
 import styled from "./styleHome.module.css";
-function DatePicker() {
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/light.css";
+function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
-  // FILTER OPTION
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [selectValue, setSelectValue] = useState("Date");
-  
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleDateChange = (date) => {
+      setSelectedDate(date);
+  };
+
+  const includeDates = [
+    new Date(2023, 4, 10),
+    new Date(2023, 4, 15),
+    new Date(2023, 4, 20),
+  ];
   const onChange = (event) => {
     const value = event.target.value;
-
-    setSelectValue(value);
+    props.onChangeSelectedType(value);
+    //setSelectValue(value);
     if (value === "Date") {
       setVisibilityDate(true);
       setVisibilityMonth(false);
@@ -36,14 +43,17 @@ function DatePicker() {
       </select>
 
       {visibleDate && (
-        <input
-          type="Date"
-          className={`${styled["filedDateMonth"]}`}
-          onChange={(e) => {
-            // retrieveFilterType(filterTypeOption.daily);
-            // retrieveSelectedDate(e.currentTarget.value);
+        <Flatpickr
+          style={{ width: "90px" }}
+          value={selectedDate}
+          options={{
+            enable: includeDates,
+            maxDate: includeDates[includeDates.length - 1],
+            minDate: includeDates[0],
+            mode: "single",
           }}
-        ></input>
+          onChange={handleDateChange}
+        />
       )}
 
       {visibleMonth && (
@@ -52,9 +62,7 @@ function DatePicker() {
           lassName={`${styled["filedDateMonth"]}`}
           onChange={(e) => {
             let selectedTimeArr = e.currentTarget.value.split("/");
-            // setSelectedMonth(selectedTimeArr[0]);
-            // setSelectedYear(selectedTimeArr[1]);
-            // retrieveFilterType(filterTypeOption.monthly);
+            props.onChangeSelectedMonth(selectedTimeArr[0]);
           }}
         >
           <option selected value={"12/2022"}>

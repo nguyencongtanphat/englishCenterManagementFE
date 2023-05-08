@@ -5,72 +5,72 @@ import ClassCard from "./ClassCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from '@fortawesome/fontawesome-free-solid'
 
-function ClassList() {
-  const classes = [
-    {
-      id: "1",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "2",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "3",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "4",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "5",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "6",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "7",
-      className: "TOE500.1",
-      teacher: "Mrs.Hoa",
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-  ];
+function ClassList({classes}) {
+  // const classes = [
+  //   {
+  //     id: "1",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     id: "2",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     id: "3",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     id: "4",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     id: "5",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     id: "6",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  //   {
+  //     id: "7",
+  //     className: "TOE500.1",
+  //     teacher: "Mrs.Hoa",
+  //     number: 45,
+  //     target: "500+",
+  //     time: "Jan 2nd - Jul 30th",
+  //   },
+  // ];
   const colorsBg = [
     "#1C64F2",
     "#BC2FB6",
