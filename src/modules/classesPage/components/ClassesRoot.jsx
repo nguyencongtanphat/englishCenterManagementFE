@@ -10,6 +10,7 @@ function ClassesRoot() {
 
   if (params.className) name = params.className;
   else if (pathname.includes("add")) name = "New Class";
+  else if (params.classId) name = params.classId;
   else name = "Class List";
 
   return (
