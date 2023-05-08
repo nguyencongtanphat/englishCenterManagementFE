@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const url = "http://localhost:3001/api/v1/";
+
 class StudentService {
   getAll() {
     return axios.get(`http://localhost:3001/api/v1/students`);
@@ -57,6 +59,47 @@ export class ClassService {
 
   static create(data) {
     return axios.post(`http://localhost:3001/api/v1/class`, data);
+  }
+}
+
+export class HomeService {
+  static async getTopStudent() {
+    try {
+      const response = await axios.get(`${url}/student-report/top`);
+      return response.data.ResponseResult.Result;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+  static async getClass() {
+    try {
+      const response = await axios.get(`${url}/class`);
+      return response.data.ResponseResult.Result;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  static async getChartData({
+    date = null,
+    month = null,
+    isPeriod= null,
+  } = {}) {
+    try {
+      let query = "";
+      if(date)
+        query =  "?date=" + date
+      if(month)
+        query = "?month=" + month
+      if(isPeriod)
+        query = "/monthly";
+
+      const response = await axios.get(`${url}/center-report`+query);
+      const reports = response.data.ResponseResult.Result.reports;
+      return reports;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 }
 
@@ -137,18 +180,6 @@ export class TestsService {
   }
 
   static getPeriodicTests(classId) {
-    return axios.get(
-      `http://localhost:3001/api/v1/tests/periodic-tests/${classId}`
-    );
-  }
-}
-
-//Teacher:
-export class TeacherService {
-  static getAll() {
-    return axios.get(`http://localhost:3001/api/v1/teacher`);
-  }
-  static get(id) {
-    return axios.get(`http://localhost:3001/api/v1/teacher/${id}`);
+    return axios.get(`http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`)
   }
 }
