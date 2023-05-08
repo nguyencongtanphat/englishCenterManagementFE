@@ -11,6 +11,7 @@ import StudentService, { StatisticsService } from "../../../service.js";
 import AttendanceTableRow from "../components/AttendanceTableRow";
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Notification from "../components/Notification";
 
 function ClassAttendant() {
   const [students, setStudents] = useState([]);
@@ -18,6 +19,7 @@ function ClassAttendant() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingAttendant, setIsAddingAttendant] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const params = useParams();
   const { classId } = params;
@@ -136,7 +138,7 @@ function ClassAttendant() {
     const attendancesCopy = [...attendances];
     attendancesCopy[index].Attendance = value;
     setAttendances(attendancesCopy);
-    console.log(attendances)
+    console.log(attendances);
   };
 
   const completeUpdateHandler = async () => {
@@ -222,19 +224,27 @@ function ClassAttendant() {
                 <th style={{ maxWidth: "50px" }}>NAME</th>
                 <th>PRESENT</th>
                 {existingDates.map((date) => (
-                  <th key={Math.random()}>
-                    <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + (date.getMonth() + 1)}
-                    </span>
-                    {/* Style will be customized later */}
-                    {isUpdating && (
-                      <button
-                        onClick={() => deleteAttendanceHandler(date)}
-                      >
-                        <FontAwesomeIcon icon={faTimesCircle} />
-                      </button>
+                  <>
+                    <th key={Math.random()}>
+                      <span style={{ marginRight: "4px" }}>
+                        {date.getDate() + "/" + (date.getMonth() + 1)}
+                      </span>
+                      {/* Style will be customized later */}
+                      {isUpdating && (
+                        <button onClick={() => setIsDeleting(true)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </button>
+                      )}
+                    </th>
+                    {isDeleting && (
+                      <Notification
+                        message="Are you sure to delete this attendance? This action can not be
+              undone."
+                        onCancelDelete={() => { setIsDeleting(false) }}
+                        onAcceptDelete={() => deleteAttendanceHandler(date)}
+                      />
                     )}
-                  </th>
+                  </>
                 ))}
 
                 {isUpdating && (

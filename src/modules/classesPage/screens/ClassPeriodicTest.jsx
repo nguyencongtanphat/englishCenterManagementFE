@@ -14,6 +14,7 @@ import StudentService, {
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Notification from './../components/Notification'
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -22,6 +23,7 @@ function ClassPeriodicTest() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const params = useParams();
   const { classId } = params;
@@ -150,7 +152,7 @@ function ClassPeriodicTest() {
   };
 
   const completeUpdateHandler = async () => {
-    console.log(periodicTests);
+    // console.log(periodicTests);
     setIsEditable(false);
     setIsUpdating(false);
     await StatisticsService.postPeriodicTest(classId, periodicTests);
@@ -232,18 +234,28 @@ function ClassPeriodicTest() {
                 <th>NAME</th>
                 <th>AVERAGE</th>
                 {testDates.map((date) => (
+                  <>
                   <th key={Math.random()}>
                     <span style={{ marginRight: "4px" }}>
                       {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {isUpdating && (
                       <button
-                        onClick={() => deletePeriodicTestHandler(date)}
+                        onClick={() => setIsDeleting(true)}
                       >
                         <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
                   </th>
+                  {isDeleting && (
+                      <Notification
+                        message="Are you sure to delete this periodic tests results? This action can not be
+              undone."
+                        onCancelDelete={() => { setIsDeleting(false) }}
+                        onAcceptDelete={() => deletePeriodicTestHandler(date)}
+                      />
+                    )}
+                    </>
                 ))}
                 {isUpdating && (
                   <th>
