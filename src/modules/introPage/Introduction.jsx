@@ -15,8 +15,8 @@ import send from '../../assets/images/global/sendIcon.png'
 const Introduction = () => {
   return (
     <div style={{display:"flex", flexDirection:"column"}}>
-      <div style={{ backgroundImage: `url(${background})`, height: "720px", width: "full", order: 0 }}>
-        <div style={{position: "absolute", width: "1280px", height: "80px", left: "0px", top: "0px"}}>
+      <div style={{ backgroundImage: `url(${background})`, height: "720px", width: "100%", order: 0, backgroundSize: "100%"}}>
+        <div style={{position: "absolute", width: "100%", height: "80px", left: "0px", top: "0px"}}>
           <img src={logo} style={{position: "absolute", width: "100px", left: "100px", top: "10px"}}></img>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center", padding: "0px", gap: "24px",
             position: "absolute", width: "613px", height: "38px", right: "119px", top: "calc(50% - 38px/2 + 0.5px)"
