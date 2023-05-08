@@ -13,8 +13,8 @@ import { HomeService } from "../../../service";
 function HomePage() {
   const [topStudents, setTopStudent] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [selectValue, setSelectValue] = useState("Date");
-  const [date, setDate] = useState("2023-04-15");
+  const [selectValue, setSelectValue] = useState("Month");
+  const [date, setDate] = useState(null);
   const [month, setMonth] = useState(null);
   const [isPeriod, setIsPeriod] = useState(false)
   const [lineChartData, setLineChartData] = useState([]);
@@ -26,12 +26,11 @@ function HomePage() {
   const onChangeSelectedDate = (newValue)=>{
     setMonth(null)
     setDate(newValue);
-    console.log("date:", date)
+    
   }
   const onChangeSelectedMonth = (newValue)=>{
     setDate(null)
     setMonth(newValue);
-    console.log("month:", month)
   }
 
   useEffect(()=>{
@@ -50,13 +49,11 @@ function HomePage() {
           HomeService.getChartData({ month: month, date: date, isPeriod: isPeriod }),
         ]);
 
-        console.log("student:", students);
-        console.log("centerReport:", centerReport);
+       
         //extra data for line chart
         const lineChartData = centerReport.map((report) => {
           const dateReport = new Date(report.Date);
-          console.log("dateReport:", dateReport);
-          console.log("date:", new Date(date));
+         
           if (date != null && dateReport === new Date(date)) {
             
             const dataCircleChart = [
@@ -76,8 +73,7 @@ function HomePage() {
           };
         });
 
-        console.log("linechart", lineChartData);
-        console.log("circlechart", circleChartData);
+       
         setLineChartData(lineChartData);
         setTopStudent(students);
        

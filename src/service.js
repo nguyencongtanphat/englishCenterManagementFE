@@ -16,7 +16,9 @@ class StudentService {
   }
 
   getStudentsByClass(classId) {
-    return axios.get(`http://localhost:3001/api/v1/students?classId=${classId}`);
+    return axios.get(
+      `http://localhost:3001/api/v1/students?classId=${classId}`
+    );
   }
 
   getStudentReportOverview() {
@@ -35,8 +37,8 @@ class StudentService {
     if (date) queryStr += "&date=" + date;
     return axios.get(
       `http://localhost:3001/api/v1/student-report/?studentid=` +
-      studentId +
-      queryStr
+        studentId +
+        queryStr
     );
   }
   getStudentReportTotal(studentId) {
@@ -63,6 +65,15 @@ export class ClassService {
 }
 
 export class HomeService {
+  static async getDateCenter() {
+    try {
+      const response = await axios.get(`${url}/center-report/date`);
+      return response.data.ResponseResult.Result;
+    } catch (e) {
+       throw new Error(e.message);
+    }
+  }
+
   static async getTopStudent() {
     try {
       const response = await axios.get(`${url}/student-report/top`);
@@ -83,18 +94,15 @@ export class HomeService {
   static async getChartData({
     date = null,
     month = null,
-    isPeriod= null,
+    isPeriod = null,
   } = {}) {
     try {
       let query = "";
-      if(date)
-        query =  "?date=" + date
-      if(month)
-        query = "?month=" + month
-      if(isPeriod)
-        query = "/monthly";
+      if (date) query = "?date=" + date;
+      if (month) query = "?month=" + month;
+      if (isPeriod) query = "/monthly";
 
-      const response = await axios.get(`${url}/center-report`+query);
+      const response = await axios.get(`${url}/center-report` + query);
       const reports = response.data.ResponseResult.Result.reports;
       return reports;
     } catch (e) {
@@ -118,18 +126,24 @@ export class StatisticsService {
   }
 
   static getPeriodicTests(classId) {
-    return axios.get(`http://localhost:3001/api/v1/statistics/tests/${classId}`);
+    return axios.get(
+      `http://localhost:3001/api/v1/statistics/tests/${classId}`
+    );
   }
 
   static postAttendances(classId, attendances) {
-    return axios.post(`http://localhost:3001/api/v1/statistics/attendances/${classId}`, {
-      attendances
-    })
+    return axios.post(
+      `http://localhost:3001/api/v1/statistics/attendances/${classId}`,
+      {
+        attendances,
+      }
+    );
   }
 
   static postPeriodicTest(classId, tests) {
     return axios.post(
-      `http://localhost:3001/api/v1/statistics/tests/${classId}`, {
+      `http://localhost:3001/api/v1/statistics/tests/${classId}`,
+      {
         tests,
       }
     );
@@ -137,7 +151,8 @@ export class StatisticsService {
 
   static postHomeworkTest(classId, homeworks) {
     return axios.post(
-      `http://localhost:3001/api/v1/statistics/homework/${classId}`, {
+      `http://localhost:3001/api/v1/statistics/homework/${classId}`,
+      {
         homeworks,
       }
     );
@@ -145,30 +160,33 @@ export class StatisticsService {
 
   static deleteAttendance(classId, date) {
     return axios.delete(
-      `http://localhost:3001/api/v1/statistics/attendances/${classId}`, {
+      `http://localhost:3001/api/v1/statistics/attendances/${classId}`,
+      {
         data: {
-          date
-        }
+          date,
+        },
       }
     );
   }
 
   static deletePeriodicTest(classId, date) {
     return axios.delete(
-      `http://localhost:3001/api/v1/statistics/tests/${classId}`, {
+      `http://localhost:3001/api/v1/statistics/tests/${classId}`,
+      {
         data: {
-          date
-        }
+          date,
+        },
       }
     );
   }
 
   static deleteHomework(classId, date) {
     return axios.delete(
-      `http://localhost:3001/api/v1/statistics/homework/${classId}`, {
+      `http://localhost:3001/api/v1/statistics/homework/${classId}`,
+      {
         data: {
-          date
-        }
+          date,
+        },
       }
     );
   }
@@ -180,6 +198,17 @@ export class TestsService {
   }
 
   static getPeriodicTests(classId) {
-    return axios.get(`http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`)
+    return axios.get(
+      `http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`
+    );
+  }
+}
+
+export class TeacherService {
+  static getAll() {
+    return axios.get(`http://localhost:3001/api/v1/teacher`);
+  }
+  static get(id) {
+    return axios.get(`http://localhost:3001/api/v1/teacher/${id}`);
   }
 }
