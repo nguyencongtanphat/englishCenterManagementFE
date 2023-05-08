@@ -85,13 +85,13 @@ function ClassList() {
   return (
     <AppCard className="">
       <Container>
-        <h3>Teaching Classes</h3>
+        <p style={{fontSize: "20px", fontWeight: 600}}>Teaching Classes</p>
         <Row>
           {classes.map((classInfo) => {
             if (index > colorsBg.length) index = 0;
             const bgColor = colorsBg[index++];
             return (
-              <Col md={3}>
+              <Col md={4}>
                 <ClassCard classInfo={classInfo} bgColor={bgColor} />
               </Col>
             );
