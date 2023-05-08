@@ -46,6 +46,12 @@ class StudentService {
       `http://localhost:3001/api/v1/student-report/monthly/` + studentId
     );
   }
+
+  getStudiedDate(studentId){
+    return axios.get(
+      `http://localhost:3001/api/v1/student-report/date/` + studentId
+    );
+  }
 }
 
 export default new StudentService();
