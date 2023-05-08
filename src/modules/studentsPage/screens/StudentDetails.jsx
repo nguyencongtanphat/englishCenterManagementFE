@@ -9,6 +9,7 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import StudentService from '../../../service.js';
+import Flatpickr from "react-flatpickr";
 
 const filterTypeOption = {
     daily: "Daily",
@@ -17,7 +18,9 @@ const filterTypeOption = {
 }
 
 function ClassesAdd() {
-    
+    // STUDIED DATE
+    const [datesList, setDatesList] = useState([])
+    const [monthsList, setMonthsList] = useState([])
     const [stdInfo, setStdInfo] = useState({});
     const [filterType, setFilterType] = useState(filterTypeOption.monthly);
     const [reportInfo, setReportInfo] = useState({});
@@ -43,6 +46,9 @@ function ClassesAdd() {
         let year = today.getFullYear()
         retrieveStudentReport({studentId, month, year})
 
+        // Get studied Date
+        getStudiedDate(studentId)
+
         setLoading(false)
     }, []);
     
@@ -51,6 +57,16 @@ function ClassesAdd() {
         .then(response => {
             console.log('Student Details: ',response.data.ResponseResult.Result);
             setStdInfo(response.data.ResponseResult.Result);
+        })
+        .catch(e => {
+            console.log('Error: ',e);
+        });
+    }
+    const getStudiedDate = (id) => {
+        StudentService.getStudiedDate(id)
+        .then(response => {
+            setDatesList(response.data.ResponseResult.Result.Date)
+            setMonthsList(response.data.ResponseResult.Result.Month)
         })
         .catch(e => {
             console.log('Error: ',e);
@@ -145,6 +161,7 @@ function ClassesAdd() {
             }
     };
 
+
     if(!isLoading)
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
@@ -163,33 +180,6 @@ function ClassesAdd() {
             </Stack>
 
             {/* Filter Type */}
-
-            {/* <input type="date" onChange={(e) => {
-                    retrieveFilterType(filterTypeOption.daily)
-                    retrieveSelectedDate(e.currentTarget.value)
-                }} ></input>
-            <select name="monthyear" onChange={(e) => {
-                let selectedTimeArr = e.currentTarget.value.split('/')
-                setSelectedMonth(selectedTimeArr[0])
-                setSelectedYear(selectedTimeArr[1])
-                retrieveFilterType(filterTypeOption.monthly)
-                }} 
-            >
-                <option selected>Monthly</option>
-                <option value={"12/2022"}>12/2022</option>
-                <option value={"1/2023"}>01/2023</option>
-                <option value={"2/2023"}>02/2023</option>
-                <option value={"3/2023"}>03/2023</option>
-                <option value={"4/2023"}>04/2023</option>
-            </select>
-            <Button onClick={(e) => {
-                retrieveFilterType(filterTypeOption.total)
-                }} 
-            >Total</Button> */}
-            
-            {/* Filter Type */}
-
-            {/* Filter Type */}
             <div className={`${styled['filterTime']}`}> 
                 <select onChange={onChange} className={`${styled['dropDown']}`}>
                     <option defaultValue value="Date">Date</option>
@@ -197,11 +187,19 @@ function ClassesAdd() {
                     <option value="Period">Period</option>
                 </select>
 
-                {visibleDate &&
-                <input type="Date" lassName={`${styled['filedDateMonth']}`} onChange={(e) => {
-                        retrieveFilterType(filterTypeOption.daily)
-                        retrieveSelectedDate(e.currentTarget.value)
-                }} ></input>}
+                {visibleDate && (
+                    <Flatpickr
+                    style={{ width: "90px" }}
+                    value={selectedDate}
+                    options={{
+                        enable: datesList,
+                        maxDate: datesList[datesList.length - 1],
+                        minDate: datesList[0],
+                        mode: "single",
+                    }}
+                    onChange={retrieveSelectedDate}
+                    />
+                )}
 
                 {visibleMonth &&
                 <select name="Month" lassName={`${styled['filedDateMonth']}`} onChange={(e) => {
@@ -211,11 +209,7 @@ function ClassesAdd() {
                     retrieveFilterType(filterTypeOption.monthly)
                     }} 
                 >
-                    <option selected value={"12/2022"}>12/2022</option>
-                    <option value={"1/2023"}>01/2023</option>
-                    <option value={"2/2023"}>02/2023</option>
-                    <option value={"3/2023"}>03/2023</option>
-                    <option value={"4/2023"}>04/2023</option>
+                    {monthsList.map((month) => <option value={month}>{month}</option>)}
                 </select>
                 }
             </div>
