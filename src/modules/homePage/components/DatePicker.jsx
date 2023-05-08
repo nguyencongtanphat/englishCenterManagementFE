@@ -3,20 +3,33 @@ import { useState } from "react";
 import styled from "./styleHome.module.css";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/light.css";
+import { useEffect } from "react";
+import { HomeService } from "../../../service";
+
 function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [datesList, setDatesList] = useState([])
+  const [monthsList, setMonthsList] = useState([]);
+
+  useEffect(() => {
+    const getDate = async () => {
+      const {dates, months} = await HomeService.getDateCenter();
+
+      setDatesList(dates);
+      setMonthsList(months);
+      
+    };
+    getDate()
+  }, []);
 
   const handleDateChange = (date) => {
-      setSelectedDate(date);
+    console.log("Date changed,", date)
+    setSelectedDate(date);
   };
 
-  const includeDates = [
-    new Date(2023, 4, 10),
-    new Date(2023, 4, 15),
-    new Date(2023, 4, 20),
-  ];
+ 
   const onChange = (event) => {
     const value = event.target.value;
     props.onChangeSelectedType(value);
@@ -47,9 +60,9 @@ function DatePicker(props) {
           style={{ width: "90px" }}
           value={selectedDate}
           options={{
-            enable: includeDates,
-            maxDate: includeDates[includeDates.length - 1],
-            minDate: includeDates[0],
+            enable: datesList,
+            maxDate: datesList[datesList.length - 1],
+            minDate: datesList[0],
             mode: "single",
           }}
           onChange={handleDateChange}
@@ -65,13 +78,9 @@ function DatePicker(props) {
             props.onChangeSelectedMonth(selectedTimeArr[0]);
           }}
         >
-          <option selected value={"12/2022"}>
-            12/2022
-          </option>
-          <option value={"1/2023"}>01/2023</option>
-          <option value={"2/2023"}>02/2023</option>
-          <option value={"3/2023"}>03/2023</option>
-          <option value={"4/2023"}>04/2023</option>
+          {monthsList.map((month) => (
+            <option value={month}>{month}</option>
+          ))}
         </select>
       )}
     </div>
