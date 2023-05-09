@@ -9,7 +9,6 @@ import { HomeService } from "../../../service";
 function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
   const [datesList, setDatesList] = useState([])
   const [monthsList, setMonthsList] = useState([]);
 
@@ -26,7 +25,7 @@ function DatePicker(props) {
 
   const handleDateChange = (date) => {
     console.log("Date changed,", date)
-    setSelectedDate(date);
+    props.onChangeSelectedDate(date);
   };
 
  
@@ -58,7 +57,7 @@ function DatePicker(props) {
       {visibleDate && (
         <Flatpickr
           style={{ width: "90px" }}
-          value={selectedDate}
+          defaultValue={datesList[0]}
           options={{
             enable: datesList,
             maxDate: datesList[datesList.length - 1],

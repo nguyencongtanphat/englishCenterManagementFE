@@ -18,14 +18,17 @@ function HomePage() {
   const [month, setMonth] = useState(null);
   const [isPeriod, setIsPeriod] = useState(false)
   const [lineChartData, setLineChartData] = useState([]);
-  const [circleChartData, setCircleChartData] = useState([]);
+  const [pieChartData, setPieChartData] = useState([]);
   
   const onChangeSelectedType = (newValue)=>{
+    console.log("here changed selected", newValue);
     setSelectValue(newValue);
   }
   const onChangeSelectedDate = (newValue)=>{
+    console.log("date selected:", newValue[0]);
+    const dateString = newValue[0].toISOString().slice(0, 10); 
     setMonth(null)
-    setDate(newValue);
+    setDate(dateString);
     
   }
   const onChangeSelectedMonth = (newValue)=>{
@@ -44,26 +47,16 @@ function HomePage() {
   useEffect(() => {
     const getHomeData = async () => {
       try {
-        const [students, centerReport] = await Promise.all([
+        console.log("run 11")
+        const [students, centerReport, pieChartReport] = await Promise.all([
           HomeService.getTopStudent(),
-          HomeService.getChartData({ month: month, date: date, isPeriod: isPeriod }),
+          HomeService.getLineChartData({ month: month, date: date, isPeriod: isPeriod }),
+          HomeService.getPieChartData({month: month, date: date, isPeriod: isPeriod})
         ]);
-
-        console.log("top student:", students)
-       
+        setPieChartData(pieChartReport);
         //extra data for line chart
         const lineChartData = centerReport.map((report) => {
           const dateReport = new Date(report.Date);
-         
-          if (date != null && dateReport === new Date(date)) {
-            
-            const dataCircleChart = [
-              { Good: report["GoodLevel"] },
-              { Medium: report["MediumLevel"] },
-              { Bad: report["BadLevel"] },
-            ];
-            setCircleChartData(dataCircleChart);
-          }
           return {
             key: `${dateReport.getDate().toString().padStart(2, "0")}/${(
               dateReport.getMonth() + 1
@@ -73,8 +66,6 @@ function HomePage() {
             value: report.CenterScore,
           };
         });
-
-       
         setLineChartData(lineChartData);
         setTopStudent(students);
        
@@ -113,12 +104,14 @@ function HomePage() {
             onChangeSelectedDate={onChangeSelectedDate}
             onChangeSelectedMonth={onChangeSelectedMonth}
           />
-        
         </Col>
       </Row>
       <AppLineChart data={lineChartData} />
 
-      <StudentCenterInfo topStudents={topStudents} />
+      <StudentCenterInfo
+        pieChartData={pieChartData}
+        topStudents={topStudents}
+      />
       <ClassList classes={classes} />
     </Container>
   );
