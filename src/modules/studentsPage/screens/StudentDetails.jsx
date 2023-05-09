@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Stack from 'react-bootstrap/Stack';
-import { Link } from 'react-router-dom';
 import styled from "../components/styleStd.module.css"
 import AppLineChart from "../components/LineChart"
 import { Badge, Button, Dropdown, Image } from "react-bootstrap";
@@ -10,6 +9,11 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import StudentService from '../../../service.js';
 import Flatpickr from "react-flatpickr";
+import identification from "../../../assets/images/global/identification.svg"
+import { Link, useNavigate } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import abc from '../../../assets/images/global/logocard.png';
+import Barcode from 'react-barcode';
 
 const filterTypeOption = {
     daily: "Daily",
@@ -33,6 +37,10 @@ function ClassesAdd() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth()) + 1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     let { studentId } = useParams();
     console.log('StudentID: ',studentId);
 
@@ -72,6 +80,8 @@ function ClassesAdd() {
             console.log('Error: ',e);
         });
     }
+
+    let navigate = useNavigate();
 
     // STUDENT REPORT INFO
     useEffect(() => {
@@ -178,7 +188,12 @@ function ClassesAdd() {
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
                 <Link key="Home" to="" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Student Details</Link>
             </Stack>
-
+            <button onClick={handleShow}>
+                <div className={`${styled['StdBtn']}`}>
+                    <img src={identification} alt="card"/>
+                    <div className={`${styled['BtnTe']}`} style={{color:"white"}}>Student Card</div>
+                </div>
+            </button>
             {/* Filter Type */}
             <div className={`${styled['filterTime']}`}> 
                 <select onChange={onChange} className={`${styled['dropDown']}`}>
@@ -396,6 +411,48 @@ function ClassesAdd() {
                     <AppLineChart style={{fontSize: "14px"}} data={chartData} mean={chartMean}/>
                 </div>
             </div>
+
+            {/* Student Card */}
+            <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered style={{}}>
+                <div className={`${styled['The']}`}>
+                    <div className={`${styled['Header']}`}>
+                        <img src={abc} style={{width:"30px"}}></img>
+                        <div className={`${styled['NameScl']}`}>
+                            <div className={`${styled['NaSc']}`}>EARTH ENGLISH CENTER</div>
+                            <div className={`${styled['NaSc']}`}>TRUNG TÂM ANH NGỮ EARTH</div>
+                        </div>
+                    </div>
+
+                    <div className={`${styled['Inf']}`}>
+                        <div className={`${styled['Inff']}`}>
+                            <div className={`${styled['ww']}`}>
+                                STUDENT CARD
+                            </div>
+                        </div>
+                        <div className={`${styled['wow']}`} >
+                            <img className={`${styled['iimg']}`} src={stdInfo.ImageURL}></img>
+                            <div className={`${styled['iiimg']}`}>
+                                <div className={`${styled['dataa']}`}>
+                                    {stdInfo.Name}
+                                </div>
+                                <div className={`${styled['dataaa']}`}>
+                                    ID: {stdInfo.StudentID}
+                                </div>
+                                <div className={`${styled['dataaa']}`}>
+                                    DOB: {stdInfo.DateOfBirthday}
+                                </div>
+                                <div className={`${styled['dataaa']}`}>
+                                    Class: {stdInfo.NameClass}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={`${styled['barcode']}`}>
+                            <Barcode value={stdInfo.StudentID} margin={0} lineColor="#111827" width={3} 
+                            displayValue={0}></Barcode>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }

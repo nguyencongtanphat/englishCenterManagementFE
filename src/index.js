@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { PDFViewer } from '@react-pdf/renderer';
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -116,7 +117,7 @@ const router = createBrowserRouter([
   {
   path: "/introduction",
     element: <Introduction/>,
-  }
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
