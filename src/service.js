@@ -76,7 +76,9 @@ export class HomeService {
 
   static async getTopStudent() {
     try {
-      const response = await axios.get(`${url}/student-report/top`);
+      const response = await axios.get(
+        `${url}/student-report/total/?istop=true`
+      );
       return response.data.ResponseResult.Result;
     } catch (e) {
       throw new Error(e.message);

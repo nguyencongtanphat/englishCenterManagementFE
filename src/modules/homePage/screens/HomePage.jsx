@@ -49,6 +49,7 @@ function HomePage() {
           HomeService.getChartData({ month: month, date: date, isPeriod: isPeriod }),
         ]);
 
+        console.log("top student:", students)
        
         //extra data for line chart
         const lineChartData = centerReport.map((report) => {
