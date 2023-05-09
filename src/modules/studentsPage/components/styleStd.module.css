@@ -590,3 +590,277 @@
     border: 1px solid #111827;
     border-radius: 8px;
 }
+
+.StdBtn{
+    box-sizing: border-box;
+
+/* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    gap: 4px;
+
+    position: absolute;
+    width: 129px;
+    height: 36px;
+    left: 940px;
+    top: 106px;
+
+    background: #1C64F2;
+    border: 1px solid #1C64F2;
+    border-radius: 8px;
+}
+
+.btnTe{
+    width: 89px;
+    height: 20px;
+
+    /* text-sm/leading-5/font-medium */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+
+    color: #FFFFFF;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 2;
+    flex-grow: 0;
+}
+
+.The{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    gap: 16px;
+    height: 300px;
+}
+
+.Header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    width: 439px;
+    height: 30px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.NameScl{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 4px;
+
+    width: 194.5px;
+    height: 28px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.NaSc{
+    width: 194.5px;
+    height: 12px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 100%;
+    /* identical to box height, or 12px */
+
+
+    /* Primary */
+
+    color: #1C64F2;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.Inf{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 12px;
+
+    width: 439px;
+    height: 140px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.Inff{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    width: 439px;
+    height: 20px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.ww{
+    width: 439px;
+    height: 20px;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 100%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    letter-spacing: 0.1em;
+    flex-direction: column;
+    color: #1C64F2;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
+.wow{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    gap: 32px;
+
+    width: 439px;
+    height: 108px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.iimg{
+    width: 81px;
+    height: 108px;
+    border-radius: 5px;
+
+    /* Inside auto layout */
+    object-fit: cover;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.iiimg{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 4px;
+
+    width: 326px;
+    height: 108px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 1;
+}
+
+.dataa{
+    width: 326px;
+    height: 24px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+
+
+    /* cool-gray/900 */
+
+    color: #111827;
+    text-transform: uppercase;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
+.dataaa{
+    width: 326px;
+    height: 24px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    /* identical to box height, or 24px */
+
+
+    color: #6B7280;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+}
+
+.barcode{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 32px;
+
+    height: 46px;
+
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 2;
+    align-self: stretch;
+    flex-grow: 1;
+}
