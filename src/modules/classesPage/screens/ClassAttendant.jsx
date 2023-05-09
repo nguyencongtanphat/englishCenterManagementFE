@@ -11,7 +11,9 @@ import StudentService, { StatisticsService } from "../../../service.js";
 import AttendanceTableRow from "../components/AttendanceTableRow";
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import { faQrcode } from "@fortawesome/fontawesome-free-solid";
 import Notification from "../components/Notification";
+import ScanningPopup from "../components/ScanningPopup";
 
 function ClassAttendant() {
   const [students, setStudents] = useState([]);
@@ -20,6 +22,8 @@ function ClassAttendant() {
   const [isAddingAttendant, setIsAddingAttendant] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [isScanningDisable, setIsScanningDisable] = useState(false);
 
   const params = useParams();
   const { classId } = params;
@@ -88,6 +92,17 @@ function ClassAttendant() {
       }
     });
   }
+  useEffect(() => {
+    if (
+      existingDates.findIndex(
+        (date) => date.toDateString() === new Date().toDateString()
+      ) >= 0
+    ) {
+      setIsScanningDisable(true);
+    } else {
+      setIsScanningDisable(false)
+    }
+  }, [existingDates]);
 
   const updateHandler = () => {
     setIsUpdating(true);
@@ -159,6 +174,18 @@ function ClassAttendant() {
     await StatisticsService.deleteAttendance(classId, date);
   };
 
+  const saveScanningHandler = async (studentIds) => {
+    console.log(studentIds);
+    StatisticsService.postAttendancesByScanning(classId, studentIds)
+      .then((res) => {
+        console.log(res.data.ResponseResult.Result);
+        // setAttendances(res.data.ResponseResult.Result);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+
   return (
     <Container
       className="bg-white p-4 rounded-4"
@@ -184,6 +211,18 @@ function ClassAttendant() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
+          {students.length > 0 && (
+            <button
+              onClick={() => {
+                setIsScanning(true);
+              }}
+              className="bg-black d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0 me-2"
+              disabled={isScanningDisable}
+            >
+              <FontAwesomeIcon icon={faQrcode} />
+              <span className="ps-2">Scan Code</span>
+            </button>
+          )}
           {!isUpdating && students.length > 0 && (
             <button
               onClick={updateHandler}
@@ -240,7 +279,9 @@ function ClassAttendant() {
                       <Notification
                         message="Are you sure to delete this attendance? This action can not be
               undone."
-                        onCancelDelete={() => { setIsDeleting(false) }}
+                        onCancelDelete={() => {
+                          setIsDeleting(false);
+                        }}
                         onAcceptDelete={() => deleteAttendanceHandler(date)}
                       />
                     )}
@@ -278,6 +319,15 @@ function ClassAttendant() {
           existingDates={existingDates}
           onCloseModal={closeAddHandler}
           onSave={saveAttendanceHandler}
+        />
+      )}
+
+      {isScanning && (
+        <ScanningPopup
+          onCancelScanning={() => {
+            setIsScanning(false);
+          }}
+          onSaveScanning={saveScanningHandler}
         />
       )}
     </Container>
