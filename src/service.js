@@ -146,6 +146,15 @@ export class StatisticsService {
     );
   }
 
+  static postAttendancesByScanning(classId, studentIds) {
+    return axios.post(
+      `http://localhost:3001/api/v1/statistics/attendances/${classId}/scan`,
+      {
+        studentIds,
+      }
+    );
+  }
+
   static postPeriodicTest(classId, tests) {
     return axios.post(
       `http://localhost:3001/api/v1/statistics/tests/${classId}`,
