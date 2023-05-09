@@ -30,6 +30,7 @@
     "react-router-dom": "^6.9.0",
     "react-scripts": "^5.0.1",
     "react-search-autocomplete": "^8.3.2",
+    "react-to-print": "^2.14.12",
     "recharts": "^2.5.0",
     "tailwind": "^4.0.0",
     "use-react-router-breadcrumbs": "^4.0.1",

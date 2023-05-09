@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Stack from 'react-bootstrap/Stack';
 import styled from "../components/styleStd.module.css"
 import AppLineChart from "../components/LineChart"
@@ -10,10 +10,12 @@ import { useEffect } from "react";
 import StudentService from '../../../service.js';
 import Flatpickr from "react-flatpickr";
 import identification from "../../../assets/images/global/identification.svg"
+import printIcon from "../../../assets/images/global/PrintBtn.svg"
 import { Link, useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import abc from '../../../assets/images/global/logocard.png';
 import Barcode from 'react-barcode';
+import { useReactToPrint } from 'react-to-print';
 
 const filterTypeOption = {
     daily: "Daily",
@@ -22,6 +24,11 @@ const filterTypeOption = {
 }
 
 function ClassesAdd() {
+    //PRINT PDF
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
     // STUDIED DATE
     const [datesList, setDatesList] = useState([])
     const [monthsList, setMonthsList] = useState([])
@@ -413,8 +420,13 @@ function ClassesAdd() {
             </div>
 
             {/* Student Card */}
-            <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered style={{}}>
-                <div className={`${styled['The']}`}>
+            <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered >
+                <div style={{display:"flex", flexDirection:"row", gap: "12px", alignItems:"center",
+            justifyContent:"center"}}>
+                    <label style={{fontWeight:"bold", fontSize:"14px", textAlign:"center", padding:"12px", paddingRight:"0px"}}>Student Card</label>
+                    <button onClick={handlePrint}><img src={printIcon} width={"28px"}></img></button>
+                </div>
+                <div ref={componentRef} className={`${styled['Chan']}`}>
                     <div className={`${styled['Header']}`}>
                         <img src={abc} style={{width:"30px"}}></img>
                         <div className={`${styled['NameScl']}`}>
