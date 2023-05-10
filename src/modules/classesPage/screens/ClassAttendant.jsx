@@ -100,7 +100,7 @@ function ClassAttendant() {
     ) {
       setIsScanningDisable(true);
     } else {
-      setIsScanningDisable(false)
+      setIsScanningDisable(false);
     }
   }, [existingDates]);
 
@@ -176,14 +176,50 @@ function ClassAttendant() {
 
   const saveScanningHandler = async (studentIds) => {
     console.log(studentIds);
-    StatisticsService.postAttendancesByScanning(classId, studentIds)
-      .then((res) => {
-        console.log(res.data.ResponseResult.Result);
-        // setAttendances(res.data.ResponseResult.Result);
-      })
-      .catch((err) => {
-        throw err;
+    let newAttandances = [];
+    const date = new Date();
+
+    students.forEach((student) => {
+      let newAttandance;
+      if (studentIds.includes(student.StudentID)) {
+        newAttandance = {
+          Date: date,
+          Attendance: true,
+          StudentID: student,
+        };
+      } else {
+        newAttandance = {
+          Date: date,
+          Attendance: false,
+          StudentID: student,
+        };
+      }
+
+      const index = attendances.findIndex((attendance) => {
+        return (
+          new Date(attendance.Date).toDateString() ===
+            new Date(newAttandance.Date).toDateString() &&
+          attendance.StudentID.StudentID === newAttandance.StudentID.StudentID
+        );
       });
+
+      console.log(index);
+
+      if (index > -1) {
+        const _attendances = attendances;
+        if (_attendances[index].Attendance === false)
+          _attendances[index].Attendance = newAttandance.Attendance;
+        setAttendances(_attendances);
+      } else {
+        newAttandances.push(newAttandance);
+      }
+    });
+    if (newAttandances.length > 0) {
+      setAttendances((prevAttendances) => {
+        return [...prevAttendances, ...newAttandances];
+      });
+    }
+    setIsScanning(false);
   };
 
   return (
@@ -211,18 +247,6 @@ function ClassAttendant() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          {students.length > 0 && (
-            <button
-              onClick={() => {
-                setIsScanning(true);
-              }}
-              className="bg-black d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0 me-2"
-              disabled={isScanningDisable}
-            >
-              <FontAwesomeIcon icon={faQrcode} />
-              <span className="ps-2">Scan Code</span>
-            </button>
-          )}
           {!isUpdating && students.length > 0 && (
             <button
               onClick={updateHandler}
@@ -233,13 +257,25 @@ function ClassAttendant() {
             </button>
           )}
           {isUpdating && (
-            <button
-              onClick={completeUpdateHandler}
-              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-            >
-              <FontAwesomeIcon icon={faDownload} />
-              <span className="ps-2">Save</span>
-            </button>
+            <>
+              <button
+                onClick={() => {
+                  setIsScanning(true);
+                }}
+                className="bg-black d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0 me-2"
+                // disabled={isScanningDisable}
+              >
+                <FontAwesomeIcon icon={faQrcode} />
+                <span className="ps-2">Scan Code</span>
+              </button>
+              <button
+                onClick={completeUpdateHandler}
+                className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+              >
+                <FontAwesomeIcon icon={faDownload} />
+                <span className="ps-2">Save</span>
+              </button>
+            </>
           )}
         </Col>
       </Row>

@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
 import classes from "./UpdatePeriodic.module.css";
 import ReactDOM from "react-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Backdrop = (props) => {
   return <div onClick={props.onClick} className={classes.backdrop}></div>;
@@ -18,8 +18,29 @@ const ModalOverlay = (props) => {
 const DUMMY_STUDENT_IDS = ["STD0334", "STD1097", "STD0280"];
 
 const ScanningPopup = ({ onCancelScanning, onSaveScanning }) => {
-  const [studentIds, setStudentIds] = useState(DUMMY_STUDENT_IDS);
-  const studentIdsString = studentIds.join(" ");
+  const [studentIdsString, setStudentIdsString] = useState("");
+  const [studentIds, setStudentIds] = useState([]);
+
+  useEffect(() => {
+    setStudentIdsString(studentIds.join(" "));
+  }, [studentIds]);
+
+  const inputChangeHandler = (event) => {
+    const newId = event.target.value.slice(
+      studentIdsString.length,
+      event.target.value.length
+    );
+
+    if (!studentIds.includes(newId)) {
+      setStudentIds(prev => [...prev, newId])
+    }
+  };
+
+  const saveScanningHandler = (event) => {
+    event.preventDefault()
+    onSaveScanning(studentIds);
+  }
+
   return (
     <>
       {ReactDOM.createPortal(
@@ -43,7 +64,11 @@ const ScanningPopup = ({ onCancelScanning, onSaveScanning }) => {
                 <span style={{ color: "#1b64f2" }}>Scan codes</span> in student
                 cards:
               </Form.Label>
-              <Form.Control type="text" value={studentIdsString} readOnly />
+              <Form.Control
+                type="text"
+                value={studentIdsString}
+                onChange={inputChangeHandler}
+              />
             </Form.Group>
             <div className="d-flex gap-2 justify-content-end">
               <button
@@ -54,9 +79,7 @@ const ScanningPopup = ({ onCancelScanning, onSaveScanning }) => {
               </button>
               <button
                 className="w-25 py-1 border-0 rounded-2 bg-black text-white"
-                onClick={() => {
-                  onSaveScanning(studentIds);
-                }}
+                onClick={saveScanningHandler}
               >
                 Save
               </button>
