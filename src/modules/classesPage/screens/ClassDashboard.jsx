@@ -6,12 +6,21 @@ import StudentService from "../../../service.js"
 
 function ClassDashboard() {
     const [students, setStudents] = useState([]);
+    const [topStudents, setTopStudents] = useState([]);
     useEffect(() => {
         // StudentService.getAll()
         StudentService.getStudentReportOverview()
         .then((res) => {
             console.log('Student List: ',res.data.ResponseResult.Result);
             setStudents(res.data.ResponseResult.Result);
+        })
+        .catch(err => console.log(err));
+
+        // GetTopStudent
+        StudentService.getTopStudents({classid: "TOE300.394"})
+        .then((res) => {
+            console.log('Top Student List: ',res.data.ResponseResult.Result);
+            setTopStudents(res.data.ResponseResult.Result);
         })
         .catch(err => console.log(err));
     }, []);
@@ -26,7 +35,7 @@ function ClassDashboard() {
                 </div>
                 <div>
                 <AppLineChart/>
-                <StudentCenterInfo/>    
+                <StudentCenterInfo topStudents={topStudents}/>    
                 </div>
             </div>
         </>

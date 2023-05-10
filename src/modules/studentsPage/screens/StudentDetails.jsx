@@ -49,7 +49,6 @@ function ClassesAdd() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     let { studentId } = useParams();
-    console.log('StudentID: ',studentId);
     let sgtHomework = "";
     // GET INITIAL DATA 
     useEffect(() => {
@@ -70,7 +69,6 @@ function ClassesAdd() {
     const retrieveStudentDetails = (id) => {
         StudentService.get(id)
         .then(response => {
-            console.log('Student Details: ',response.data.ResponseResult.Result);
             setStdInfo(response.data.ResponseResult.Result);
         })
         .catch(e => {
@@ -95,7 +93,6 @@ function ClassesAdd() {
         if(filterType === filterTypeOption.daily){
             retrieveStudentReport({studentId, date:selectedDate})
         }else if(filterType === filterTypeOption.monthly){
-            console.log("hehehe: ", selectedYear)
             retrieveStudentReport({studentId, month: selectedMonth, year: selectedYear})
         }else if(filterType === filterTypeOption.total){
             retrieveStudentReportTotal()
@@ -106,6 +103,7 @@ function ClassesAdd() {
     useEffect(() => {
         let data = []
         try{
+            console.log('reportInfo')
             console.log(reportInfo)
             if(filterType === filterTypeOption.daily || filterType === filterTypeOption.monthly ){
                 reportInfo.Reports?.map(report => {
@@ -409,7 +407,28 @@ function ClassesAdd() {
                         <p style={{fontSize: "20px", fontWeight: 600}}>Evaluation & Suggestion</p>
                         <div className={`${styled['evaluation']}`}>
                             <label style={{width: "350px", fontSize: "16px", fontWeight:400}}>Evaluation:</label>
-                            <h6><Badge pill bg="success">Good</Badge></h6>
+                            <h6>
+                                {reportInfo.Result?.Evaluation === "Good" &&
+                                <Badge pill bg="success">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                                {reportInfo.Result?.Evaluation === "Medium" &&
+                                <Badge pill bg="warning">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                                {reportInfo.Result?.Evaluation === "Not-Good" &&
+                                <Badge pill bg="danger">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                                {reportInfo.Result?.Evaluation === "Non" &&
+                                <Badge pill bg="secondary">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                            </h6>
                         </div>
                         <div className={`${styled['border_bottom']}`}></div>
                         <label style={{width: "350px", fontSize: "16px", fontWeight:400}}>Suggestion:</label>

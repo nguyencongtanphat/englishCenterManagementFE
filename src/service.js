@@ -25,6 +25,12 @@ class StudentService {
     return axios.get(`http://localhost:3001/api/v1/student-report/total`);
   }
 
+  getTopStudents({classid} = {}) {
+    let urlString = "http://localhost:3001/api/v1/student-report/total/?istop=true"
+    urlString = classid ? urlString + '&classid=' + classid : urlString
+    return axios.get(urlString);
+  }
+
   getStudentReportDailyMonthly({
     studentId = null,
     month = null,
