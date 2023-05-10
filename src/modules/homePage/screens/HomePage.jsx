@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import AppLineChart from "../../../globalComponents/LineChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
+import moment from "moment-timezone";
 
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -13,68 +14,74 @@ import { HomeService } from "../../../service";
 function HomePage() {
   const [topStudents, setTopStudent] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [selectValue, setSelectValue] = useState("Month");
+  const [selectValue, setSelectValue] = useState("Date");
   const [date, setDate] = useState(null);
   const [month, setMonth] = useState(null);
   const [isPeriod, setIsPeriod] = useState(false)
   const [lineChartData, setLineChartData] = useState([]);
   const [pieChartData, setPieChartData] = useState([]);
+  const [datesList, setDatesList] = useState([]);
+  const [monthsList, setMonthsList] = useState([]);
   
   const onChangeSelectedType = (newValue)=>{
     console.log("here changed selected", newValue);
+    if (newValue === "Period") {
+      setIsPeriod(true)
+    }
     setSelectValue(newValue);
   }
   const onChangeSelectedDate = (newValue)=>{
     console.log("date selected:", newValue[0]);
-    const dateString = newValue[0].toISOString().slice(0, 10); 
+    const dateString = moment(newValue[0])
+      .tz("Asia/Ho_Chi_Minh")
+      .format("YYYY-MM-DD");
+    console.log("dateString:", dateString);
     setMonth(null)
+    setIsPeriod(false);
     setDate(dateString);
     
   }
   const onChangeSelectedMonth = (newValue)=>{
     setDate(null)
+    setIsPeriod(false);
+    console.log("new month:", newValue);
     setMonth(newValue);
   }
 
   useEffect(()=>{
-    const getClassData = async ()=>{
-      const classes = await  HomeService.getClass()
+    const getData = async ()=>{
+      const { dates, months } = await HomeService.getDateCenter();
+      const [students, classes] = await Promise.all([
+        HomeService.getTopStudent(),
+        HomeService.getClass(),
+      ]);  
+      console.log("dates list: ", dates)
+      console.log("months list: ", months);
+      setDatesList(dates);
+      setMonthsList(months);
+      //set defaut value for date
+      setDate(dates[0])
       setClasses(classes)
+      setTopStudent(students);
     }
-    getClassData();
+    getData();
   },[])
 
   useEffect(() => {
     const getHomeData = async () => {
       try {
-        console.log("run 11")
-        const [students, centerReport, pieChartReport] = await Promise.all([
-          HomeService.getTopStudent(),
+        const [centerReport, pieChartReport] = await Promise.all([
           HomeService.getLineChartData({ month: month, date: date, isPeriod: isPeriod }),
           HomeService.getPieChartData({month: month, date: date, isPeriod: isPeriod})
         ]);
         setPieChartData(pieChartReport);
-        //extra data for line chart
-        const lineChartData = centerReport.map((report) => {
-          const dateReport = new Date(report.Date);
-          return {
-            key: `${dateReport.getDate().toString().padStart(2, "0")}/${(
-              dateReport.getMonth() + 1
-            )
-              .toString()
-              .padStart(2, "0")}/${dateReport.getFullYear().toString()}`,
-            value: report.CenterScore,
-          };
-        });
-        setLineChartData(lineChartData);
-        setTopStudent(students);
-       
+        setLineChartData(centerReport);
       } catch (e) {
         console.log(e);
       }
     };
     getHomeData();
-  }, [ date, isPeriod, month, selectValue]);
+  }, [ date, isPeriod, month]);
 
   
   return (
@@ -103,6 +110,8 @@ function HomePage() {
             onChangeSelectedType={onChangeSelectedType}
             onChangeSelectedDate={onChangeSelectedDate}
             onChangeSelectedMonth={onChangeSelectedMonth}
+            datesList={datesList}
+            monthsList={monthsList}
           />
         </Col>
       </Row>
