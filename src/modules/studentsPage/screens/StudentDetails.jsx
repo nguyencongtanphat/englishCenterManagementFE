@@ -50,7 +50,7 @@ function ClassesAdd() {
     const handleShow = () => setShow(true);
     let { studentId } = useParams();
     console.log('StudentID: ',studentId);
-
+    let sgtHomework = "";
     // GET INITIAL DATA 
     useEffect(() => {
         retrieveStudentDetails(studentId);
@@ -143,7 +143,18 @@ function ClassesAdd() {
         .catch(e => {
             console.log('Error: ',e);
         });
-    }
+    };
+
+    const getHwSgt = () => {
+        let score = reportInfo.Result?.TotalHomeworkScore/ reportInfo.Result?.TotalHomeworkScoreRequired;
+        if (score>=0.9) sgtHomework = "Well done! You can do additional exercises to maintain this form."
+        else if (score>=0.8) sgtHomework = "You need to practice more advanced exercises at home to achieve excellent results!"
+            else if (score>=0.75) sgtHomework = "You need to do the exercise more carefully and pay attention to correcting the wrong sentences."
+                else if (score>=0.5) sgtHomework = "You do your homework poorly and without care. need more attention!"
+                    else if (score>=0.5) sgtHomework = "This lack of regular homework will result in very bad results. need more attention!"
+        return sgtHomework;
+    };
+
     const retrieveStudentReportTotal = () => {
         StudentService.getStudentReportTotal(studentId)
         .then(response => {
@@ -254,7 +265,7 @@ function ClassesAdd() {
                         <div className={`${styled['alot_details']}`}>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-calendar" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>{stdInfo.DateOfBirthday}</label>
+                                <label style={{color: "#6B7280"}}>{(new Date(stdInfo.DateOfBirthday).getMonth()+1)+"/"+new Date(stdInfo.DateOfBirthday).getDate()+"/"+new Date(stdInfo.DateOfBirthday).getFullYear()}</label>
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-phone" style={{color: "#6B7280"}} />
@@ -403,10 +414,29 @@ function ClassesAdd() {
                         <div className={`${styled['border_bottom']}`}></div>
                         <label style={{width: "350px", fontSize: "16px", fontWeight:400}}>Suggestion:</label>
                         <div>
-                            <ul style={{color: "#6B7280", lineHeight: "168%"}}>
-                                <li>Should do their homework harder and more carefully.</li>
-                                <li>Further improve reading skills by learning more vocabulary and grammar.</li>
-                                <li>Periodic tests have done very well. Should keep it like that.</li>
+                            <ul style={{color: "#6B7280", lineHeight: "168%", listStyleType: "circle"}}>
+                                <li>
+                                {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
+                                        <>{(reportInfo.Result?.TotalAttented/reportInfo.Result?.TotalReport>=0.85)?("Try to maintain the same level of attendance as before. This is very good!")
+                                        :((reportInfo.Result?.TotalAttented/reportInfo.Result?.TotalReport>=0.65)?("Remember to review the lectures in the absences and ask teacher if don't understand them ")
+                                        :("Should register for extra classes because of missing a lot of classes!"))}</>
+                                        }
+
+                                </li>
+                                <li>
+                                {(reportInfo.Result?.TotalTestScore/reportInfo?.Result?.TotalTestScoreRequired>=0.9)?("Periodic tests have done very well. Should keep it like that!")
+                                    :((reportInfo.Result?.TotalTestScore/reportInfo?.Result?.TotalTestScoreRequired>=0.75)?("Should try to do it faster to have time to do the difficult questions in the lesson.")
+                                    :((reportInfo.Result?.TotalTestScore/reportInfo?.Result?.TotalTestScoreRequired>=0.6)?("Need to review the lesson more carefully before the periodic test.")
+                                    :("Achieving low results will make it difficult to achieve the goal. Need more focus!")))
+                                    }
+                                </li>
+                                <li>
+                                    {(reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.9)?("Well done! Try to do additional exercises to maintain this form.")
+                                    :((reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.8)?("Need to practice more advanced exercises at home to achieve excellent results!")
+                                    :((reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.75)?("Have to do the exercise more carefully and pay attention to correcting the wrong sentences.")
+                                    :((reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.5)?("Have done homework poorly and without care! Need more attention!"):("Failure to do homework frequently will lead to bad results. Need more attention!"))))
+                                    }
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -451,7 +481,7 @@ function ClassesAdd() {
                                     ID: {stdInfo.StudentID}
                                 </div>
                                 <div className={`${styled['dataaa']}`}>
-                                    DOB: {stdInfo.DateOfBirthday}
+                                    DOB: {(new Date(stdInfo.DateOfBirthday).getMonth()+1)+"/"+new Date(stdInfo.DateOfBirthday).getDate()+"/"+new Date(stdInfo.DateOfBirthday).getFullYear()}
                                 </div>
                                 <div className={`${styled['dataaa']}`}>
                                     Class: {stdInfo.NameClass}
