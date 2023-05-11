@@ -3,10 +3,13 @@ import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
 import StudentService from "../../../service.js"
+import { useParams } from 'react-router'
 
 function ClassDashboard() {
     const [students, setStudents] = useState([]);
     const [topStudents, setTopStudents] = useState([]);
+    const params = useParams()
+    
     useEffect(() => {
         // StudentService.getAll()
         StudentService.getStudentReportOverview()
@@ -17,7 +20,7 @@ function ClassDashboard() {
         .catch(err => console.log(err));
 
         // GetTopStudent
-        StudentService.getTopStudents({classid: "TOE300.394"})
+        StudentService.getTopStudents({classid: params.classId})
         .then((res) => {
             console.log('Top Student List: ',res.data.ResponseResult.Result);
             setTopStudents(res.data.ResponseResult.Result);
