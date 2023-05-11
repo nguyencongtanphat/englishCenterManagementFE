@@ -16,6 +16,7 @@ import Modal from 'react-bootstrap/Modal';
 import abc from '../../../assets/images/global/logocard.png';
 import Barcode from 'react-barcode';
 import { useReactToPrint } from 'react-to-print';
+import moment from 'moment';
 
 const filterTypeOption = {
     daily: "Daily",
@@ -263,7 +264,7 @@ function ClassesAdd() {
                         <div className={`${styled['alot_details']}`}>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-calendar" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>{(new Date(stdInfo.DateOfBirthday).getMonth()+1)+"/"+new Date(stdInfo.DateOfBirthday).getDate()+"/"+new Date(stdInfo.DateOfBirthday).getFullYear()}</label>
+                                <label style={{color: "#6B7280"}}>{moment(stdInfo.DateOfBirthday).format("MMMM Do, YYYY")}</label>
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-phone" style={{color: "#6B7280"}} />
@@ -500,7 +501,7 @@ function ClassesAdd() {
                                     ID: {stdInfo.StudentID}
                                 </div>
                                 <div className={`${styled['dataaa']}`}>
-                                    DOB: {(new Date(stdInfo.DateOfBirthday).getMonth()+1)+"/"+new Date(stdInfo.DateOfBirthday).getDate()+"/"+new Date(stdInfo.DateOfBirthday).getFullYear()}
+                                    DOB: {moment(stdInfo.DateOfBirthday).format("MM/DD/YYYY")}
                                 </div>
                                 <div className={`${styled['dataaa']}`}>
                                     Class: {stdInfo.NameClass}
