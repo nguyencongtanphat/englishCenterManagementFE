@@ -22,24 +22,23 @@ const ScanningPopup = ({ onCancelScanning, onSaveScanning }) => {
   const [studentIds, setStudentIds] = useState([]);
 
   useEffect(() => {
-    setStudentIdsString(studentIds.join(" "));
-  }, [studentIds]);
+    let _studentIds = studentIdsString.trim().split(" ");
+    _studentIds = [...new Set(_studentIds)];
+    console.log(_studentIds);
+    setStudentIds(_studentIds);
+  }, [studentIdsString]);
 
   const inputChangeHandler = (event) => {
-    const newId = event.target.value.slice(
-      studentIdsString.length,
-      event.target.value.length
-    );
-
-    if (!studentIds.includes(newId)) {
-      setStudentIds(prev => [...prev, newId])
-    }
+    const value = event.target.value;
+    const valueReplace = value.replace(/ /g, "");
+    if (valueReplace.length % 7 === 0) setStudentIdsString(value + " ");
+    else setStudentIdsString(value);
   };
 
   const saveScanningHandler = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     onSaveScanning(studentIds);
-  }
+  };
 
   return (
     <>
