@@ -221,7 +221,7 @@ function ClassesAdd(){
             <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
                 <Modal.Body>
                     <div className={`${styled['pop-up']}`}>
-                    <label style={{fontWeight:"bold", fontSize:"14px", textAlign:"center", width:"434.892px"}}>Choose Class</label>
+                    <h3 style={{fontSize:"20px", textAlign:"center", width:"434.892px"}}>Choose Class</h3>
                     <label style={{color:"#9CA3AF", fontSize:"14px", width:"434.892px"}}>Choose <label style={{color:"#1C64F2"}}>a suitable class</label> from the list of suggested classes below:</label>
 
                     <div>

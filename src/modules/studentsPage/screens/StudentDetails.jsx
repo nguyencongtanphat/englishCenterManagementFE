@@ -472,8 +472,8 @@ function ClassesAdd() {
             <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered >
                 <div style={{display:"flex", flexDirection:"row", gap: "12px", alignItems:"center",
             justifyContent:"center"}}>
-                    <label style={{fontWeight:"bold", fontSize:"14px", textAlign:"center", padding:"12px", paddingRight:"0px"}}>Student Card</label>
-                    <button onClick={handlePrint}><img src={printIcon} width={"28px"}></img></button>
+                    <h3 style={{fontSize:"20px", textAlign:"center", padding:"12px", paddingRight:"0px", paddingBottom:"4px"}}>Student Card</h3>
+                    <button onClick={handlePrint}><img src={printIcon} width={"24px"}></img></button>
                 </div>
                 <div ref={componentRef} className={`${styled['Chan']}`}>
                     <div className={`${styled['Header']}`}>
