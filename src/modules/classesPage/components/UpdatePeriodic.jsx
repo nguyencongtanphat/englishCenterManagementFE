@@ -19,8 +19,8 @@ const ModalOverlay = (props) => {
 
 const UpdatePeriodicModal = (props) => {
   const [date, setDate] = useState(new Date());
-  const [tests, setTests] = useState(props.tests);
-  const [testChosen, setTestChosen] = useState(tests[0] || null);
+  const [tests, setTests] = useState(props.existingTests);
+  const [testChosen, setTestChosen] = useState(tests ? tests[0] : null);
   const [score, setScore] = useState("");
   const [error, setError] = useState(null);
 

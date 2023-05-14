@@ -14,6 +14,7 @@ import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
 import { faQrcode } from "@fortawesome/fontawesome-free-solid";
 import Notification from "../components/Notification";
 import ScanningPopup from "../components/ScanningPopup";
+import Loading from "../components/Loading";
 
 function ClassAttendant() {
   const [students, setStudents] = useState([]);
@@ -24,11 +25,13 @@ function ClassAttendant() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [isScanningDisable, setIsScanningDisable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true);
     StudentService.getStudentsByClass(classId)
       .then((res) => {
         setStudents(res.data.ResponseResult.Result);
@@ -44,6 +47,9 @@ function ClassAttendant() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
 
   let studentAttendance = [];
@@ -280,7 +286,11 @@ function ClassAttendant() {
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && (
+        <Loading isLoading={isLoading}/>
+      )}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -348,7 +358,7 @@ function ClassAttendant() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingAttendant && (
         <UpdateAttendantModal
