@@ -14,6 +14,7 @@ import StudentService, {
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Loading from "../components/Loading";
 
 function ClassHomework() {
   const [tests, setTests] = useState([]);
@@ -22,11 +23,13 @@ function ClassHomework() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingHomework, setIsAddingHomework] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true)
     TestsService.getHomework(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -50,6 +53,9 @@ function ClassHomework() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
   let studentTest = [];
@@ -213,7 +219,11 @@ function ClassHomework() {
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && (
+        <Loading isLoading={isLoading}/>
+      )}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -237,9 +247,7 @@ function ClassHomework() {
                       {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {isUpdating && (
-                      <button
-                        onClick={() => deleteHomeworkHandler(date)}
-                      >
+                      <button onClick={() => deleteHomeworkHandler(date)}>
                         <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
@@ -269,11 +277,11 @@ function ClassHomework() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingHomework && (
         <UpdateHomeworkModal
-          tests={tests}
+          tests={tests || []}
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={saveHomeworkHandler}

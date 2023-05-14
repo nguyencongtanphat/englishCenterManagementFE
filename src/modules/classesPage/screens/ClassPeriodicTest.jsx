@@ -15,6 +15,7 @@ import StudentService, {
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
 import Notification from './../components/Notification'
+import Loading from "../components/Loading";
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -24,11 +25,13 @@ function ClassPeriodicTest() {
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true)
     TestsService.getPeriodicTests(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -52,6 +55,9 @@ function ClassPeriodicTest() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
   let studentTest = []
@@ -215,7 +221,9 @@ function ClassPeriodicTest() {
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && <Loading isLoading={isLoading}/>}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -281,11 +289,11 @@ function ClassPeriodicTest() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingPeriodic && (
         <UpdatePeriodicModal
-          tests={tests}
+          tests={tests || []}
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={savePeriodicHandler}
