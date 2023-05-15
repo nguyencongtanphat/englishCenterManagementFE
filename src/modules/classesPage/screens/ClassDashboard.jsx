@@ -26,7 +26,7 @@ function ClassDashboard() {
                 </div>
                 <div>
                 <AppLineChart/>
-                <StudentCenterInfo/>    
+                {/* <StudentCenterInfo/>     */}
                 </div>
             </div>
         </>
