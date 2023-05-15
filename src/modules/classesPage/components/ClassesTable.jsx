@@ -7,6 +7,8 @@ import styled from "../../studentsPage/components/styleStd.module.css"
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import axios from 'axios';
+import StudentService from "../../../service.js";
+import { useParams } from "react-router";
 
 function ClassesTable({ classes }) {
   const formatDate = (dateString) => {
@@ -124,6 +126,7 @@ function ClassesTable({ classes }) {
       });
   };
   
+
   return (
     <div>
       <Container>
@@ -156,7 +159,7 @@ function ClassesTable({ classes }) {
           <Link to='add' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
                         <FontAwesomeIcon icon={faPlusCircle}/>
                         <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
-                    </Link>
+          </Link>
           </Col>
         </Row>
       </Container>
@@ -192,10 +195,8 @@ function ClassesTable({ classes }) {
                   <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>
                 </Link>
               </td>
-              {/* <td>{_class.teacher.Name}</td>
-              <td>{_class.studentQuantity}</td> */}
               <td>{_class.TeacherName}</td>
-              <td>35</td>
+              <td>{_class.NumberOfStudent}</td>
               <td>
               <td>
                 {`${formatDate(_class.TermFrom)} - ${formatDate(_class.TermTo)}`}
