@@ -3,15 +3,27 @@ import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
 import StudentService from "../../../service.js"
+import { useParams } from 'react-router'
 
 function ClassDashboard() {
     const [students, setStudents] = useState([]);
+    const [topStudents, setTopStudents] = useState([]);
+    const params = useParams()
+    
     useEffect(() => {
         // StudentService.getAll()
         StudentService.getStudentReportOverview()
         .then((res) => {
             console.log('Student List: ',res.data.ResponseResult.Result);
             setStudents(res.data.ResponseResult.Result);
+        })
+        .catch(err => console.log(err));
+
+        // GetTopStudent
+        StudentService.getTopStudents({classid: params.classId})
+        .then((res) => {
+            console.log('Top Student List: ',res.data.ResponseResult.Result);
+            setTopStudents(res.data.ResponseResult.Result);
         })
         .catch(err => console.log(err));
     }, []);
@@ -26,7 +38,7 @@ function ClassDashboard() {
                 </div>
                 <div>
                 <AppLineChart/>
-                {/* <StudentCenterInfo/>     */}
+                <StudentCenterInfo topStudents={topStudents}/>    
                 </div>
             </div>
         </>
