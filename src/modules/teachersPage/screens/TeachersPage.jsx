@@ -8,18 +8,54 @@ import { Table, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { TeacherService } from "../../../service.js";
+import moment from "moment";
+import axios from "axios";
+
+function calculateExperience(startDate) {
+  const today = moment();
+  const start = moment(startDate);
+  const yearsOfExperience = today.diff(start, "years");
+  return yearsOfExperience;
+}
 
 function TeachersPage() {
   let navigate = useNavigate();
   // Gọi API:
   const [teachers, setTeachers] = useState([]);
+  // useEffect(() => {
+  //   TeacherService.getAll()
+  //     .then((res) => {
+  //       setTeachers(res.data.ResponseResult.Result);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  //Bộ lọc:
+  const [selectedCertificate, setSelectedCertificate] = useState("");
+
+  const handleCertificateChange = (event) => {
+    setSelectedCertificate(event.target.value);
+  };
   useEffect(() => {
-    TeacherService.getAll()
-      .then((res) => {
-        setTeachers(res.data.ResponseResult.Result);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    fetchTeachers();
+  }, [selectedCertificate]);
+  const fetchTeachers = async () => {
+    try {
+      // Gọi API từ backend để lấy danh sách giáo viên
+      const response = await axios.get("http://localhost:3001/api/v1/teacher", {
+        params: { Certificate: selectedCertificate }, // Truyền giá trị đã chọn làm tham số cho API
+      });
+
+      // Lấy danh sách giáo viên từ kết quả API
+      const teacherList = response.data.ResponseResult.Result;
+
+      // Cập nhật state với danh sách giáo viên
+      setTeachers(teacherList);
+    } catch (error) {
+      // Xử lý lỗi nếu có
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -63,17 +99,16 @@ function TeachersPage() {
             </h3>
             <Row>
               <Form.Group as={Col} xs="auto">
-                <Form.Select name="class" style={{ fontSize: "14px" }}>
-                  <option hidden>Certificate:</option>
-                  <option>TOEIC</option>
-                  <option>IELTS</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group as={Col} xs="auto">
-                <Form.Select name="type" style={{ fontSize: "14px" }}>
-                  <option hidden>Type Teaching Class</option>
-                  <option>TOEIC500</option>
-                  <option>IELTS5.5</option>
+                <Form.Select
+                  name="Certificate"
+                  style={{ fontSize: "14px" }}
+                  value={selectedCertificate}
+                  onChange={handleCertificateChange}
+                >
+                  <option hidden>Certificate</option>
+                  <option value="TOEIC">TOEIC</option>
+                  <option value="IELTS">IELTS</option>
+                  <option value="TOEFL">TOEFL</option>
                 </Form.Select>
               </Form.Group>
             </Row>
@@ -144,9 +179,11 @@ function TeachersPage() {
                   </td>
                   <td>{teacher.PhoneNumber}</td>
                   <td>{teacher.Email}</td>
-                  <td>{teacher.Certificate}</td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    {teacher.Certificate} {teacher.Score}
+                  </td>
+                  <td>{calculateExperience(teacher.StartedDate)}</td>
+                  <td>{teacher.class}</td>
                 </tr>
               ))}
             </tbody>
