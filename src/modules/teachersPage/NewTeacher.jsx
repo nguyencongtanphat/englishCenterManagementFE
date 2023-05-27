@@ -174,55 +174,6 @@ function TeacherAdd(){
                         </Button>
                 </div>
             </div>
-
-            {/* Pop-up */}
-            <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
-                <Modal.Body>
-                    <div className={`${styled['pop-up']}`}>
-                    <label style={{fontWeight:"bold", fontSize:"14px", textAlign:"center", width:"434.892px"}}>Choose Class</label>
-                    <label style={{color:"#9CA3AF", fontSize:"14px", width:"434.892px"}}>Choose <label style={{color:"#1C64F2"}}>a suitable class</label> from the list of suggested classes below:</label>
-
-                    <div>
-                        <Row>
-                            <Col style={{width:"32px", marginTop:"20px"}}>
-                                <Form>
-                                    {['1', '2'].map((type) => (
-                                        <div key={`inline-${type}`} style={{marginBottom:"44px"}}>
-                                        <Form.Check
-                                            inline
-                                            name="group1"
-                                            type='radio'
-                                            id={`inline-${type}-1`
-                                            }
-                                        />
-                                        </div>
-                                    ))}
-                                </Form>
-                            </Col>
-                            <Col>
-                                <div>
-                                    {['1', '2'].map((type) => (
-                                    <div style={{display:"flex", flexDirection:"column"}}>
-                                        <label style={{fontWeight:500,fontSize:"14px",marginTop:"12px"}}>TOE700.3 - Mrs Hoa</label>
-                                        <label style={{fontWeight:400,fontSize:"14px",color:"#6B7280", marginBottom:"12px"}}>700+ | 12 students | 14th Sep - 15th Nov</label>
-                                        <div className={`${styled['border_itemm']}`}></div>
-                                    </div>    ))}
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                    
-                    <div className={`${styled['pop-up-footer']}`}>
-                        <Button variant="secondary" style={{backgroundColor:"transparent", borderColor:"transparent"}} onClick={handleClose}>
-                            <label style={{color: "#9CA3AF", fontSize:"14px"}}>Cancel</label>
-                        </Button>
-                        <Button variant="dark" onClick={handleClose} style={{paddingInline: "16px"}}>
-                            <label style={{fontSize:"14px", fontWeight:"bold"}}>Add</label>
-                        </Button>
-                    </div>
-                    </div>
-                </Modal.Body>
-            </Modal>
         </div>
     );
 }
