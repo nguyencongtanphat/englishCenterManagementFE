@@ -25,6 +25,12 @@ class StudentService {
     return axios.get(`http://localhost:3001/api/v1/student-report/total`);
   }
 
+  getTopStudents({classid} = {}) {
+    let urlString = "http://localhost:3001/api/v1/student-report/total/?istop=true"
+    urlString = classid ? urlString + '&classid=' + classid : urlString
+    return axios.get(urlString);
+  }
+
   getStudentReportDailyMonthly({
     studentId = null,
     month = null,
@@ -44,6 +50,12 @@ class StudentService {
   getStudentReportTotal(studentId) {
     return axios.get(
       `http://localhost:3001/api/v1/student-report/monthly/` + studentId
+    );
+  }
+
+  getStudiedDate(studentId){
+    return axios.get(
+      `http://localhost:3001/api/v1/student-report/date/` + studentId
     );
   }
 }
@@ -227,6 +239,15 @@ export class StatisticsService {
       `http://localhost:3001/api/v1/statistics/attendances/${classId}`,
       {
         attendances,
+      }
+    );
+  }
+
+  static postAttendancesByScanning(classId, studentIds) {
+    return axios.post(
+      `http://localhost:3001/api/v1/statistics/attendances/${classId}/scan`,
+      {
+        studentIds,
       }
     );
   }

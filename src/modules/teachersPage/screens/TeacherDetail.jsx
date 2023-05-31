@@ -6,7 +6,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ClassList from "../components/ClassList";
 import { TeacherService } from "../../../service.js";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
-import Stack from 'react-bootstrap/Stack';
+import Stack from "react-bootstrap/Stack";
+import moment from "moment";
+
+function calculateExperience(startDate) {
+  const today = moment();
+  const start = moment(startDate);
+  const yearsOfExperience = today.diff(start, "years");
+  return yearsOfExperience;
+}
 
 function TeacherDetail() {
   // Gọi API:
@@ -27,20 +35,57 @@ function TeacherDetail() {
       <Container>
         <Row>
           <Stack direction="horizontal" gap={2} className="mt-3">
-                <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Home</Link>
-                <FontAwesomeIcon
-                    icon={faChevronRight}
-                    className="me-3"
-                    style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
-                <Link key="Home" to="/teachers" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Teacher List</Link>
-                <FontAwesomeIcon
-                    icon={faChevronRight}
-                    className="me-3"
-                    style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
-                <Link key="Home" to="" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Teacher Details</Link>
-            </Stack>
+            <Link
+              key="Home"
+              to="/"
+              className="me-3"
+              style={{
+                textDecoration: "none",
+                color: "#1B64F2",
+                fontSize: "14px",
+              }}
+            >
+              Home
+            </Link>
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              className="me-3"
+              style={{ fontSize: "10px", color: "#888" }}
+            ></FontAwesomeIcon>
+            <Link
+              key="Home"
+              to="/teachers"
+              className="me-3"
+              style={{
+                textDecoration: "none",
+                color: "#1B64F2",
+                fontSize: "14px",
+              }}
+            >
+              Teacher List
+            </Link>
+            <FontAwesomeIcon
+              icon={faChevronRight}
+              className="me-3"
+              style={{ fontSize: "10px", color: "#888" }}
+            ></FontAwesomeIcon>
+            <Link
+              key="Home"
+              to=""
+              className="me-3"
+              style={{
+                textDecoration: "none",
+                color: "#1B64F2",
+                fontSize: "14px",
+              }}
+            >
+              Teacher Details
+            </Link>
+          </Stack>
         </Row>
-        <h3 className="mb-3"><b>{teacher.Name}</b></h3>
+        <h3 className="mb-3">
+          <b>{teacher.Name}</b>
+        </h3>
         <Row>
           <Col md={4}>
             <div className={`${styled["details1"]}`}>
@@ -74,7 +119,7 @@ function TeacherDetail() {
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-phone"
-                    style={{ color: "#6B7280", height: "14px"  }}
+                    style={{ color: "#6B7280", height: "14px" }}
                   />
                   <label style={{ color: "#6B7280", fontSize: "14px" }}>
                     {teacher.PhoneNumber}
@@ -85,23 +130,27 @@ function TeacherDetail() {
                     icon="fa-solid fa-envelope"
                     style={{ color: "#6B7280", height: "14px" }}
                   />
-                  <label style={{ color: "#6B7280", fontSize: "14px" }}>{teacher.Email}</label>
+                  <label style={{ color: "#6B7280", fontSize: "14px" }}>
+                    {teacher.Email}
+                  </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-graduation-cap"
-                    style={{ color: "#6B7280", height: "14px"  }}
+                    style={{ color: "#6B7280", height: "14px" }}
                   />
                   <label style={{ color: "#6B7280", fontSize: "14px" }}>
-                    {teacher.Certificate}
+                    {teacher.Certificate} {teacher.Score}
                   </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
                   <FontAwesomeIcon
                     icon="fa-solid fa-star"
-                    style={{ color: "#6B7280", height: "14px"  }}
+                    style={{ color: "#6B7280", height: "14px" }}
                   />
-                  <label style={{ color: "#6B7280", fontSize: "14px" }}>9 years</label>
+                  <label style={{ color: "#6B7280", fontSize: "14px" }}>
+                    {calculateExperience(teacher.StartedDate)} year
+                  </label>
                 </div>
               </div>
             </div>

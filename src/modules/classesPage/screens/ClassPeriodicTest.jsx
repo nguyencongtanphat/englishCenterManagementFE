@@ -13,7 +13,9 @@ import StudentService, {
   TestsService,
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Notification from './../components/Notification'
+import Loading from "../components/Loading";
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -22,11 +24,14 @@ function ClassPeriodicTest() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true)
     TestsService.getPeriodicTests(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -50,13 +55,16 @@ function ClassPeriodicTest() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
   let studentTest = []
-  if (students.length && students.length > 0) {
+  if (students.length > 0) {
     studentTest = students.map((student) => {
       let sumScores = 0;
-      if (periodicTests === null) {
+      if (periodicTests === null || periodicTests.length === 0) {
         return {
           ...student,
           periTests: [],
@@ -150,7 +158,7 @@ function ClassPeriodicTest() {
   };
 
   const completeUpdateHandler = async () => {
-    console.log(periodicTests);
+    // console.log(periodicTests);
     setIsEditable(false);
     setIsUpdating(false);
     await StatisticsService.postPeriodicTest(classId, periodicTests);
@@ -213,7 +221,9 @@ function ClassPeriodicTest() {
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && <Loading isLoading={isLoading}/>}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -232,22 +242,28 @@ function ClassPeriodicTest() {
                 <th>NAME</th>
                 <th>AVERAGE</th>
                 {testDates.map((date) => (
+                  <>
                   <th key={Math.random()}>
                     <span style={{ marginRight: "4px" }}>
                       {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {isUpdating && (
                       <button
-                        onClick={() => deletePeriodicTestHandler(date)}
-                        style={{
-                          padding: "4px",
-                          backgroundColor: "#fff",
-                        }}
+                        onClick={() => setIsDeleting(true)}
                       >
-                        <FontAwesomeIcon icon={faTimes} />
+                        <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
                   </th>
+                  {isDeleting && (
+                      <Notification
+                        message="Are you sure to delete this periodic tests results? This action can not be
+              undone."
+                        onCancelDelete={() => { setIsDeleting(false) }}
+                        onAcceptDelete={() => deletePeriodicTestHandler(date)}
+                      />
+                    )}
+                    </>
                 ))}
                 {isUpdating && (
                   <th>
@@ -273,11 +289,11 @@ function ClassPeriodicTest() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingPeriodic && (
         <UpdatePeriodicModal
-          tests={tests}
+          tests={tests || []}
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={savePeriodicHandler}

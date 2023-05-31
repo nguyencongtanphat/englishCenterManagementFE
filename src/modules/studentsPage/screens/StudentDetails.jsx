@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Stack from 'react-bootstrap/Stack';
-import { Link } from 'react-router-dom';
 import styled from "../components/styleStd.module.css"
 import AppLineChart from "../components/LineChart"
 import { Badge, Button, Dropdown, Image } from "react-bootstrap";
@@ -9,6 +8,15 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import StudentService from '../../../service.js';
+import Flatpickr from "react-flatpickr";
+import identification from "../../../assets/images/global/identification.svg"
+import printIcon from "../../../assets/images/global/PrintBtn.svg"
+import { Link, useNavigate } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import abc from '../../../assets/images/global/logocard.png';
+import Barcode from 'react-barcode';
+import { useReactToPrint } from 'react-to-print';
+import moment from 'moment';
 
 const filterTypeOption = {
     daily: "Daily",
@@ -17,7 +25,14 @@ const filterTypeOption = {
 }
 
 function ClassesAdd() {
-    
+    //PRINT PDF
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+    // STUDIED DATE
+    const [datesList, setDatesList] = useState([])
+    const [monthsList, setMonthsList] = useState([])
     const [stdInfo, setStdInfo] = useState({});
     const [filterType, setFilterType] = useState(filterTypeOption.monthly);
     const [reportInfo, setReportInfo] = useState({});
@@ -30,9 +45,12 @@ function ClassesAdd() {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth()) + 1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    let { studentId } = useParams();
-    console.log('StudentID: ',studentId);
+    const [show, setShow] = useState(false);
 
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    let { studentId } = useParams();
+    let sgtHomework = "";
     // GET INITIAL DATA 
     useEffect(() => {
         retrieveStudentDetails(studentId);
@@ -43,26 +61,39 @@ function ClassesAdd() {
         let year = today.getFullYear()
         retrieveStudentReport({studentId, month, year})
 
+        // Get studied Date
+        getStudiedDate(studentId)
+
         setLoading(false)
     }, []);
     
     const retrieveStudentDetails = (id) => {
         StudentService.get(id)
         .then(response => {
-            console.log('Student Details: ',response.data.ResponseResult.Result);
             setStdInfo(response.data.ResponseResult.Result);
         })
         .catch(e => {
             console.log('Error: ',e);
         });
     }
+    const getStudiedDate = (id) => {
+        StudentService.getStudiedDate(id)
+        .then(response => {
+            setDatesList(response.data.ResponseResult.Result.Date)
+            setMonthsList(response.data.ResponseResult.Result.Month)
+        })
+        .catch(e => {
+            console.log('Error: ',e);
+        });
+    }
+
+    let navigate = useNavigate();
 
     // STUDENT REPORT INFO
     useEffect(() => {
         if(filterType === filterTypeOption.daily){
             retrieveStudentReport({studentId, date:selectedDate})
         }else if(filterType === filterTypeOption.monthly){
-            console.log("hehehe: ", selectedYear)
             retrieveStudentReport({studentId, month: selectedMonth, year: selectedYear})
         }else if(filterType === filterTypeOption.total){
             retrieveStudentReportTotal()
@@ -73,6 +104,7 @@ function ClassesAdd() {
     useEffect(() => {
         let data = []
         try{
+            console.log('reportInfo')
             console.log(reportInfo)
             if(filterType === filterTypeOption.daily || filterType === filterTypeOption.monthly ){
                 reportInfo.Reports?.map(report => {
@@ -110,7 +142,18 @@ function ClassesAdd() {
         .catch(e => {
             console.log('Error: ',e);
         });
-    }
+    };
+
+    const getHwSgt = () => {
+        let score = reportInfo.Result?.TotalHomeworkScore/ reportInfo.Result?.TotalHomeworkScoreRequired;
+        if (score>=0.9) sgtHomework = "Well done! You can do additional exercises to maintain this form."
+        else if (score>=0.8) sgtHomework = "You need to practice more advanced exercises at home to achieve excellent results!"
+            else if (score>=0.75) sgtHomework = "You need to do the exercise more carefully and pay attention to correcting the wrong sentences."
+                else if (score>=0.5) sgtHomework = "You do your homework poorly and without care. need more attention!"
+                    else if (score>=0.5) sgtHomework = "This lack of regular homework will result in very bad results. need more attention!"
+        return sgtHomework;
+    };
+
     const retrieveStudentReportTotal = () => {
         StudentService.getStudentReportTotal(studentId)
         .then(response => {
@@ -145,6 +188,7 @@ function ClassesAdd() {
             }
     };
 
+
     if(!isLoading)
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
@@ -161,34 +205,12 @@ function ClassesAdd() {
                     style={{ fontSize: "10px", color: "#888" }}></FontAwesomeIcon>
                 <Link key="Home" to="" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>Student Details</Link>
             </Stack>
-
-            {/* Filter Type */}
-
-            {/* <input type="date" onChange={(e) => {
-                    retrieveFilterType(filterTypeOption.daily)
-                    retrieveSelectedDate(e.currentTarget.value)
-                }} ></input>
-            <select name="monthyear" onChange={(e) => {
-                let selectedTimeArr = e.currentTarget.value.split('/')
-                setSelectedMonth(selectedTimeArr[0])
-                setSelectedYear(selectedTimeArr[1])
-                retrieveFilterType(filterTypeOption.monthly)
-                }} 
-            >
-                <option selected>Monthly</option>
-                <option value={"12/2022"}>12/2022</option>
-                <option value={"1/2023"}>01/2023</option>
-                <option value={"2/2023"}>02/2023</option>
-                <option value={"3/2023"}>03/2023</option>
-                <option value={"4/2023"}>04/2023</option>
-            </select>
-            <Button onClick={(e) => {
-                retrieveFilterType(filterTypeOption.total)
-                }} 
-            >Total</Button> */}
-            
-            {/* Filter Type */}
-
+            <button onClick={handleShow}>
+                <div className={`${styled['StdBtn']}`}>
+                    <img src={identification} alt="card"/>
+                    <div className={`${styled['BtnTe']}`} style={{color:"white"}}>Student Card</div>
+                </div>
+            </button>
             {/* Filter Type */}
             <div className={`${styled['filterTime']}`}> 
                 <select onChange={onChange} className={`${styled['dropDown']}`}>
@@ -197,11 +219,19 @@ function ClassesAdd() {
                     <option value="Period">Period</option>
                 </select>
 
-                {visibleDate &&
-                <input type="Date" lassName={`${styled['filedDateMonth']}`} onChange={(e) => {
-                        retrieveFilterType(filterTypeOption.daily)
-                        retrieveSelectedDate(e.currentTarget.value)
-                }} ></input>}
+                {visibleDate && (
+                    <Flatpickr
+                    style={{ width: "90px" }}
+                    value={selectedDate}
+                    options={{
+                        enable: datesList,
+                        maxDate: datesList[datesList.length - 1],
+                        minDate: datesList[0],
+                        mode: "single",
+                    }}
+                    onChange={retrieveSelectedDate}
+                    />
+                )}
 
                 {visibleMonth &&
                 <select name="Month" lassName={`${styled['filedDateMonth']}`} onChange={(e) => {
@@ -211,11 +241,7 @@ function ClassesAdd() {
                     retrieveFilterType(filterTypeOption.monthly)
                     }} 
                 >
-                    <option selected value={"12/2022"}>12/2022</option>
-                    <option value={"1/2023"}>01/2023</option>
-                    <option value={"2/2023"}>02/2023</option>
-                    <option value={"3/2023"}>03/2023</option>
-                    <option value={"4/2023"}>04/2023</option>
+                    {monthsList.map((month) => <option value={month}>{month}</option>)}
                 </select>
                 }
             </div>
@@ -238,7 +264,7 @@ function ClassesAdd() {
                         <div className={`${styled['alot_details']}`}>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-calendar" style={{color: "#6B7280"}} />
-                                <label style={{color: "#6B7280"}}>{stdInfo.DateOfBirthday}</label>
+                                <label style={{color: "#6B7280"}}>{moment(stdInfo.DateOfBirthday).format("MMMM Do, YYYY")}</label>
                             </div>
                             <div className={`${styled['icon_label']}`}>
                                 <FontAwesomeIcon icon="fa-solid fa-phone" style={{color: "#6B7280"}} />
@@ -382,15 +408,55 @@ function ClassesAdd() {
                         <p style={{fontSize: "20px", fontWeight: 600}}>Evaluation & Suggestion</p>
                         <div className={`${styled['evaluation']}`}>
                             <label style={{width: "350px", fontSize: "16px", fontWeight:400}}>Evaluation:</label>
-                            <h6><Badge pill bg="success">Good</Badge></h6>
+                            <h6>
+                                {reportInfo.Result?.Evaluation === "Good" &&
+                                <Badge pill bg="success">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                                {reportInfo.Result?.Evaluation === "Medium" &&
+                                <Badge pill bg="warning">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                                {reportInfo.Result?.Evaluation === "Not-Good" &&
+                                <Badge pill bg="danger">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                                {reportInfo.Result?.Evaluation === "Non" &&
+                                <Badge pill bg="secondary">
+                                    {reportInfo.Result?.Evaluation}
+                                </Badge>
+                                }
+                            </h6>
                         </div>
                         <div className={`${styled['border_bottom']}`}></div>
                         <label style={{width: "350px", fontSize: "16px", fontWeight:400}}>Suggestion:</label>
                         <div>
-                            <ul style={{color: "#6B7280", lineHeight: "168%"}}>
-                                <li>Should do their homework harder and more carefully.</li>
-                                <li>Further improve reading skills by learning more vocabulary and grammar.</li>
-                                <li>Periodic tests have done very well. Should keep it like that.</li>
+                            <ul style={{color: "#6B7280", lineHeight: "168%", listStyleType: "circle"}}>
+                                <li>
+                                {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
+                                        <>{(reportInfo.Result?.TotalAttented/reportInfo.Result?.TotalReport>=0.85)?("Try to maintain the same level of attendance as before. This is very good!")
+                                        :((reportInfo.Result?.TotalAttented/reportInfo.Result?.TotalReport>=0.65)?("Remember to review the lectures in the absences and ask teacher if don't understand them ")
+                                        :("Should register for extra classes because of missing a lot of classes!"))}</>
+                                        }
+
+                                </li>
+                                <li>
+                                {(reportInfo.Result?.TotalTestScore/reportInfo?.Result?.TotalTestScoreRequired>=0.9)?("Periodic tests have done very well. Should keep it like that!")
+                                    :((reportInfo.Result?.TotalTestScore/reportInfo?.Result?.TotalTestScoreRequired>=0.75)?("Should try to do it faster to have time to do the difficult questions in the lesson.")
+                                    :((reportInfo.Result?.TotalTestScore/reportInfo?.Result?.TotalTestScoreRequired>=0.6)?("Need to review the lesson more carefully before the periodic test.")
+                                    :("Achieving low results will make it difficult to achieve the goal. Need more focus!")))
+                                    }
+                                </li>
+                                <li>
+                                    {(reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.9)?("Well done! Try to do additional exercises to maintain this form.")
+                                    :((reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.8)?("Need to practice more advanced exercises at home to achieve excellent results!")
+                                    :((reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.75)?("Have to do the exercise more carefully and pay attention to correcting the wrong sentences.")
+                                    :((reportInfo.Result?.TotalHomeworkScore/reportInfo.Result?.TotalHomeworkScoreRequired>=0.5)?("Have done homework poorly and without care! Need more attention!"):("Failure to do homework frequently will lead to bad results. Need more attention!"))))
+                                    }
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -402,6 +468,53 @@ function ClassesAdd() {
                     <AppLineChart style={{fontSize: "14px"}} data={chartData} mean={chartMean}/>
                 </div>
             </div>
+
+            {/* Student Card */}
+            <Modal show={show} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered >
+                <div style={{display:"flex", flexDirection:"row", gap: "12px", alignItems:"center",
+            justifyContent:"center"}}>
+                    <h3 style={{fontSize:"20px", textAlign:"center", padding:"12px", paddingRight:"0px", paddingBottom:"4px"}}>Student Card</h3>
+                    <button onClick={handlePrint}><img src={printIcon} width={"24px"}></img></button>
+                </div>
+                <div ref={componentRef} className={`${styled['Chan']}`}>
+                    <div className={`${styled['Header']}`}>
+                        <img src={abc} style={{width:"30px"}}></img>
+                        <div className={`${styled['NameScl']}`}>
+                            <div className={`${styled['NaSc']}`}>EARTH ENGLISH CENTER</div>
+                            <div className={`${styled['NaSc']}`}>TRUNG TÂM ANH NGỮ EARTH</div>
+                        </div>
+                    </div>
+
+                    <div className={`${styled['Inf']}`}>
+                        <div className={`${styled['Inff']}`}>
+                            <div className={`${styled['ww']}`}>
+                                STUDENT CARD
+                            </div>
+                        </div>
+                        <div className={`${styled['wow']}`} >
+                            <img className={`${styled['iimg']}`} src={stdInfo.ImageURL}></img>
+                            <div className={`${styled['iiimg']}`}>
+                                <div className={`${styled['dataa']}`}>
+                                    {stdInfo.Name}
+                                </div>
+                                <div className={`${styled['dataaa']}`}>
+                                    ID: {stdInfo.StudentID}
+                                </div>
+                                <div className={`${styled['dataaa']}`}>
+                                    DOB: {moment(stdInfo.DateOfBirthday).format("MM/DD/YYYY")}
+                                </div>
+                                <div className={`${styled['dataaa']}`}>
+                                    Class: {stdInfo.NameClass}
+                                </div>
+                            </div>
+                        </div>
+                        <div className={`${styled['barcode']}`}>
+                            <Barcode value={stdInfo.StudentID} margin={0} lineColor="#111827" width={3} 
+                            displayValue={0}></Barcode>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }

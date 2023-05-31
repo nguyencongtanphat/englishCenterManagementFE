@@ -13,7 +13,8 @@ import StudentService, {
   TestsService,
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Loading from "../components/Loading";
 
 function ClassHomework() {
   const [tests, setTests] = useState([]);
@@ -22,11 +23,13 @@ function ClassHomework() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingHomework, setIsAddingHomework] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true)
     TestsService.getHomework(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -50,13 +53,16 @@ function ClassHomework() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
   let studentTest = [];
-  if (students.length && students.length > 0) {
+  if (students.length > 0) {
     studentTest = students.map((student) => {
       let sumScores = 0;
-      if (homeworkTests === null) {
+      if (homeworkTests === null || homeworkTests.length === 0) {
         return {
           ...student,
           periTests: [],
@@ -213,7 +219,11 @@ function ClassHomework() {
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && (
+        <Loading isLoading={isLoading}/>
+      )}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -237,14 +247,8 @@ function ClassHomework() {
                       {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {isUpdating && (
-                      <button
-                        onClick={() => deleteHomeworkHandler(date)}
-                        style={{
-                          padding: "4px",
-                          backgroundColor: "#fff",
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
+                      <button onClick={() => deleteHomeworkHandler(date)}>
+                        <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
                   </th>
@@ -273,11 +277,11 @@ function ClassHomework() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingHomework && (
         <UpdateHomeworkModal
-          tests={tests}
+          tests={tests || []}
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={saveHomeworkHandler}

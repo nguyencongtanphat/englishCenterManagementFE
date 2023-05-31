@@ -19,9 +19,8 @@ const ModalOverlay = (props) => {
 
 const UpdatePeriodicModal = (props) => {
   const [date, setDate] = useState(new Date());
-  // test base on date choose
-  const [tests, setTests] = useState(props.tests);
-  const [testChosen, setTestChosen] = useState(tests[0] || null);
+  const [tests, setTests] = useState(props.existingTests);
+  const [testChosen, setTestChosen] = useState(tests ? tests[0] : null);
   const [score, setScore] = useState("");
   const [error, setError] = useState(null);
 
@@ -97,7 +96,7 @@ const UpdatePeriodicModal = (props) => {
       )}
       {ReactDOM.createPortal(
         <ModalOverlay>
-          {tests.length === 0 && (
+          {props.tests.length === 0 && (
             <>
               <p>There's no tests in this class</p>
               <div className="d-flex gap-2 justify-content-end">
@@ -110,7 +109,7 @@ const UpdatePeriodicModal = (props) => {
               </div>
             </>
           )}
-          {tests.length > 0 && (
+          {props.tests.length > 0 && (
             <>
               <h4 className="text-center">Additional Request</h4>
               {error && <p className="text-danger">{error}</p>}
