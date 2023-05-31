@@ -8,7 +8,9 @@ import { Table, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { TeacherService } from "../../../service.js";
-import moment from "moment";
+import deleteSVG from "../../../assets/images/global/delete.svg";
+import editSVG from "../../../assets/images/global/edit.svg";
+import axios from 'axios';import moment from "moment";
 import axios from "axios";
 
 function calculateExperience(startDate) {
@@ -18,7 +20,7 @@ function calculateExperience(startDate) {
   return yearsOfExperience;
 }
 
-function TeachersPage() {
+function TeachersPage({ teacher}) {
   let navigate = useNavigate();
   // Gọi API:
   const [teachers, setTeachers] = useState([]);
@@ -37,26 +39,55 @@ function TeachersPage() {
     setSelectedCertificate(event.target.value);
   };
   useEffect(() => {
-    fetchTeachers();
-  }, [selectedCertificate]);
-  const fetchTeachers = async () => {
+    TeacherService.getAll()
+      .then((res) => {
+        setTeachers(res.data.ResponseResult.Result);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const monthNames = [
+      'Jan', 'Feb', 'Mar',
+      'Apr', 'May', 'Jun', 'Jul',
+      'Aug', 'Sep', 'Oct',
+      'Nov', 'Dec'
+    ];
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+  
+    return `${monthNames[monthIndex]} ${day} ${year}`;
+  };
+  
+  // Handle Delete Teacher
+  const [teacherList, setTeacherList] = useState([]);
+  const [teacherDeleted, setTeacherDeleted] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('http://localhost:3001/api/v1/teacher');
+      setTeacherList(result.data);
+    };
+    fetchData();
+  }, [teacherDeleted]);
+
+  const deleteHandler = async (Id) => {
     try {
-      // Gọi API từ backend để lấy danh sách giáo viên
-      const response = await axios.get("http://localhost:3001/api/v1/teacher", {
-        params: { Certificate: selectedCertificate }, // Truyền giá trị đã chọn làm tham số cho API
-      });
-
-      // Lấy danh sách giáo viên từ kết quả API
-      const teacherList = response.data.ResponseResult.Result;
-
-      // Cập nhật state với danh sách giáo viên
-      setTeachers(teacherList);
-    } catch (error) {
-      // Xử lý lỗi nếu có
-      console.error(error);
+      const response = await axios.delete(`http://localhost:3001/api/v1/teacher/${Id}`);
+      console.log(response.data.message);
+      if (Array.isArray(teacherList)) {
+        setTeacherList(teacherList.filter((tcs) => tcs._id !== Id));
+      }
+      setTeacherDeleted(prevState => !prevState);
+      window.location.reload();
+      alert('Xóa teacher thành công!');
+    } 
+    catch (error) {
+      console.log(error);
+      alert('Đã có lỗi xảy ra khi xóa teacher!');
     }
   };
-
   return (
     <>
       {/* Filter */}
@@ -152,38 +183,42 @@ function TeachersPage() {
                 <th>CERTIFICATE</th>
                 <th>EXPERIENCE</th>
                 <th>CLASS</th>
+                <th></th>
               </tr>
             </thead>
 
             <tbody>
-              {teachers.map((teacher) => (
+              {teachers.map((_teacher) => (
                 <tr
-                  key={teacher.id}
+                  key={_teacher.id}
                   onClick={() => {
-                    navigate(`/teachers/${teacher._id}`);
+                    navigate(`/teachers/${_teacher._id}`);
                   }}
                 >
                   <td className="d-flex">
                     <Image
-                      src={teacher.ImageURL}
+                      src={_teacher.ImageURL}
                       roundedCircle="true"
                       width="40px"
                       height="40px"
                     ></Image>
                     <div style={{ marginLeft: "8px" }}>
-                      <div style={{ fontWeight: "600" }}>{teacher.Name}</div>
+                      <div style={{ fontWeight: "600" }}>{_teacher.Name}</div>
                       <div style={{ fontSize: "12px" }}>
-                        {teacher.TeacherID}
+                        {_teacher.TeacherID}
                       </div>
                     </div>
                   </td>
-                  <td>{teacher.PhoneNumber}</td>
-                  <td>{teacher.Email}</td>
+                  <td>{_teacher.PhoneNumber}</td>
+                  <td>{_teacher.Email}</td>
+                  <td>{_teacher.Certificate}</td>
+                  <td>{_teacher.dob}</td>
+                  <td></td>
                   <td>
-                    {teacher.Certificate} {teacher.Score}
-                  </td>
-                  <td>{calculateExperience(teacher.StartedDate)}</td>
-                  <td>{teacher.class}</td>
+                  <button><img src={editSVG} alt="edit"/></button>
+                  <br></br>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_teacher._id)} /></button>
+                </td>
                 </tr>
               ))}
             </tbody>
