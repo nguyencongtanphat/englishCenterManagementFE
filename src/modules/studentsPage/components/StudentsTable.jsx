@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "./styleStd.module.css";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
+import searchSVG from "../../../assets/images/global/search.svg";
 import axios from 'axios';
 
 function mathRound(number){
@@ -141,6 +142,7 @@ function StudentsTable({ std }) {
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
         <Row>
+          <div style={{display:"flex", flexDirection:"row", gap:"12px"}}>
           <Form.Group as={Col} xs="auto">
             <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}}
             onChange={onChange}>
@@ -162,6 +164,11 @@ function StudentsTable({ std }) {
               <option value="Non">Non</option>
             </Form.Select>
           </Form.Group>
+          <div className={`${styled["searchStyle"]}`}>
+              <img src={searchSVG}></img>
+              <input type="text" placeholder="Search Students..." className={`${styled["focusNone"]}`}></input>
+          </div>
+          </div>
         </Row>
       </Form>
       <div className={`${styled["form"]}`}>
