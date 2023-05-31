@@ -149,9 +149,9 @@ function TeachersPage() {
                 <th>NAME</th>
                 <th>PHONE</th>
                 <th>EMAIL</th>
-                <th>CERTIFICATE</th>
+                <th>EXPERTISE</th>
                 <th>EXPERIENCE</th>
-                <th>CLASS</th>
+                {/* <th>CLASS</th> */}
               </tr>
             </thead>
 
@@ -180,10 +180,11 @@ function TeachersPage() {
                   <td>{teacher.PhoneNumber}</td>
                   <td>{teacher.Email}</td>
                   <td>
-                    {teacher.Certificate} {teacher.Score}
+                    {teacher.Certificate}
+                    {/* {teacher.Score} */}
                   </td>
                   <td>{calculateExperience(teacher.StartedDate)}</td>
-                  <td>{teacher.class}</td>
+                  {/* <td>{teacher.class}</td> */}
                 </tr>
               ))}
             </tbody>

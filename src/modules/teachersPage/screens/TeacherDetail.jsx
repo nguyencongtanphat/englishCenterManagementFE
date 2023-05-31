@@ -140,7 +140,8 @@ function TeacherDetail() {
                     style={{ color: "#6B7280", height: "14px" }}
                   />
                   <label style={{ color: "#6B7280", fontSize: "14px" }}>
-                    {teacher.Certificate} {teacher.Score}
+                    {teacher.Certificate}
+                    {/* {teacher.Score} */}
                   </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
