@@ -10,8 +10,8 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { TeacherService } from "../../../service.js";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
-import axios from 'axios';import moment from "moment";
-import axios from "axios";
+import axios from 'axios';
+import moment from "moment";
 
 function calculateExperience(startDate) {
   const today = moment();
