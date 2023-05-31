@@ -21,7 +21,7 @@ function ClassCard({ classInfo, bgColor }) {
     <Card
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: bgColor, minHeight:"180px"}}
       className="mb-3"
     >
       <Card.Body>
