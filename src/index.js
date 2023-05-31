@@ -1,9 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { PDFViewer } from '@react-pdf/renderer';
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./Root";
+import Introduction from "./modules/introPage/Introduction";
 import ErrorPage from "./modules/errorPage/ErrorPage";
 import HomePage from "./modules/homePage/screens/HomePage";
 import ClassesPage from "./modules/classesPage/screens/ClassesPage";
@@ -55,7 +57,7 @@ const router = createBrowserRouter([
             element: <ClassesAdd />,
           },
           {
-            path: ":className",
+            path: ":classId",
             element: <ClassDetailRoot />,
             children: [
               {
@@ -111,6 +113,10 @@ const router = createBrowserRouter([
         element: <TeacherDetail />,
       },
     ],
+  },
+  {
+  path: "/introduction",
+    element: <Introduction/>,
   },
 ]);
 

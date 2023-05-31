@@ -1,19 +1,39 @@
 import React from "react";
 import { useState } from "react";
 import styled from "./styleHome.module.css";
-function DatePicker() {
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/light.css";
+import { useEffect } from "react";
+import { HomeService } from "../../../service";
+
+function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
-  // FILTER OPTION
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-    const [selectValue, setSelectValue] = useState("Date");
-  
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [datesList, setDatesList] = useState([])
+  const [monthsList, setMonthsList] = useState([]);
+
+  useEffect(() => {
+    const getDate = async () => {
+      const {dates, months} = await HomeService.getDateCenter();
+
+      setDatesList(dates);
+      setMonthsList(months);
+      
+    };
+    getDate()
+  }, []);
+
+  const handleDateChange = (date) => {
+    console.log("Date changed,", date)
+    setSelectedDate(date);
+  };
+
+ 
   const onChange = (event) => {
     const value = event.target.value;
-
-    setSelectValue(value);
+    props.onChangeSelectedType(value);
+    //setSelectValue(value);
     if (value === "Date") {
       setVisibilityDate(true);
       setVisibilityMonth(false);
@@ -36,14 +56,17 @@ function DatePicker() {
       </select>
 
       {visibleDate && (
-        <input
-          type="Date"
-          className={`${styled["filedDateMonth"]}`}
-          onChange={(e) => {
-            // retrieveFilterType(filterTypeOption.daily);
-            // retrieveSelectedDate(e.currentTarget.value);
+        <Flatpickr
+          style={{ width: "90px" }}
+          value={selectedDate}
+          options={{
+            enable: datesList,
+            maxDate: datesList[datesList.length - 1],
+            minDate: datesList[0],
+            mode: "single",
           }}
-        ></input>
+          onChange={handleDateChange}
+        />
       )}
 
       {visibleMonth && (
@@ -52,18 +75,12 @@ function DatePicker() {
           lassName={`${styled["filedDateMonth"]}`}
           onChange={(e) => {
             let selectedTimeArr = e.currentTarget.value.split("/");
-            // setSelectedMonth(selectedTimeArr[0]);
-            // setSelectedYear(selectedTimeArr[1]);
-            // retrieveFilterType(filterTypeOption.monthly);
+            props.onChangeSelectedMonth(selectedTimeArr[0]);
           }}
         >
-          <option selected value={"12/2022"}>
-            12/2022
-          </option>
-          <option value={"1/2023"}>01/2023</option>
-          <option value={"2/2023"}>02/2023</option>
-          <option value={"3/2023"}>03/2023</option>
-          <option value={"4/2023"}>04/2023</option>
+          {monthsList.map((month) => (
+            <option value={month}>{month}</option>
+          ))}
         </select>
       )}
     </div>

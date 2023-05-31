@@ -13,7 +13,8 @@ import StudentService, {
   TestsService,
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Loading from "../components/Loading";
 
 function ClassHomework() {
   const [tests, setTests] = useState([]);
@@ -22,11 +23,13 @@ function ClassHomework() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingHomework, setIsAddingHomework] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true)
     TestsService.getHomework(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -50,14 +53,16 @@ function ClassHomework() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
   }, []);
 
-  let studentTest;
-  if (!students) studentTest = [];
-  else {
+  let studentTest = [];
+  if (students.length > 0) {
     studentTest = students.map((student) => {
       let sumScores = 0;
-      if (homeworkTests === null) {
+      if (homeworkTests === null || homeworkTests.length === 0) {
         return {
           ...student,
           periTests: [],
@@ -193,11 +198,10 @@ function ClassHomework() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          {!isUpdating && (
+          {!isUpdating && students.length > 0 && (
             <button
               onClick={updateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-              disabled={students.length === 0}
             >
               <FontAwesomeIcon icon={faPenToSquare} />
               <span className="ps-2">Update</span>
@@ -215,7 +219,11 @@ function ClassHomework() {
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && (
+        <Loading isLoading={isLoading}/>
+      )}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -236,17 +244,11 @@ function ClassHomework() {
                 {testDates.map((date) => (
                   <th key={Math.random()}>
                     <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + date.getMonth()}
+                      {date.getDate() + "/" + (date.getMonth() + 1)}
                     </span>
                     {isUpdating && (
-                      <button
-                        onClick={() => deleteHomeworkHandler(date)}
-                        style={{
-                          padding: "4px",
-                          backgroundColor: "#fff",
-                        }}
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
+                      <button onClick={() => deleteHomeworkHandler(date)}>
+                        <FontAwesomeIcon icon={faTimesCircle} />
                       </button>
                     )}
                   </th>
@@ -275,11 +277,11 @@ function ClassHomework() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingHomework && (
         <UpdateHomeworkModal
-          tests={tests}
+          tests={tests || []}
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={saveHomeworkHandler}

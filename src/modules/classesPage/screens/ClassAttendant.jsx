@@ -10,7 +10,11 @@ import { useParams } from "react-router";
 import StudentService, { StatisticsService } from "../../../service.js";
 import AttendanceTableRow from "../components/AttendanceTableRow";
 import NoStudent from "../components/NoStudent";
-import { faTimes } from "@fortawesome/fontawesome-free-solid";
+import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import { faQrcode } from "@fortawesome/fontawesome-free-solid";
+import Notification from "../components/Notification";
+import ScanningPopup from "../components/ScanningPopup";
+import Loading from "../components/Loading";
 
 function ClassAttendant() {
   const [students, setStudents] = useState([]);
@@ -18,11 +22,16 @@ function ClassAttendant() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingAttendant, setIsAddingAttendant] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
+  const [isScanningDisable, setIsScanningDisable] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
+    setIsLoading(true);
     StudentService.getStudentsByClass(classId)
       .then((res) => {
         setStudents(res.data.ResponseResult.Result);
@@ -38,11 +47,13 @@ function ClassAttendant() {
       .catch((err) => {
         throw err;
       });
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   }, []);
 
-  let studentAttendance;
-  if (!students) studentAttendance = [];
-  else {
+  let studentAttendance = [];
+  if (students.length > 0) {
     studentAttendance = students.map((student) => {
       let presents = 0;
       if (attendances === null) {
@@ -87,6 +98,17 @@ function ClassAttendant() {
       }
     });
   }
+  useEffect(() => {
+    if (
+      existingDates.findIndex(
+        (date) => date.toDateString() === new Date().toDateString()
+      ) >= 0
+    ) {
+      setIsScanningDisable(true);
+    } else {
+      setIsScanningDisable(false);
+    }
+  }, [existingDates]);
 
   const updateHandler = () => {
     setIsUpdating(true);
@@ -137,6 +159,7 @@ function ClassAttendant() {
     const attendancesCopy = [...attendances];
     attendancesCopy[index].Attendance = value;
     setAttendances(attendancesCopy);
+    console.log(attendances);
   };
 
   const completeUpdateHandler = async () => {
@@ -155,6 +178,54 @@ function ClassAttendant() {
       });
     });
     await StatisticsService.deleteAttendance(classId, date);
+  };
+
+  const saveScanningHandler = async (studentIds) => {
+    console.log(studentIds);
+    let newAttandances = [];
+    const date = new Date();
+
+    students.forEach((student) => {
+      let newAttandance;
+      if (studentIds.includes(student.StudentID)) {
+        newAttandance = {
+          Date: date,
+          Attendance: true,
+          StudentID: student,
+        };
+      } else {
+        newAttandance = {
+          Date: date,
+          Attendance: false,
+          StudentID: student,
+        };
+      }
+
+      const index = attendances.findIndex((attendance) => {
+        return (
+          new Date(attendance.Date).toDateString() ===
+            new Date(newAttandance.Date).toDateString() &&
+          attendance.StudentID.StudentID === newAttandance.StudentID.StudentID
+        );
+      });
+
+      console.log(index);
+
+      if (index > -1) {
+        const _attendances = attendances;
+        if (_attendances[index].Attendance === false)
+          _attendances[index].Attendance = newAttandance.Attendance;
+        setAttendances(_attendances);
+      } else {
+        newAttandances.push(newAttandance);
+      }
+    });
+    if (newAttandances.length > 0) {
+      setAttendances((prevAttendances) => {
+        return [...prevAttendances, ...newAttandances];
+      });
+    }
+    setIsScanning(false);
   };
 
   return (
@@ -182,29 +253,44 @@ function ClassAttendant() {
           </p>
         </Col>
         <Col className="d-flex justify-content-end">
-          {!isUpdating && (
+          {!isUpdating && students.length > 0 && (
             <button
               onClick={updateHandler}
               className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-              disabled={students.length === 0}
             >
               <FontAwesomeIcon icon={faPenToSquare} />
               <span className="ps-2">Update</span>
             </button>
           )}
           {isUpdating && (
-            <button
-              onClick={completeUpdateHandler}
-              className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
-            >
-              <FontAwesomeIcon icon={faDownload} />
-              <span className="ps-2">Save</span>
-            </button>
+            <>
+              <button
+                onClick={() => {
+                  setIsScanning(true);
+                }}
+                className="bg-black d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0 me-2"
+                // disabled={isScanningDisable}
+              >
+                <FontAwesomeIcon icon={faQrcode} />
+                <span className="ps-2">Scan Code</span>
+              </button>
+              <button
+                onClick={completeUpdateHandler}
+                className="bg-primary d-flex align-items-center text-light py-2 px-3 rounded-2 text-decoration-none border-0"
+              >
+                <FontAwesomeIcon icon={faDownload} />
+                <span className="ps-2">Save</span>
+              </button>
+            </>
           )}
         </Col>
       </Row>
 
-      {students.length > 0 && (
+      {isLoading && (
+        <Loading isLoading={isLoading}/>
+      )}
+
+      {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
           <Table
             bordered
@@ -223,23 +309,29 @@ function ClassAttendant() {
                 <th style={{ maxWidth: "50px" }}>NAME</th>
                 <th>PRESENT</th>
                 {existingDates.map((date) => (
-                  <th key={Math.random()}>
-                    <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + date.getMonth()}
-                    </span>
-                    {/* Style will be customized later */}
-                    {isUpdating && (
-                      <button
-                        onClick={() => deleteAttendanceHandler(date)}
-                        style={{
-                          padding: "4px",
-                          backgroundColor: "#fff",
+                  <>
+                    <th key={Math.random()}>
+                      <span style={{ marginRight: "4px" }}>
+                        {date.getDate() + "/" + (date.getMonth() + 1)}
+                      </span>
+                      {/* Style will be customized later */}
+                      {isUpdating && (
+                        <button onClick={() => setIsDeleting(true)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </button>
+                      )}
+                    </th>
+                    {isDeleting && (
+                      <Notification
+                        message="Are you sure to delete this attendance? This action can not be
+              undone."
+                        onCancelDelete={() => {
+                          setIsDeleting(false);
                         }}
-                      >
-                        <FontAwesomeIcon icon={faTimes} />
-                      </button>
+                        onAcceptDelete={() => deleteAttendanceHandler(date)}
+                      />
                     )}
-                  </th>
+                  </>
                 ))}
 
                 {isUpdating && (
@@ -266,13 +358,22 @@ function ClassAttendant() {
         </div>
       )}
 
-      {students.length === 0 && <NoStudent />}
+      {students.length === 0 && !isLoading && <NoStudent />}
 
       {isAddingAttendant && (
         <UpdateAttendantModal
           existingDates={existingDates}
           onCloseModal={closeAddHandler}
           onSave={saveAttendanceHandler}
+        />
+      )}
+
+      {isScanning && (
+        <ScanningPopup
+          onCancelScanning={() => {
+            setIsScanning(false);
+          }}
+          onSaveScanning={saveScanningHandler}
         />
       )}
     </Container>

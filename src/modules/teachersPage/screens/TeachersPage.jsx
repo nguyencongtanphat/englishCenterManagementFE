@@ -10,11 +10,34 @@ import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { TeacherService } from "../../../service.js";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
-import axios from 'axios';
+import axios from 'axios';import moment from "moment";
+import axios from "axios";
+
+function calculateExperience(startDate) {
+  const today = moment();
+  const start = moment(startDate);
+  const yearsOfExperience = today.diff(start, "years");
+  return yearsOfExperience;
+}
+
 function TeachersPage({ teacher}) {
   let navigate = useNavigate();
   // Gọi API:
   const [teachers, setTeachers] = useState([]);
+  // useEffect(() => {
+  //   TeacherService.getAll()
+  //     .then((res) => {
+  //       setTeachers(res.data.ResponseResult.Result);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  //Bộ lọc:
+  const [selectedCertificate, setSelectedCertificate] = useState("");
+
+  const handleCertificateChange = (event) => {
+    setSelectedCertificate(event.target.value);
+  };
   useEffect(() => {
     TeacherService.getAll()
       .then((res) => {
@@ -107,17 +130,16 @@ function TeachersPage({ teacher}) {
             </h3>
             <Row>
               <Form.Group as={Col} xs="auto">
-                <Form.Select name="class" style={{ fontSize: "14px" }}>
-                  <option hidden>Certificate:</option>
-                  <option>TOEIC</option>
-                  <option>IELTS</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group as={Col} xs="auto">
-                <Form.Select name="type" style={{ fontSize: "14px" }}>
-                  <option hidden>Type Teaching Class</option>
-                  <option>TOEIC500</option>
-                  <option>IELTS5.5</option>
+                <Form.Select
+                  name="Certificate"
+                  style={{ fontSize: "14px" }}
+                  value={selectedCertificate}
+                  onChange={handleCertificateChange}
+                >
+                  <option hidden>Certificate</option>
+                  <option value="TOEIC">TOEIC</option>
+                  <option value="IELTS">IELTS</option>
+                  <option value="TOEFL">TOEFL</option>
                 </Form.Select>
               </Form.Group>
             </Row>
