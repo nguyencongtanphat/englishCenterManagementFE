@@ -9,24 +9,10 @@ import { HomeService } from "../../../service";
 function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [datesList, setDatesList] = useState([])
-  const [monthsList, setMonthsList] = useState([]);
-
-  useEffect(() => {
-    const getDate = async () => {
-      const {dates, months} = await HomeService.getDateCenter();
-
-      setDatesList(dates);
-      setMonthsList(months);
-      
-    };
-    getDate()
-  }, []);
-
+ 
   const handleDateChange = (date) => {
     console.log("Date changed,", date)
-    setSelectedDate(date);
+    props.onChangeSelectedDate(date);
   };
 
  
@@ -58,11 +44,10 @@ function DatePicker(props) {
       {visibleDate && (
         <Flatpickr
           style={{ width: "90px" }}
-          value={selectedDate}
           options={{
-            enable: datesList,
-            maxDate: datesList[datesList.length - 1],
-            minDate: datesList[0],
+            enable: props.datesList,
+            maxDate: props.datesList[props.datesList.length - 1],
+            minDate: props.datesList[0],
             mode: "single",
           }}
           onChange={handleDateChange}
@@ -74,11 +59,16 @@ function DatePicker(props) {
           name="Month"
           lassName={`${styled["filedDateMonth"]}`}
           onChange={(e) => {
-            let selectedTimeArr = e.currentTarget.value.split("/");
-            props.onChangeSelectedMonth(selectedTimeArr[0]);
+            let selectedValue = e.currentTarget.value.split("-");
+            console.log("month selected", selectedValue);
+            if (selectedValue[0] !== "none") {
+              console.log("changed value");
+              props.onChangeSelectedMonth(selectedValue[0]);
+            }
           }}
         >
-          {monthsList.map((month) => (
+          <option value={"none"}>select month</option>
+          {props.monthsList.map((month) => (
             <option value={month}>{month}</option>
           ))}
         </select>

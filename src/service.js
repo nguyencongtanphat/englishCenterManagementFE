@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "http://localhost:3001/api/v1/";
+const url = "http://localhost:3001/api/v1";
 
 class StudentService {
   getAll() {
@@ -80,15 +80,17 @@ export class HomeService {
   static async getDateCenter() {
     try {
       const response = await axios.get(`${url}/center-report/date`);
-      return response.data.ResponseResult.Result;
+     return  response.data.ResponseResult.Result;
     } catch (e) {
-       throw new Error(e.message);
+      throw new Error(e.message);
     }
   }
 
   static async getTopStudent() {
     try {
-      const response = await axios.get(`${url}/student-report/top`);
+      const response = await axios.get(
+        `${url}/student-report/total/?istop=true`
+      );
       return response.data.ResponseResult.Result;
     } catch (e) {
       throw new Error(e.message);
@@ -102,21 +104,110 @@ export class HomeService {
       throw new Error(e.message);
     }
   }
-
-  static async getChartData({
-    date = null,
-    month = null,
-    isPeriod = null,
+  static async getPieChartData({
+    month= null,
+    date= null,
+    isPeriod= null,
+    year=2023
   } = {}) {
     try {
-      let query = "";
-      if (date) query = "?date=" + date;
-      if (month) query = "?month=" + month;
-      if (isPeriod) query = "/monthly";
+      console.log("getPieChartData month date", month, date)
+      if(month){
+        console.log(
+          "url pie chart month",
+          `${url}/student-report/monthly/?month=${month}`
+        );
+        const response = await axios.get(
+          `${url}/student-report/monthly/?month=${month}`
+        );
+        const reports = response.data.ResponseResult.Result.Reports;
 
-      const response = await axios.get(`${url}/center-report` + query);
-      const reports = response.data.ResponseResult.Result.reports;
-      return reports;
+        let goodNumber = 0;
+        let mediumNumber = 0;
+        let badNumber = 0;
+        reports.forEach((report) => {
+          if (report.TotalScore >= 80) goodNumber++;
+          else if (report.TotalScore < 80 && report.TotalScore >= 65)
+            mediumNumber++;
+          else badNumber++;
+        });
+        const data = [
+          { name: "Good", value: goodNumber },
+          { name: "Medium", value: mediumNumber },
+          { name: "Not-Good", value: badNumber },
+        ];
+        return data;
+      }else if(date){
+        console.log("date here")
+        // eslint-disable-next-line no-useless-concat
+        console.log(
+          "url pie chart date",
+          `${url}/center-report` + "?date=" + date.slice(0, 10)
+        );
+        let currentReport;
+        const response = await axios.get(`${url}/center-report` + "?date=" + date.slice(0,10));
+        const reports = response.data.ResponseResult.Result.reports;
+        reports.forEach(report => {
+          const reportDate = report.Date.slice(0, 10); 
+          date = date.slice(0, 10);
+          console.log("current date", date, reportDate);
+          if(reportDate === date)
+            currentReport = report
+        })
+        const data = [
+          { name: "Good", value: currentReport["GoodLevel"] },
+          { name: "Medium", value: currentReport["MediumLevel"] },
+          { name: "Not-Good", value: currentReport["BadLevel"] },
+        ];
+        return data;
+      }
+      
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+  static async getLineChartData({
+    date = null,
+    month = null,
+    isPeriod = false,
+  } = {}) {
+    try {
+      if(isPeriod){
+         console.log("url line chart", `${url}/center-report/monthly`);
+         const response = await axios.get(
+           `${url}/center-report/monthly` 
+         );
+         const reports = response.data.ResponseResult.Result;
+         const pieChart = reports.map(report =>{
+            return {
+              key: report["_id"]["Month"],
+              value: report["AvgCenterScore"],
+            };
+         })
+         return pieChart;
+      }else{
+        let query = "";
+        if (date) query = "?date=" + date.slice(0, 10);
+        if (month) query = "?month=" + month;
+        if (isPeriod) query = "/monthly";
+        console.log("url line chart", `${url}/center-report` + query);
+        const response = await axios.get(`${url}/center-report` + query);
+        const reports = response.data.ResponseResult.Result.reports;
+        //extra data for line chart
+        const lineChartData = reports.map((report) => {
+          const dateReport = new Date(report.Date);
+          return {
+            key: `${dateReport.getDate().toString().padStart(2, "0")}/${(
+              dateReport.getMonth() + 1
+            )
+              .toString()
+              .padStart(2, "0")}/${dateReport.getFullYear().toString()}`,
+            value: report.CenterScore,
+          };
+        });
+        return lineChartData;
+      }
+     
     } catch (e) {
       throw new Error(e.message);
     }

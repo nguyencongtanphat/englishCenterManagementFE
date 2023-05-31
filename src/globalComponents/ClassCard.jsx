@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
 
 function ClassCard({ classInfo, bgColor }) {
-  console.log(bgColor);
   const { ClassID, Name, ScoreTarget, TeacherName, TermFrom, TermTo } =
     classInfo;
     const TermFromDate = new Date(TermFrom);
@@ -22,7 +21,7 @@ function ClassCard({ classInfo, bgColor }) {
     <Card
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: bgColor, minHeight:"180px"}}
       className="mb-3"
     >
       <Card.Body>
