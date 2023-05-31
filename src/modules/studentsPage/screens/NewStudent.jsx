@@ -112,7 +112,7 @@ function ClassesAdd(){
         const apiNewStudent = { 
             ...studentIn,
             ImageURL: url,
-            ClassID: classChosen._id,
+            ClassID: classChosen.ClassID,
             NameClass: classChosen.ClassID,
         }
         console.log('API new student: ', apiNewStudent);
