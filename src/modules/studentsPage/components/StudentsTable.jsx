@@ -7,6 +7,7 @@ import {
   Container,
   Badge,
   Image,
+  Modal,
   Dropdown,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,6 +27,8 @@ function StudentsTable({ std }) {
   // Handle Delete Student
   const [studentList, setStudentList] = useState([]);
   const [studentDeleted, setStudentDeleted] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [classToDelete, setClassToDelete] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,12 +47,29 @@ function StudentsTable({ std }) {
       }
       setStudentDeleted(prevState => !prevState);
       window.location.reload();
-      alert('Xóa học viên thành công!');
+      //alert('Xóa học viên thành công!');
     } 
     catch (error) {
       console.log(error);
       alert('Đã có lỗi xảy ra khi xóa học viên!');
     }
+  };
+
+  const handleDelete = (id) => {
+    setClassToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (classToDelete) {
+      deleteHandler(classToDelete);
+    }
+    setShowConfirmation(false);
+  };
+
+  const handleCancelDelete = () => {
+    setClassToDelete(null);
+    setShowConfirmation(false);
   };
 
   // Handle Filter by Type Class
@@ -264,12 +284,33 @@ function StudentsTable({ std }) {
                 <td>
                   <button><img src={editSVG} alt="edit"/></button>
                   <br></br>
-                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_std.Student._id)} /></button>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => handleDelete(_std.Student._id)} /></button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        <Modal show={showConfirmation} onHide={handleCancelDelete} centered>
+        <Modal.Header closeButton>
+        <Modal.Title style={{textAlign:'center', alignItems:'center'}}>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{textAlign:'center', alignItems:'center', fontSize:'20px'}}>
+           Are you sure you want to delete this student?
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: 'none' }}>
+          <button
+            onClick={handleCancelDelete}
+            style={{ marginRight: '10px', borderRadius:'3px', padding:'7px', backgroundColor:'#3333' }}>
+            Cancel
+        </button>
+        <button 
+          style={{ marginRight: '-3px', borderRadius:'3px', color:'black', padding:'7px', backgroundColor:'#EA2027' }}
+          onClick={handleConfirmDelete}>
+          Delete
+        </button>
+        </Modal.Footer>
+      </Modal>
       </div>
     </>
   );
