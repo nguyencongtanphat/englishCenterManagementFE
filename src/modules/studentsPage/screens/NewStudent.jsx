@@ -12,8 +12,10 @@ import StudentService from "../../../service.js";
 import axios from "axios";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
 import { storage } from "../../../firebase";
+import { useNavigate } from 'react-router-dom';
 
 function ClassesAdd(){
+    const navigate = useNavigate();
     const firstName = useRef("");
     const lastName = useRef("");
     const email = useRef("");
@@ -117,6 +119,9 @@ function ClassesAdd(){
         }
         console.log('API new student: ', apiNewStudent);
         axios.post('http://localhost:3001/api/v1/students', apiNewStudent);
+
+        alert('Tạo mới Student thành công');
+        navigate('/students');
     }
 
     return(
