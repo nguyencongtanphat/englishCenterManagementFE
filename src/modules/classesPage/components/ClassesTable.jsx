@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Form, Row, Table } from "react-bootstrap";
+import { Col, Container, Form, Row, Table,Modal, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faPlusCircle } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,8 +7,7 @@ import styled from "../../studentsPage/components/styleStd.module.css"
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import axios from 'axios';
-import StudentService from "../../../service.js";
-import { useParams } from "react-router";
+
 
 function ClassesTable({ classes }) {
   const formatDate = (dateString) => {
@@ -30,6 +29,9 @@ function ClassesTable({ classes }) {
   const [classList, setClassList] = useState([]);
   const [classDeleted, setClassDeleted] = useState(false);
 
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [classToDelete, setClassToDelete] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/class');
@@ -37,6 +39,24 @@ function ClassesTable({ classes }) {
     };
     fetchData();
   }, [classDeleted]);
+
+  const handleDelete = (id) => {
+    setClassToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (classToDelete) {
+      deleteHandler(classToDelete);
+    }
+    setShowConfirmation(false);
+  };
+
+  const handleCancelDelete = () => {
+    setClassToDelete(null);
+    setShowConfirmation(false);
+  };
+
 
   const deleteHandler = async (Id) => {
     try {
@@ -46,8 +66,9 @@ function ClassesTable({ classes }) {
         setClassList(classList.filter((cls) => cls._id !== Id));
       }
       setClassDeleted(prevState => !prevState);
+      // alert('Xóa class thành công!');
       window.location.reload();
-      alert('Xóa class thành công!');
+      
     } 
     catch (error) {
       console.log(error);
@@ -55,6 +76,7 @@ function ClassesTable({ classes }) {
     }
   };
 
+ 
 
 
   //---------handle filter Teacher and TypeClass---------------
@@ -157,77 +179,128 @@ function ClassesTable({ classes }) {
           </Col>
           <Col className="d-flex justify-content-end">
           <Link to='add' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
-                        <FontAwesomeIcon icon={faPlusCircle}/>
-                        <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
+           <FontAwesomeIcon icon={faPlusCircle}/>
+          <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
           </Link>
           </Col>
         </Row>
       </Container>
       <div className={`${styled["form"]}`}>
-      <Table bordered
-          hover
-          style={{
-            fontSize: 14,
-            borderCollapse: "collapse",
-            borderRadius: "1em",
-            overflow: "hidden",
-            borderColor: "#E5E7EB",
-            backgroundColor: "white"
-          }}>
-        <thead>
-          <tr className="text-uppercase text-secondary">
-            <th>Name</th>
-            <th>Teacher</th>
-            <th>Num of Student</th>
-            <th>Term</th>
-            <th>Type Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {displayedClasses.map((_class) => (
-            <tr key={_class._id}>
-              <td>
-                <Link
-                  to={_class.ClassID + '/dashboard'}
-                  className="text-decoration-none text-dark fw-semibold"
-                >
-                  {_class.ClassID} <br/>
-                  <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>
-                </Link>
-              </td>
-              <td>{_class.TeacherName}</td>
-              <td>{_class.NumberOfStudent}</td>
-              <td>
-              <td>
-                {`${formatDate(_class.TermFrom)} - ${formatDate(_class.TermTo)}`}
-              </td>
-              </td>
-              <td>
-                {(() => {
-                  switch (_class.Type) {
-                    case "TC01":
-                      return "TOEIC Reading & Listening";
-                    case "TC02":
-                      return "TOEIC Writing & Speaking";
-                    case "TC03":
-                      return "IELTS";
-                    case "TC04":
-                      return "TOEFL";
-                    default:
-                      return _class.Type;
-                  }
-                })()}
-              </td>
-              <td>
-                  <button><img src={editSVG} alt="edit"/></button>
-                  <br></br>
-                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_class._id)} /></button>
-                </td>
+        <Table bordered
+            hover
+            style={{
+              fontSize: 14,
+              borderCollapse: "collapse",
+              borderRadius: "1em",
+              overflow: "hidden",
+              borderColor: "#E5E7EB",
+              backgroundColor: "white",
+              cursor:'pointer'
+            }}>
+          <thead>
+            <tr className="text-uppercase text-secondary">
+              <th>Name</th>
+              <th>Teacher</th>
+              <th>Num of Student</th>
+              <th>From - To</th>
+              <th>Type Name</th>
             </tr>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+          {displayedClasses.length === 0 ? (
+            <tr>
+              <td colSpan="5" style={{ textAlign: "center" }}>
+                No class data available
+              </td>
+            </tr>
+          ):(
+            displayedClasses.map((_class) => (
+              <tr key={_class._id}>
+                <td>
+                  <Link
+                    to={_class.ClassID + '/dashboard'}
+                    className="text-decoration-none text-dark fw-semibold"
+                  >
+                    {_class.ClassID} <br/>
+                    <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>
+                  </Link>
+                </td>
+                <td> 
+                  <Link to={_class.ClassID + '/dashboard'} className="text-decoration-none text-dark">
+                    {_class.TeacherName}
+                  </Link>
+                </td>
+                <td>
+                  <Link to={_class.ClassID + '/dashboard'} className="text-decoration-none text-dark">
+                    {_class.NumberOfStudent}
+                  </Link>
+                </td>
+                <td>
+                <td>
+                  <Link to={_class.ClassID + '/dashboard'} className="text-decoration-none text-dark">
+                    {`${formatDate(_class.TermFrom)} - ${formatDate(_class.TermTo)}`}
+                  </Link>
+                </td>
+                </td>
+                <td>
+                <Link to={_class.ClassID + '/dashboard'} className="text-decoration-none text-dark">
+                  {(() => {
+                    switch (_class.Type) {
+                      case "TC01":
+                        return "TOEIC Reading & Listening";
+                      case "TC02":
+                        return "TOEIC Writing & Speaking";
+                      case "TC03":
+                        return "IELTS";
+                      case "TC04":
+                        return "TOEFL";
+                      default:
+                        return _class.Type;
+                    }
+                  })()}
+                  </Link>
+                </td>
+                <td>
+                    {/* <button><img src={editSVG} alt="edit"/></button>
+                    <br></br>
+                    <button>
+                      <img src={deleteSVG} alt="delete" onClick={() => handleDelete(_class._id)} />
+                    </button> */}
+                  <button>
+                    <img src={editSVG} alt="edit" />
+                  </button>
+                  <br></br>
+                  <button onClick={() => handleDelete(_class._id)}>
+                    <img src={deleteSVG} alt="delete" />
+                  </button>
+                </td>
+              </tr>
+            )))}
+          </tbody>
+        </Table>
       </div>
+    
+      <Modal show={showConfirmation} onHide={handleCancelDelete} centered>
+        <Modal.Header closeButton>
+        <Modal.Title style={{textAlign:'center', alignItems:'center'}}>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{textAlign:'center', alignItems:'center', fontSize:'20px'}}>
+           Are you sure you want to delete this class?
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: 'none' }}>
+          <button
+            onClick={handleCancelDelete}
+            style={{ marginRight: '10px', borderRadius:'3px', padding:'7px', backgroundColor:'#3333' }}>
+            Cancel
+        </button>
+        <button 
+          style={{ marginRight: '-3px', borderRadius:'3px', color:'black', padding:'7px', backgroundColor:'#EA2027' }}
+          onClick={handleConfirmDelete}>
+          Delete
+        </button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 }
