@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Form, Row, Table,Modal, Button } from "react-bootstrap";
+import { Col, Container, Form, Row, Table, Modal} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faPlusCircle } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,9 +7,12 @@ import styled from "../../studentsPage/components/styleStd.module.css"
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 function ClassesTable({ classes }) {
+  const navigate = useNavigate();
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const monthNames = [
@@ -21,17 +24,38 @@ function ClassesTable({ classes }) {
     const monthIndex = date.getMonth();
     const day = date.getDate();
     const year = date.getFullYear();
-  
     return `${monthNames[monthIndex]} ${day} ${year}`;
   };
   
   // Handle Delete Class
   const [classList, setClassList] = useState([]);
   const [classDeleted, setClassDeleted] = useState(false);
-
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [classToDelete, setClassToDelete] = useState(null);
-
+  const [searchValue, setSearchValue] = useState("");
+  
+  //Search handle
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchValue(value);
+  
+    find(value, ['TeacherName', 'ClassID']); 
+  };
+  
+  const find = (query) => {
+    const params = new URLSearchParams();
+    params.append('query', query);
+  
+    axios.get(`http://localhost:3001/api/v1/class/find?${params}`)
+      .then((response) => {
+        setDisplayedClasses(response.data.ResponseResult.Result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
+  
   useEffect(() => {
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/class');
@@ -57,7 +81,6 @@ function ClassesTable({ classes }) {
     setShowConfirmation(false);
   };
 
-
   const deleteHandler = async (Id) => {
     try {
       const response = await axios.delete(`http://localhost:3001/api/v1/class/${Id}`);
@@ -77,8 +100,6 @@ function ClassesTable({ classes }) {
   };
 
  
-
-
   //---------handle filter Teacher and TypeClass---------------
   const [teachers, setTeachers] = useState([]);
   const [selectedTeacher, setSelectedTeacher] = useState("");
@@ -114,7 +135,6 @@ function ClassesTable({ classes }) {
       return;
     }
     axios
-      // .get(`http://localhost:3001/api/v1/class/?teacherName=${selectedValue}`)
       .get(
         `http://localhost:3001/api/v1/class/?teacherName=${selectedValue}&classType=${selectedType}`
       )
@@ -131,12 +151,10 @@ function ClassesTable({ classes }) {
     const selectedValue = event.target.value;
     setSelectedType(selectedValue);
     if (selectedValue === "") {
-      // nếu không chọn type thì hiển thị tất cả Class
       setDisplayedClasses(classes);
       return;
     }
     axios
-      // .get(`http://localhost:3001/api/v1/class/?classType=${selectedValue}`)
       .get(
         `http://localhost:3001/api/v1/class/?teacherName=${selectedTeacher}&classType=${selectedValue}`
       )
@@ -147,17 +165,19 @@ function ClassesTable({ classes }) {
         console.log(error);
       });
   };
+
+  const handleClassClick = (classId) => {
+    navigate(`/classes/${classId}/dashboard`);
   
+  };
 
   return (
     <div>
       <Container>
-        <Row className="align-items-center">
-          <Col style={{fontSize:"14px"}}>
-            <Form className="mb-3" as={Row}>
-              <Form.Group as={Col} xs="auto">
-                <Form.Select name="teacher" style={{ fontSize: "14px" }} value={selectedTeacher} 
-                  onChange={handleTeacherChange}>
+           <Row>
+           <Col xs="auto">
+              <Form.Group>
+                <Form.Select name="teacher" style={{ fontSize: "14px" }} value={selectedTeacher} onChange={handleTeacherChange}>
                   <option hidden>Select a Teacher</option>
                   {teachers.map((teacher) => (
                     <option key={teacher.id} value={teacher.id}>
@@ -166,7 +186,10 @@ function ClassesTable({ classes }) {
                   ))}
                 </Form.Select>
               </Form.Group>
-              <Form.Group as={Col} xs="auto">
+            </Col>
+
+            <Col xs="auto">
+              <Form.Group>
                 <Form.Select name="type" style={{ fontSize: "14px" }} value={selectedType} onChange={handleTypeChange}>
                   <option hidden>Type</option>
                   <option value="TC01">TOEIC Reading & Listening</option>
@@ -175,17 +198,28 @@ function ClassesTable({ classes }) {
                   <option value="TC04">TOEFL</option>
                 </Form.Select>
               </Form.Group>
-            </Form>
-          </Col>
-          <Col className="d-flex justify-content-end">
-          <Link to='add' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
-           <FontAwesomeIcon icon={faPlusCircle}/>
-          <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
-          </Link>
-          </Col>
-        </Row>
+            </Col>
+           
+            <Col xs="auto">
+              <Form.Group>
+                <Form.Control 
+                  type="text"  
+                  placeholder="Search Class..." 
+                  style={{ fontSize: '14px' }} 
+                  value={searchValue} 
+                  onChange={handleSearchChange}/>
+              </Form.Group>
+            </Col>
+
+            <Col className="d-flex justify-content-end">
+              <Link to='add' className='bg-primary text-light py-1 px-3 rounded-2 text-decoration-none' style={{alignItems: "center"}}>
+              <FontAwesomeIcon icon={faPlusCircle}/>
+              <span className='ps-2' style={{fontSize: "14px"}}>Add Class</span>
+              </Link>
+            </Col>
+          </Row>
       </Container>
-      <div className={`${styled["form"]}`}>
+      <div style={{paddingTop:'20px'}} className={`${styled["form"]}`}>
         <Table bordered
             hover
             style={{
@@ -218,16 +252,20 @@ function ClassesTable({ classes }) {
               <tr key={_class._id}>
                 <td>
                   <Link
-                    to={_class.ClassID + '/dashboard'}
+                    to={`/classes/${_class.ClassID}/dashboard`}
+                    onClick={() => handleClassClick(_class.ClassID)}
                     className="text-decoration-none text-dark fw-semibold"
                   >
                     {_class.ClassID} <br/>
                     <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>
                   </Link>
                 </td>
+                
                 <td> 
-                  <Link to={_class.ClassID + '/dashboard'} className="text-decoration-none text-dark">
+                  <Link to={_class.ClassID + '/dashboard'} 
+                    className="text-decoration-none text-dark">
                     {_class.TeacherName}
+                    
                   </Link>
                 </td>
                 <td>
@@ -261,11 +299,6 @@ function ClassesTable({ classes }) {
                   </Link>
                 </td>
                 <td>
-                    {/* <button><img src={editSVG} alt="edit"/></button>
-                    <br></br>
-                    <button>
-                      <img src={deleteSVG} alt="delete" onClick={() => handleDelete(_class._id)} />
-                    </button> */}
                   <button>
                     <img src={editSVG} alt="edit" />
                   </button>
