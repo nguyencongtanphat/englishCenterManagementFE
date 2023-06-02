@@ -10,16 +10,18 @@ import StudentIcon from './SidebarIcon/StudentIcon.jsx'
 import TeacherIcon from './SidebarIcon/TeacherIcon.jsx'
 
 import SidebarFooter from './SidebarFooter'
+import { NavLink } from 'react-router-dom'
 
 
 export default function Sidebar() {
-    
     const [dashboardColor, setDashboardColor] = useState("black");
     const [studentColor, setStudentColor] = useState("black");
     const [classColor, setClassColor] = useState("black");
     const [teacherColor, setTeacherColor] = useState("black");
     const [certificateColor, setCertificateColor] = useState("black");
     const [helpColor, setHelpColor] = useState("black");
+
+
     return <div className='d-flex flex-column justify-content-between sidebar-disable-copy' 
         style={{  height: '100%',
             width: "calc(100% / 6 - 20px)",
@@ -31,53 +33,68 @@ export default function Sidebar() {
         <div>
         {
             SidebarMenu.subMenuL1.map((item, index) => {
-                // let icon = iconList.find((iconItem) => {
-                //     if(iconItem.name === item.icon){
-                //         return iconItem
-                //     }
-                    
-                // })
-                // let iconComp = icon.comp
                 return (
                     <div className=''>
                         
                         <div className='row sitebar-menu-item' style={{marginTop: "8px"}}
                             key={index}
-                            onMouseEnter={ () => {
-                                if(item.title === "Dashboard"){
-                                    setDashboardColor("#1C64F2")
-                                }else if(item.title=== "Students"){
-                                    setStudentColor("#1C64F2")
-                                }else if(item.title=== "Classes"){
-                                    setClassColor("#1C64F2")
-                                }else if(item.title=== "Teachers"){
-                                    setTeacherColor("#1C64F2")
-                                }else if(item.title=== "Certificates"){
-                                    
-                                    setCertificateColor("#1C64F2")
-                                }else if(item.title==="Help"){
-                                    setHelpColor("#1C64F2")
-                                }
-
-
-                             } }
-                            onMouseLeave={ () => {
-                                if(item.title === "Dashboard"){
-                                    setDashboardColor("#000000")
-                                }else if(item.title=== "Students"){
-                                    setStudentColor("#000000")
-                                }else if(item.title=== "Classes"){
-                                    setClassColor("#000000")
-                                }else if(item.title=== "Teachers"){
-                                    setTeacherColor("#000000")
-                                }else if(item.title=== "Certificates"){
-                                    setCertificateColor("#000000")
-                                }else if(item.title==="Help"){
-                                    setHelpColor("#000000")
-                                }
-                            } }
                         >
-                            <a href={item.route} >
+                            <NavLink to={item.route}
+                                className={({ isActive }) => {
+                                    if(isActive){
+                                        if(item.title === "Dashboard"){
+                                            setDashboardColor("#1C64F2")
+                                            setStudentColor("black")
+                                            setClassColor("black")
+                                            setTeacherColor("black")
+                                            setCertificateColor("black")
+                                            setHelpColor("black")
+                                        }else if(item.title=== "Students"){
+                                            setStudentColor("#1C64F2")
+                                            setDashboardColor("black")
+                                            setClassColor("black")
+                                            setTeacherColor("black")
+                                            setCertificateColor("black")
+                                            setHelpColor("black")
+                                        }else if(item.title=== "Classes"){
+                                            setClassColor("#1C64F2")
+                                            setStudentColor("black")
+                                            setDashboardColor("black")
+                                            setTeacherColor("black")
+                                            setCertificateColor("black")
+                                            setHelpColor("black")
+                                        }else if(item.title=== "Teachers"){
+                                            setTeacherColor("#1C64F2")
+                                            setStudentColor("black")
+                                            setDashboardColor("black")
+                                            setClassColor("black")
+                                            setCertificateColor("black")
+                                            setHelpColor("black")
+                                        }else if(item.title=== "Certificates"){
+                                            setStudentColor("black")
+                                            setDashboardColor("black")
+                                            setClassColor("black")
+                                            setTeacherColor("black")
+                                            setHelpColor("black")
+                                            setCertificateColor("#1C64F2")
+                                        }else if(item.title==="Help"){
+                                            setHelpColor("#1C64F2")
+                                            setStudentColor("black")
+                                            setDashboardColor("black")
+                                            setClassColor("black")
+                                            setTeacherColor("black")
+                                            setCertificateColor("black")
+                                        }
+                                    }
+                                }
+                                
+                             }
+                             style={({ isActive, isPending }) => {
+                                return {
+                                  color: isActive ? "#1C64F2" : "black",
+                                };
+                              }}
+                            >
                                 <div className='col-3'
                                     style={{
                                         height: "50px",
@@ -112,7 +129,7 @@ export default function Sidebar() {
                                 >
                                     <p > {item.title} </p>
                                 </div>
-                                </a>
+                                </NavLink>
         
                                 {item.isEnd && item.isEnd === true && <hr style={{marginTop: "10px"}}></hr>}
                             </div>
