@@ -27,6 +27,13 @@ function TeacherAdd(){
     
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
+
+    const sleep = async (milliseconds) => {
+        await new Promise(resolve => {
+            return setTimeout(resolve, milliseconds)
+        });
+    };
+
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
     const uploadImage = () => {
@@ -49,6 +56,7 @@ function TeacherAdd(){
     const saveHandler = async () => {
         const id = "TC" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
         uploadImage();
+        while (url==null) {await sleep(1000);}
         const firstName = firstNameRef.current.value;
         const lastName = lastNameRef.current.value;
         const email = emailRef.current.value;
@@ -78,6 +86,7 @@ function TeacherAdd(){
                 TeacherID: teacherID
             };
             console.log("TeacherID: ", teacherID );
+            console.log('Img new teacher: ', url);
             console.log('API new teacher: ', apiNewTeacher);
 
             // axios.post('http://localhost:3001/api/v1/teacher', apiNewTeacher);
