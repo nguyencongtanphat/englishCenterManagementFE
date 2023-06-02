@@ -113,7 +113,7 @@ function TeacherDetail() {
                     style={{ color: "#6B7280", height: "14px" }}
                   />
                   <label style={{ color: "#6B7280", fontSize: "14px" }}>
-                    {teacher.DateOfBirth}
+                    {moment(teacher.DateOfBirth).format("MMMM Do, YYYY")}
                   </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>

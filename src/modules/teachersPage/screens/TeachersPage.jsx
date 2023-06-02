@@ -8,6 +8,7 @@ import { Table, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { TeacherService } from "../../../service.js";
+import deleteSVG from "../../../assets/images/global/delete.svg";
 import moment from "moment";
 import axios from "axios";
 
@@ -56,7 +57,34 @@ function TeachersPage() {
       console.error(error);
     }
   };
+  // Handle Delete Teacher
+  const [teacherList, setTeacherList] = useState([]);
+  const [teacherDeleted, setTeacherDeleted] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('http://localhost:3001/api/v1/teacher');
+      setTeacherList(result.data);
+    };
+    fetchData();
+  }, [teacherDeleted]);
+
+  const deleteHandler = async (Id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3001/api/v1/teacher/${Id}`);
+      console.log(response.data.message);
+      if (Array.isArray(teacherList)) {
+        setTeacherList(teacherList.filter((tcs) => tcs._id !== Id));
+      }
+      setTeacherDeleted(prevState => !prevState);
+      window.location.reload();
+      alert('Xóa teacher thành công!');
+    } 
+    catch (error) {
+      console.log(error);
+      alert('Đã có lỗi xảy ra khi xóa teacher!');
+    }
+  };
   return (
     <>
       {/* Filter */}
@@ -105,7 +133,7 @@ function TeachersPage() {
                   value={selectedCertificate}
                   onChange={handleCertificateChange}
                 >
-                  <option hidden>Certificate</option>
+                  <option hidden>Expertise</option>
                   <option value="TOEIC">TOEIC</option>
                   <option value="IELTS">IELTS</option>
                   <option value="TOEFL">TOEFL</option>
@@ -149,21 +177,17 @@ function TeachersPage() {
                 <th>NAME</th>
                 <th>PHONE</th>
                 <th>EMAIL</th>
-                <th>CERTIFICATE</th>
+                <th>EXPERTISE</th>
                 <th>EXPERIENCE</th>
                 <th>CLASS</th>
+                <th></th>
               </tr>
             </thead>
 
             <tbody>
               {teachers.map((teacher) => (
-                <tr
-                  key={teacher.id}
-                  onClick={() => {
-                    navigate(`/teachers/${teacher._id}`);
-                  }}
-                >
-                  <td className="d-flex">
+                <tr key={teacher.id}>
+                  <td onClick={() => {navigate(`/teachers/${teacher._id}`);}} className="d-flex" style={{ cursor: 'pointer' }}>
                     <Image
                       src={teacher.ImageURL}
                       roundedCircle="true"
@@ -184,6 +208,9 @@ function TeachersPage() {
                   </td>
                   <td>{calculateExperience(teacher.StartedDate)}</td>
                   <td>{teacher.class}</td>
+                  <td>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(teacher._id)} /></button>
+                  </td>
                 </tr>
               ))}
             </tbody>

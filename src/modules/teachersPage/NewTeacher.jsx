@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
-import { Link } from 'react-router-dom'
-import { Button } from "react-bootstrap";
-import styled from "./components/styleTc.module.css"
-import { Col, Form, Row, Image, Modal} from 'react-bootstrap'
+import { Link } from 'react-router-dom';
+import { Button, Col, Form, Row, Image } from "react-bootstrap";
+import styled from "./components/styleTc.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { useRef } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage"
-import { storage } from "../../firebase.js"
+import { storage } from "../../firebase";
+
 function TeacherAdd(){
-    const [teacherIn, setTeacherIn] = useState([]);
+    const navigate = useNavigate();
     const firstNameRef = useRef("");
     const lastNameRef = useRef("");
     const emailRef = useRef("");
@@ -21,58 +22,67 @@ function TeacherAdd(){
     const certificateRef = useRef("");
     const scoreRef = useRef("");
     const [imageUpload, setImageUpload] = useState(null);
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const [show, setShow] = useState(false);
+    // const [teacherIn, setTeacherIn] = useState([]);
+    
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
     const uploadImage = () => {
         const imageRef = ref(storage, `${imageUpload.name}`);
         uploadBytes(imageRef, imageUpload)
-          .then(() => {
-            getDownloadURL(imageRef)
-              .then((url) => {
-                setUrl(url);
-              })
-              .catch((error) => {
-                console.log(error.message, "error getting the image url");
-              });
-            setImage(null);
-          })
-          .catch((error) => {
-            console.log(error.message);
-          });
+            .then(() => {
+                getDownloadURL(imageRef)
+                    .then((url) => {
+                        setUrl(url);
+                    })
+                    .catch((error) => {
+                        console.log(error.message, "error getting the image url");
+                    });
+                setImage(null);
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
     };
     const saveHandler = async () => {
         const id = "TC" + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 10);
         uploadImage();
+        const firstName = firstNameRef.current.value;
+        const lastName = lastNameRef.current.value;
+        const email = emailRef.current.value;
+        if (!firstName || !lastName || !email) {
+            alert('Vui lòng nhập đầy đủ thông tin');
+            return;
+        }
         try {
             const teacherInfo = {
                 TeacherID: id,
-                FirstName: firstNameRef.current.value,
-                LastName: lastNameRef.current.value,
-                Email: emailRef.current.value,
+                FirstName: firstName,
+                LastName: lastName,
+                Email: email,
                 DateOfBirth: dobRef.current.value,
                 StartedDate: startdRef.current.value,
                 PhoneNumber: phoneNumberRef.current.value,
                 Certificate: certificateRef.current.value,
                 Score: scoreRef.current.value,
             };
-            setTeacherIn(teacherInfo)
+            // setTeacherIn(teacherInfo)
             console.log('Teacher Info: ',teacherInfo);
-
-            const response = await axios.post('http://localhost:3001/api/v1/teacher', teacherInfo);
-            
+            const response = await axios.post(`http://localhost:3001/api/v1/teacher`, teacherInfo);
             const teacherID = response.data.TeacherID;
             const apiNewTeacher = { 
-                ...teacherIn,
+                ...teacherInfo,
+                ImageURL: url,
                 TeacherID: teacherID
             };
             console.log("TeacherID: ", teacherID );
             console.log('API new teacher: ', apiNewTeacher);
-            axios.post('http://localhost:3001/api/v1/teacher', apiNewTeacher);
+
+            // axios.post('http://localhost:3001/api/v1/teacher', apiNewTeacher);
             alert('Tạo mới Teacher thành công');
+            navigate('/teachers');
         } 
         catch (e) {
             console.log('Lỗi: ', e);
@@ -127,11 +137,11 @@ function TeacherAdd(){
                         <div className={`${styled['name']}`}>
                             <Form.Group controlId="formGridName" style={{width: "210px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Date of birth</Form.Label>
-                                <Form.Control type="date" value="01/01/2023" style={{fontSize: "14px", marginTop:"-4px"}} ref={dobRef}/>
+                                <Form.Control type="date" style={{fontSize: "14px", marginTop:"-4px"}} ref={dobRef}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "210px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Starting date</Form.Label>
-                                <Form.Control type="date" value="01/01/2023" style={{fontSize: "14px", marginTop:"-4px"}} ref={startdRef}/>
+                                <Form.Control type="date" style={{fontSize: "14px", marginTop:"-4px"}} ref={startdRef}/>
                             </Form.Group>
                             <Form.Group controlId="formGridName" style={{width: "239px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Phone number</Form.Label>
@@ -140,31 +150,39 @@ function TeacherAdd(){
                         </div>
                     </Row>
                     <Row>
-                        <Form.Group controlId="formGridName" style={{width: "732px"}}>
+                        <Form.Group controlId="formGridName" style={{width: "522px"}}>
                             <Form.Label style={{fontWeight:"500"}}>Email</Form.Label>
                             <Form.Control type="email" placeholder="Email" style={{fontSize: "14px", marginTop:"-4px"}} ref={emailRef}/>
                         </Form.Group>
+                        <Form.Group controlId="formGridType" style={{width: "209px"}}>
+                                <Form.Label style={{fontWeight:"500"}}>Expertise</Form.Label>
+                                    <Form.Select defaultValue="Expertise" placeholder="Type" style={{fontSize: "14px", marginTop:"-4px"}} ref={certificateRef}>
+                                        <option value="TOEIC">TOEIC</option>
+                                        <option value="IELTS">IELTS</option>
+                                        <option value="TOEFL">TOEFL</option>
+                                    </Form.Select>
+                                </Form.Group>
                     </Row>
                     
                     
-                    <Row>
+                    {/* <Row>
                         <Col>
                             <Form.Group controlId="formGridType" style={{width: "210px"}}>
-                                <Form.Label style={{fontWeight:"500"}}>Certificate</Form.Label>
-                                    <Form.Select defaultValue="Type" placeholder="Type" style={{fontSize: "14px", marginTop:"-4px"}} ref={certificateRef}>
-                                        <option value="type01">Toeic Reading & Listening</option>
-                                        <option value="type02">Toeic Writing & Speaking</option>
-                                        <option value="type03">IELTS</option>
+                                <Form.Label style={{fontWeight:"500"}}>Expertise</Form.Label>
+                                    <Form.Select defaultValue="Expertise" placeholder="Type" style={{fontSize: "14px", marginTop:"-4px"}} ref={certificateRef}>
+                                        <option value="TOEIC">TOEIC</option>
+                                        <option value="IELTS">IELTS</option>
+                                        <option value="TOEFL">TOEFL</option>
                                     </Form.Select>
                                 </Form.Group>
                         </Col>
-                        <Col>
+                        {/* <Col>
                             <Form.Group controlId="formGridScoreRequired" style={{width: "210px"}}>
                                 <Form.Label style={{fontWeight:"500"}}>Score</Form.Label>
                                 <Form.Control type="number" min="0" placeholder="Score income" style={{fontSize: "14px", marginTop:"-4px"}} ref={scoreRef}/>
                             </Form.Group>
-                        </Col>
-                    </Row>
+                        </Col> 
+                    </Row> */}
                 </Form>
                 <div className={`${styled['div_save']}`}>
                         <Button
