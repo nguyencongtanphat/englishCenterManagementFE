@@ -7,8 +7,12 @@ import styled from "../../studentsPage/components/styleStd.module.css"
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function ClassesTable({ classes }) {
+  const navigate = useNavigate();
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const monthNames = [
@@ -161,7 +165,12 @@ function ClassesTable({ classes }) {
         console.log(error);
       });
   };
+
+  const handleClassClick = (classId) => {
+    navigate(`/classes/${classId}/dashboard`);
   
+  };
+
   return (
     <div>
       <Container>
@@ -243,16 +252,20 @@ function ClassesTable({ classes }) {
               <tr key={_class._id}>
                 <td>
                   <Link
-                    to={_class.ClassID + '/dashboard'}
+                    to={`/classes/${_class.ClassID}/dashboard`}
+                    onClick={() => handleClassClick(_class.ClassID)}
                     className="text-decoration-none text-dark fw-semibold"
                   >
                     {_class.ClassID} <br/>
                     <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>
                   </Link>
                 </td>
+                
                 <td> 
-                  <Link to={_class.ClassID + '/dashboard'} className="text-decoration-none text-dark">
+                  <Link to={_class.ClassID + '/dashboard'} 
+                    className="text-decoration-none text-dark">
                     {_class.TeacherName}
+                    
                   </Link>
                 </td>
                 <td>
