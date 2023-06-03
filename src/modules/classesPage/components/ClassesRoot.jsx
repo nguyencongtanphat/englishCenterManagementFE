@@ -17,7 +17,7 @@ function ClassesRoot() {
     <div className="px-3 position-relative">
       <div>
         <BreadCrumbs />
-        <h3 className="mb-3" style={{padding:'15px'}}>
+        <h3 className="mb-3">
           <b>{name}</b>
         </h3>
       </div>

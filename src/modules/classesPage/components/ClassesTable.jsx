@@ -45,7 +45,8 @@ function ClassesTable({ classes }) {
   const find = (query) => {
     const params = new URLSearchParams();
     params.append('query', query);
-  
+    const url = `http://localhost:3001/api/v1/class/find?${params}`;
+    console.log("URL API search: ",url);
     axios.get(`http://localhost:3001/api/v1/class/find?${params}`)
       .then((response) => {
         setDisplayedClasses(response.data.ResponseResult.Result);
@@ -174,7 +175,7 @@ function ClassesTable({ classes }) {
   return (
     <div>
       <Container>
-           <Row>
+           <Row style={{marginLeft:"-24px"}}>
            <Col xs="auto">
               <Form.Group>
                 <Form.Select name="teacher" style={{ fontSize: "14px" }} value={selectedTeacher} onChange={handleTeacherChange}>

@@ -29,6 +29,7 @@ function StudentsTable({ std }) {
   const [studentDeleted, setStudentDeleted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [classToDelete, setClassToDelete] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -158,11 +159,37 @@ function StudentsTable({ std }) {
       });
   }, []);
 
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchValue(value);
+  
+    //find(value, ['StudentName', 'StudentID']); 
+    displayedStudents.forEach(function (item, index) {
+      (searchValue in item.Student.StudentID) ? console.log(1111) : console.log("00000");
+    });
+    
+    console.log(searchValue);
+  };
+  
+  const find = (query) => {
+    const params = new URLSearchParams();
+    params.append('query', query);
+    const url = `http://localhost:3001/api/v1/student-report/total/find?${params}`;
+    console.log("URL API search: ",url);
+    axios.get(`http://localhost:3001/api/v1/student-report/total/find?${params}`)
+      .then((response) => {
+        setDisplayedStudents(response.data.ResponseResult.Result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
         <Row>
-          <div style={{display:"flex", flexDirection:"row", gap:"12px"}}>
+          <div style={{display:"flex", flexDirection:"row", gap:"16px"}}>
           <Form.Group as={Col} xs="auto">
             <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}}
             onChange={onChange}>
@@ -186,7 +213,9 @@ function StudentsTable({ std }) {
           </Form.Group>
           <div className={`${styled["searchStyle"]}`}>
               <img src={searchSVG}></img>
-              <input type="text" placeholder="Search Students..." className={`${styled["focusNone"]}`}></input>
+              <input type="text" placeholder="Search Students..." className={`${styled["focusNone"]}`}
+              value={searchValue} 
+              onChange={handleSearchChange}></input>
           </div>
           </div>
         </Row>
