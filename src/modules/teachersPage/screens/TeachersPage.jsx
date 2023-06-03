@@ -57,6 +57,31 @@ function TeachersPage() {
     }
   };
 
+  //search teachers:
+  // const [searchValue, setSearchValue] = useState("");
+
+  // //Search handle
+  // const handleSearchChange = (event) => {
+  //   const value = event.target.value;
+  //   setSearchValue(value);
+
+  //   find(value, ["TeacherName", "ClassID"]);
+  // };
+
+  // const find = (query) => {
+  //   const params = new URLSearchParams();
+  //   params.append("query", query);
+
+  //   axios
+  //     .get(`http://localhost:3001/api/v1/teacher/search?${params}`)
+  //     .then((response) => {
+  //       setTeachers(response.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   return (
     <>
       {/* Filter */}
@@ -98,19 +123,33 @@ function TeachersPage() {
               <b>Teacher List</b>
             </h3>
             <Row>
-              <Form.Group as={Col} xs="auto">
-                <Form.Select
-                  name="Certificate"
-                  style={{ fontSize: "14px" }}
-                  value={selectedCertificate}
-                  onChange={handleCertificateChange}
-                >
-                  <option hidden>Certificate</option>
-                  <option value="TOEIC">TOEIC</option>
-                  <option value="IELTS">IELTS</option>
-                  <option value="TOEFL">TOEFL</option>
-                </Form.Select>
-              </Form.Group>
+              <Col xs="auto">
+                <Form.Group as={Col} xs="auto">
+                  <Form.Select
+                    name="Certificate"
+                    style={{ fontSize: "14px", cursor: "pointer" }}
+                    value={selectedCertificate}
+                    onChange={handleCertificateChange}
+                  >
+                    <option hidden>Expertise</option>
+                    <option value="TOEIC">TOEIC</option>
+                    <option value="IELTS">IELTS</option>
+                    <option value="TOEFL">TOEFL</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              <Col xs="auto">
+                <Form.Group>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search Class..."
+                    style={{ fontSize: "14px" }}
+                    // value={searchValue}
+                    // onChange={handleSearchChange}
+                  />
+                </Form.Group>
+              </Col>
             </Row>
           </Col>
 
@@ -128,7 +167,7 @@ function TeachersPage() {
             </Link>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ cursor: "pointer" }}>
           <Table
             bordered
             hover

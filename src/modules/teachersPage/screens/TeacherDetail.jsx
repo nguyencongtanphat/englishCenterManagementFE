@@ -29,6 +29,29 @@ function TeacherDetail() {
       .catch((err) => console.log(err));
   }, [id]);
 
+  //Format date:
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthIndex = date.getMonth();
+    const day = date.getDate();
+    const year = date.getFullYear();
+    return `${monthNames[monthIndex]} ${day}${","} ${year}`;
+  };
+
   return (
     <>
       {/* Filter */}
@@ -113,7 +136,8 @@ function TeacherDetail() {
                     style={{ color: "#6B7280", height: "14px" }}
                   />
                   <label style={{ color: "#6B7280", fontSize: "14px" }}>
-                    {teacher.DateOfBirth}
+                    {/* {teacher.DateOfBirth} */}
+                    {`${formatDate(teacher.DateOfBirth)}`}
                   </label>
                 </div>
                 <div className={`${styled["icon_label"]}`}>
