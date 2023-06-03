@@ -163,12 +163,7 @@ function StudentsTable({ std }) {
     const value = event.target.value;
     setSearchValue(value);
   
-    //find(value, ['StudentName', 'StudentID']); 
-    displayedStudents.forEach(function (item, index) {
-      (searchValue in item.Student.StudentID) ? console.log(1111) : console.log("00000");
-    });
-    
-    console.log(searchValue);
+    find(value, ['StudentName', 'StudentID']); 
   };
   
   const find = (query) => {
