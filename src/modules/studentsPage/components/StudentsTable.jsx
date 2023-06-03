@@ -16,6 +16,7 @@ import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import searchSVG from "../../../assets/images/global/search.svg";
 import axios from 'axios';
+import Loading from "../../classesPage/components/Loading";
 
 function mathRound(number){
   return Math.round((number) * 100)/100
@@ -23,7 +24,7 @@ function mathRound(number){
 
 function StudentsTable({ std }) {
   let navigate = useNavigate();
-  
+  const [isLoading, setIsLoading] = useState(true);
   // Handle Delete Student
   const [studentList, setStudentList] = useState({});
   const [studentDeleted, setStudentDeleted] = useState(false);
@@ -32,11 +33,15 @@ function StudentsTable({ std }) {
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/students');
       setStudentList(result.data);
     };
     fetchData();
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 700);
   }, [studentDeleted]);
 
   const deleteHandler = async (Id) => {
@@ -225,6 +230,9 @@ function StudentsTable({ std }) {
           </div>
         </Row>
       </Form>
+      {isLoading && <Loading isLoading={isLoading}/>}
+      {displayedStudents.length > 0 && !isLoading &&(
+
       <div className={`${styled["form"]}`}>
         <Table
           bordered
@@ -346,6 +354,7 @@ function StudentsTable({ std }) {
         </Modal.Footer>
       </Modal>
       </div>
+      )}
     </>
   );
 }
