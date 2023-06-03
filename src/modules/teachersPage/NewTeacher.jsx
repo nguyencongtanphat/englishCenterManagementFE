@@ -78,18 +78,23 @@ function TeacherAdd(){
             };
             // setTeacherIn(teacherInfo)
             console.log('Teacher Info: ',teacherInfo);
-            const response = await axios.post(`http://localhost:3001/api/v1/teacher`, teacherInfo);
-            const teacherID = response.data.TeacherID;
+            // const response = await axios.post(`http://localhost:3001/api/v1/teacher`, teacherInfo);
+            // const teacherID = response.data.TeacherID;
             const apiNewTeacher = { 
                 ...teacherInfo,
                 ImageURL: url,
-                TeacherID: teacherID
+                // TeacherID: teacherID
             };
-            console.log("TeacherID: ", teacherID );
+            // console.log("TeacherID: ", teacherID );
             console.log('Img new teacher: ', url);
             console.log('API new teacher: ', apiNewTeacher);
 
-            // axios.post('http://localhost:3001/api/v1/teacher', apiNewTeacher);
+            // await axios.post('http://localhost:3001/api/v1/teacher', apiNewTeacher);
+            await axios.post('http://localhost:3001/api/v1/teacher', {
+                ...apiNewTeacher,
+                ImageURL: url
+            });
+
             alert('Tạo mới Teacher thành công');
             navigate('/teachers');
         } 
