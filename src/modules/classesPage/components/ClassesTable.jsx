@@ -8,10 +8,12 @@ import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import Loading from '../components/Loading';
+import NoClass from "./NoClass";
 
 function ClassesTable({ classes }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading]= useState(true);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -58,11 +60,15 @@ function ClassesTable({ classes }) {
   
   
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/class');
       setClassList(result.data);
     };
     fetchData();
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 400);
   }, [classDeleted]);
 
   const handleDelete = (id) => {
@@ -169,7 +175,6 @@ function ClassesTable({ classes }) {
 
   const handleClassClick = (classId) => {
     navigate(`/classes/${classId}/dashboard`);
-  
   };
 
   return (
@@ -220,6 +225,10 @@ function ClassesTable({ classes }) {
             </Col>
           </Row>
       </Container>
+
+      {isLoading && <Loading isLoading={isLoading}/>}
+
+      {displayedClasses.length > 0 && !isLoading && (
       <div style={{paddingTop:'20px'}} className={`${styled["form"]}`}>
         <Table bordered
             hover
@@ -242,14 +251,7 @@ function ClassesTable({ classes }) {
             </tr>
           </thead>
           <tbody>
-          {displayedClasses.length === 0 ? (
-            <tr>
-              <td colSpan="5" style={{ textAlign: "center" }}>
-                No class data available
-              </td>
-            </tr>
-          ):(
-            displayedClasses.map((_class) => (
+          {displayedClasses.map((_class) => (
               <tr key={_class._id}>
                 <td>
                   <Link
@@ -266,7 +268,6 @@ function ClassesTable({ classes }) {
                   <Link to={_class.ClassID + '/dashboard'} 
                     className="text-decoration-none text-dark">
                     {_class.TeacherName}
-                    
                   </Link>
                 </td>
                 <td>
@@ -309,11 +310,14 @@ function ClassesTable({ classes }) {
                   </button>
                 </td>
               </tr>
-            )))}
+            ))}
           </tbody>
         </Table>
       </div>
-    
+      )}
+
+      {displayedClasses.length === 0 && !isLoading && <NoClass />}
+
       <Modal show={showConfirmation} onHide={handleCancelDelete} centered>
         <Modal.Header closeButton>
         <Modal.Title style={{textAlign:'center', alignItems:'center'}}>Confirm Deletion</Modal.Title>

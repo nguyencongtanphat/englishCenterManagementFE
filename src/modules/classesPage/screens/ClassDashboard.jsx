@@ -3,14 +3,11 @@ import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
 import StudentService from "../../../service.js"
-// import { useParams } from 'react-router'
 import { useParams } from 'react-router-dom';
-
 
 function ClassDashboard() {
     const [topStudents, setTopStudents] = useState([]);
     const [students, setStudents] = useState([]);
-    // const params = useParams()
     const { classId } = useParams();
     console.log(classId);
     
@@ -33,7 +30,7 @@ function ClassDashboard() {
 
     if (!Array.isArray(students)) {
         return <div>Invalid student data</div>;
-      }
+    }
 
     return (
         <>
@@ -41,7 +38,6 @@ function ClassDashboard() {
                 <div style={{borderRadius:"16px", padding: "24px", backgroundColor:"white", marginBottom:"16px",
                     boxShadow:"0px 1px 2px rgba(0, 0, 0, 0.06), 0px 1px 3px rgba(0, 0, 0, 0.1)"}}>
                 <ClassesStudentList std = {students}/>
-
                 </div>
                 <div>
                 <AppLineChart/>
