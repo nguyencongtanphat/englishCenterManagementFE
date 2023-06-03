@@ -25,7 +25,7 @@ function StudentsTable({ std }) {
   let navigate = useNavigate();
   
   // Handle Delete Student
-  const [studentList, setStudentList] = useState([]);
+  const [studentList, setStudentList] = useState({});
   const [studentDeleted, setStudentDeleted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [classToDelete, setClassToDelete] = useState(null);
@@ -125,6 +125,7 @@ function StudentsTable({ std }) {
   const [classes, setClasses] = useState([]);
   const [filClass, setFilClass] = useState("");
   const [filEva, setFilEva] = useState("");
+  const [totalStudents, setTotalStudents] = useState([]);
   const [displayedStudents, setDisplayedStudents] = useState([]);
 
   useEffect(() => {
@@ -133,6 +134,7 @@ function StudentsTable({ std }) {
       .then((res) => {
         //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
         setDisplayedStudents(res.data.ResponseResult.Result);
+        setTotalStudents(res.data.ResponseResult.Result)
         console.log('Data Result');
         console.log(res.data.ResponseResult.Result);
       })
@@ -162,23 +164,31 @@ function StudentsTable({ std }) {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchValue(value);
-  
-    find(value, ['StudentName', 'StudentID']); 
+    search(value)
+    // find(value, ['StudentName', 'StudentID']); 
   };
+
+  const search = (value) => {
+    let tempArr = [...totalStudents].map((x) => x)
+    let temp = tempArr.filter((item) => {
+      return item?.Student.Name.includes(value)
+    })
+    setDisplayedStudents(temp)
+  }
   
-  const find = (query) => {
-    const params = new URLSearchParams();
-    params.append('query', query);
-    const url = `http://localhost:3001/api/v1/student-report/total/find?${params}`;
-    console.log("URL API search: ",url);
-    axios.get(`http://localhost:3001/api/v1/student-report/total/find?${params}`)
-      .then((response) => {
-        setDisplayedStudents(response.data.ResponseResult.Result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const find = (query) => {
+  //   const params = new URLSearchParams();
+  //   params.append('query', query);
+  //   const url = `http://localhost:3001/api/v1/student-report/total/find?${params}`;
+  //   console.log("URL API search: ",url);
+  //   axios.get(`http://localhost:3001/api/v1/student-report/total/find?${params}`)
+  //     .then((response) => {
+  //       setDisplayedStudents(response.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <>
