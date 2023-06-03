@@ -7,12 +7,14 @@ import {
   Container,
   Badge,
   Image,
+  Modal,
   Dropdown,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "./styleStd.module.css";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
+import searchSVG from "../../../assets/images/global/search.svg";
 import axios from 'axios';
 
 function mathRound(number){
@@ -25,6 +27,8 @@ function StudentsTable({ std }) {
   // Handle Delete Student
   const [studentList, setStudentList] = useState([]);
   const [studentDeleted, setStudentDeleted] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [classToDelete, setClassToDelete] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,12 +47,29 @@ function StudentsTable({ std }) {
       }
       setStudentDeleted(prevState => !prevState);
       window.location.reload();
-      alert('Xóa học viên thành công!');
+      //alert('Xóa học viên thành công!');
     } 
     catch (error) {
       console.log(error);
       alert('Đã có lỗi xảy ra khi xóa học viên!');
     }
+  };
+
+  const handleDelete = (id) => {
+    setClassToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (classToDelete) {
+      deleteHandler(classToDelete);
+    }
+    setShowConfirmation(false);
+  };
+
+  const handleCancelDelete = () => {
+    setClassToDelete(null);
+    setShowConfirmation(false);
   };
 
   // Handle Filter by Type Class
@@ -141,6 +162,7 @@ function StudentsTable({ std }) {
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
         <Row>
+          <div style={{display:"flex", flexDirection:"row", gap:"12px"}}>
           <Form.Group as={Col} xs="auto">
             <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}}
             onChange={onChange}>
@@ -162,6 +184,11 @@ function StudentsTable({ std }) {
               <option value="Non">Non</option>
             </Form.Select>
           </Form.Group>
+          <div className={`${styled["searchStyle"]}`}>
+              <img src={searchSVG}></img>
+              <input type="text" placeholder="Search Students..." className={`${styled["focusNone"]}`}></input>
+          </div>
+          </div>
         </Row>
       </Form>
       <div className={`${styled["form"]}`}>
@@ -191,7 +218,7 @@ function StudentsTable({ std }) {
               <th></th>
             </tr>
           </thead>
-          <tbody style={{ backgroundColor: "white" }}>
+          <tbody style={{ backgroundColor: "white", cursor: "pointer" }}>
             {displayedStudents.map((_std) => (
               <tr key={_std.id}>
                 <td onClick={()=>{navigate(`/students/${_std.Student._id}`);}}>
@@ -257,12 +284,33 @@ function StudentsTable({ std }) {
                 <td>
                   <button><img src={editSVG} alt="edit"/></button>
                   <br></br>
-                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_std.Student._id)} /></button>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => handleDelete(_std.Student._id)} /></button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        <Modal show={showConfirmation} onHide={handleCancelDelete} centered>
+        <Modal.Header closeButton>
+        <Modal.Title style={{textAlign:'center', alignItems:'center'}}>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{textAlign:'center', alignItems:'center', fontSize:'20px'}}>
+           Are you sure you want to delete this student?
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: 'none' }}>
+          <button
+            onClick={handleCancelDelete}
+            style={{ marginRight: '10px', borderRadius:'3px', padding:'7px', backgroundColor:'#3333' }}>
+            Cancel
+        </button>
+        <button 
+          style={{ marginRight: '-3px', borderRadius:'3px', color:'black', padding:'7px', backgroundColor:'#EA2027' }}
+          onClick={handleConfirmDelete}>
+          Delete
+        </button>
+        </Modal.Footer>
+      </Modal>
       </div>
     </>
   );
