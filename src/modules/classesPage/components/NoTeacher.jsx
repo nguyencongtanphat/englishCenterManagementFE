@@ -1,6 +1,6 @@
 import React from 'react'
 
-function NoClass() {
+function NoTeacher() {
     return (
         <div
           style={{
@@ -9,9 +9,9 @@ function NoClass() {
             alignItems: "center",
           }}
         >
-        <p style={{ marginTop: "16px" }}>No classes exist</p>
+        <p style={{ marginTop: "16px" }}>No Teacher exist</p>
         </div>
     )
 }
 
-export default NoClass;
+export default NoTeacher;

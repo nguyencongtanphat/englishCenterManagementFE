@@ -2,24 +2,67 @@ import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ClassCard({ classInfo, bgColor }) {
-  console.log(bgColor);
-  const { id, className, teacher, number, target, time } = classInfo;
+  const { ClassID, Name,NumberOfStudent, ScoreTarget, TeacherName, TermFrom, TermTo } = classInfo;
+    const TermFromDate = new Date(TermFrom);
+    const TermToDate = new Date(TermTo);
+
+  const formatedDateFrom = `${TermFromDate.getDate()
+    .toString()
+    .padStart(2, "0")}/${(TermFromDate.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}/${TermFromDate.getFullYear().toString()}`;
+  const formatedDateTo = `${TermToDate.getDate().toString().padStart(2, "0")}/${(
+    TermToDate.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}/${TermToDate.getFullYear().toString()}`;
   return (
     <Card
-      key={id}
+      key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{backgroundColor: bgColor }}
+      style={{ backgroundColor: bgColor, minHeight:"180px"}}
       className="mb-3"
     >
       <Card.Body>
-        <div style={{display:"flex", flexDirection:"row", justifyContent:"center", alignItems:"center", gap:"8px"}}>
-        <FontAwesomeIcon icon="fa-solid fa-book-open" style={{width:"16px", marginTop:"-4px"}}/>
-        <Card.Title className="text-center" style={{fontSize:"18px", fontWeight:700}}> {className} </Card.Title>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <FontAwesomeIcon
+            icon="fa-solid fa-book-open"
+            style={{ width: "16px", marginTop: "-4px" }}
+          />
+          <Card.Title
+            className="text-center"
+            style={{ fontSize: "18px", fontWeight: 700 }}
+          >
+            {" "}
+            {Name}{" "}
+          </Card.Title>
         </div>
-        <Card.Text className="text-center" style={{fontSize:"14px", fontWeight:400, marginBottom:"4px"}}>{number} students
+        <Card.Text
+          className="text-center"
+          style={{ fontSize: "14px", fontWeight: 400, marginBottom: "4px" }}
+        >
+          {TeacherName} | {NumberOfStudent} students
         </Card.Text>
-        <Card.Text className="text-center" style={{fontSize:"14px", fontWeight:400, marginBottom:"4px"}}>Target: {target}</Card.Text>
-        <Card.Text className="text-center" style={{fontSize:"14px", fontWeight:400, marginBottom:"4px"}}>{time}</Card.Text>
+        <Card.Text
+          className="text-center"
+          style={{ fontSize: "14px", fontWeight: 400, marginBottom: "4px" }}
+        >
+          Target: {ScoreTarget}
+        </Card.Text>
+        <Card.Text
+          className="text-center"
+          style={{ fontSize: "14px", fontWeight: 400, marginBottom: "4px" }}
+        >
+          {formatedDateFrom} - {formatedDateTo}
+        </Card.Text>
       </Card.Body>
     </Card>
   );
