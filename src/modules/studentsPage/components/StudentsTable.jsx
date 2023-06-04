@@ -169,14 +169,14 @@ function StudentsTable({ std }) {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchValue(value);
-    search(value)
+    search(value.toUpperCase());
     // find(value, ['StudentName', 'StudentID']); 
   };
 
   const search = (value) => {
     let tempArr = [...totalStudents].map((x) => x)
     let temp = tempArr.filter((item) => {
-      return item?.Student.Name.includes(value)
+      return (item?.Student.Name.toUpperCase()).includes(value) || (item?.Student.StudentID.toUpperCase()).includes(value)
     })
     setDisplayedStudents(temp)
   }
