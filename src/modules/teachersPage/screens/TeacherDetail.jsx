@@ -8,6 +8,7 @@ import { TeacherService } from "../../../service.js";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import Stack from "react-bootstrap/Stack";
 import moment from "moment";
+import axios from "axios";
 
 function calculateExperience(startDate) {
   const today = moment();
@@ -19,16 +20,38 @@ function calculateExperience(startDate) {
 function TeacherDetail() {
   // Gọi API:
   const [teacher, setTeacher] = useState({});
+  const [teacherClasses, setTeacherClasses] = useState([]);
+
   const { id } = useParams();
   console.log("StudentID: ", id);
+  
+  // useEffect(() => {
+  //   TeacherService.get(id)
+  //     .then((res) => {
+  //       setTeacher(res.data.ResponseResult.Result);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [id]);
   useEffect(() => {
-    TeacherService.get(id)
-      .then((res) => {
-        setTeacher(res.data.ResponseResult.Result);
-      })
-      .catch((err) => console.log(err));
+    const fetchData = async () => {
+      try {
+        const response = await TeacherService.get(id);
+        const teacherData = response.data.ResponseResult.Result;
+        setTeacher(teacherData);
+  
+        const classResponse = await axios.get(
+          `http://localhost:3001/api/v1/class/teacherid/${teacherData._id}`
+        );
+        const classData = classResponse.data.ResponseResult.Result;
+        setTeacherClasses(classData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchData();
   }, [id]);
-
+  
   //Format date:
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -185,7 +208,7 @@ function TeacherDetail() {
             </div>
           </Col>
           <Col md={8}>
-            <ClassList></ClassList>
+          <ClassList teacherClasses={teacherClasses} />
           </Col>
         </Row>
       </Container>

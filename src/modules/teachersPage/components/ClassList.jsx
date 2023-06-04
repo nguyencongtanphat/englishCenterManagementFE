@@ -1,74 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import AppCard from "./Card";
 import ClassCard from "./ClassCard";
+import NoClass from "../../classesPage/components/NoClass";
+import Loading from "../../classesPage/components/Loading";
 
-function ClassList() {
-  const classes = [
-    {
-      id: "1",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "2",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "3",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "4",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "5",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "6",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-    {
-      id: "7",
-      className: "TOE500.1",
-
-      number: 45,
-      target: "500+",
-      time: "Jan 2nd - Jul 30th",
-    },
-  ];
+function ClassList({teacherClasses }) {
+  const [isLoading, setIsLoading]= useState(true);
   const colorsBg = [
     "#1C64F2",
     "#BC2FB6",
@@ -81,22 +19,34 @@ function ClassList() {
     "#2D9CDB",
   ];
 
+  useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
+  }, []);
+
   let index = 0;
   return (
     <AppCard className="">
       <Container>
         <p style={{fontSize: "20px", fontWeight: 600}}>Teaching Classes</p>
-        <Row>
-          {classes.map((classInfo) => {
-            if (index > colorsBg.length) index = 0;
-            const bgColor = colorsBg[index++];
-            return (
-              <Col md={4}>
-                <ClassCard classInfo={classInfo} bgColor={bgColor} />
-              </Col>
-            );
-          })}
-        </Row>
+       {isLoading && <Loading isLoading={isLoading}/>}
+       {teacherClasses.length > 0 && !isLoading &&(
+           <Row>
+           {teacherClasses.map((classInfo) => {
+             if (index > colorsBg.length) index = 0;
+             const bgColor = colorsBg[index++];
+             return (
+               <Col md={4}>
+                 <ClassCard classInfo={classInfo} bgColor={bgColor} />
+               </Col>
+             );
+           })}
+         </Row>
+       )}
+      {teacherClasses.length === 0 && !isLoading && <NoClass />}
+
       </Container>
     </AppCard>
   );

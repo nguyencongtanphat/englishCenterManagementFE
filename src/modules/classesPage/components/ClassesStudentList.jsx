@@ -1,5 +1,5 @@
 import {React, useState, useEffect} from 'react'
-import { Container, Row, Col, Table, Badge, Image, Modal} from 'react-bootstrap'
+import { Container, Row, Col, Table, Badge, Image} from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import DatePicker from 'react-datepicker';
 import deleteSVG from "../../../assets/images/global/delete.svg";
@@ -20,7 +20,7 @@ const ClassesStudentList = ({std}) => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false)
-    }, 1000);
+    }, 1600);
   }, []);
 
   return (
