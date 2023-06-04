@@ -227,7 +227,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
             </h3>
             <Row>
 
-              <Form.Group as={Col} xs="auto">
+              {/* <Form.Group as={Col} xs="auto">
                 <Form.Select
                   name="Certificate"
                   style={{ fontSize: "14px" }}
@@ -239,7 +239,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                   <option value="IELTS">IELTS</option>
                   <option value="TOEFL">TOEFL</option>
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
 
               <Col xs="auto">
                 <Form.Group as={Col} xs="auto">
