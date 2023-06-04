@@ -392,7 +392,7 @@ function ClassesAdd() {
                             </div>
 
                             <div className={`${styled['final_item']}`}>
-                                <label style={{width: "223px", fontSize: "16px", fontWeight:400}}>Overall:</label>
+                                <label style={{width: "223px", fontSize: "16px", fontWeight:400}}>Overall score:</label>
                                 <label style={{color: "#238723", textAlign: "right", fontSize: "24px", fontWeight: "600"}}>
                                     {(filterType === filterTypeOption.monthly || filterType === filterTypeOption.total) &&
                                         <>{getTotalPercent(reportInfo.Result?.TotalHomeworkScore, reportInfo.Result?.TotalHomeworkScoreRequired, reportInfo.Result?.TotalTestScore, reportInfo.Result?.TotalTestScoreRequired, reportInfo.Result?.TotalAttented, reportInfo.Result?.TotalReport).toString()}%</>

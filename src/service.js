@@ -17,10 +17,14 @@ class StudentService {
 
   getStudentsByClass(classId) {
     return axios.get(
-      `http://localhost:3001/api/v1/students?classId=${classId}`
-    );
+      `http://localhost:3001/api/v1/students?classId=${classId}`);
   }
 
+
+  getStudentReportOverviewByClass(classId) {
+    return axios.get(`http://localhost:3001/api/v1/student-report/total/${classId}`);
+  }
+  
   getStudentReportOverview() {
     return axios.get(`http://localhost:3001/api/v1/student-report/total`);
   }

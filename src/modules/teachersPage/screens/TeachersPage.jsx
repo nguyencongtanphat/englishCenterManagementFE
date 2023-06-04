@@ -107,6 +107,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
         params: { classIds },
       });
 
+
       const classList = response.data.ResponseResult.Result;
       return classList.map((classItem) => classItem.name);
     } catch (error) {
@@ -114,6 +115,33 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
       return [];
     }
   };
+
+  //search teachers:
+  // const [searchValue, setSearchValue] = useState("");
+
+  // //Search handle
+  // const handleSearchChange = (event) => {
+  //   const value = event.target.value;
+  //   setSearchValue(value);
+
+  //   find(value, ["TeacherName", "ClassID"]);
+  // };
+
+  // const find = (query) => {
+  //   const params = new URLSearchParams();
+  //   params.append("query", query);
+
+  //   axios
+  //     .get(`http://localhost:3001/api/v1/teacher/search?${params}`)
+  //     .then((response) => {
+  //       setTeachers(response.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+
   return (
     <>
       {/* Filter */}
@@ -155,6 +183,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
               <b>Teacher List</b>
             </h3>
             <Row>
+
               <Form.Group as={Col} xs="auto">
                 <Form.Select
                   name="Certificate"
@@ -168,6 +197,35 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                   <option value="TOEFL">TOEFL</option>
                 </Form.Select>
               </Form.Group>
+
+              <Col xs="auto">
+                <Form.Group as={Col} xs="auto">
+                  <Form.Select
+                    name="Certificate"
+                    style={{ fontSize: "14px", cursor: "pointer" }}
+                    value={selectedCertificate}
+                    onChange={handleCertificateChange}
+                  >
+                    <option hidden>Expertise</option>
+                    <option value="TOEIC">TOEIC</option>
+                    <option value="IELTS">IELTS</option>
+                    <option value="TOEFL">TOEFL</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              <Col xs="auto">
+                <Form.Group>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search Class..."
+                    style={{ fontSize: "14px" }}
+                    // value={searchValue}
+                    // onChange={handleSearchChange}
+                  />
+                </Form.Group>
+              </Col>
+
             </Row>
           </Col>
 
@@ -185,7 +243,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
             </Link>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ cursor: "pointer" }}>
           <Table
             bordered
             hover
@@ -208,8 +266,12 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                 <th>EMAIL</th>
                 <th>EXPERTISE</th>
                 <th>EXPERIENCE</th>
+
                 <th>CLASS</th>
                 <th></th>
+
+                {/* <th>CLASS</th> */}
+
               </tr>
             </thead>
 
@@ -233,9 +295,11 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                   <td>{teacher.PhoneNumber}</td>
                   <td>{teacher.Email}</td>
                   <td>
-                    {teacher.Certificate} {teacher.Score}
+                    {teacher.Certificate}
+                    {/* {teacher.Score} */}
                   </td>
                   <td>{calculateExperience(teacher.StartedDate)}</td>
+
                   <td>
                       {Array.isArray(teacher.classes) && teacher.classes.length > 0 ? (
                       teacher.classes.map((classItem) => (
@@ -252,6 +316,9 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                   <img src={deleteSVG} alt="delete" />
                 </button>
                   </td>
+
+                  {/* <td>{teacher.class}</td> */}
+
                 </tr>
               ))}
             </tbody>

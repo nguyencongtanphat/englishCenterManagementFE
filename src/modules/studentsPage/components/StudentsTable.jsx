@@ -7,13 +7,16 @@ import {
   Container,
   Badge,
   Image,
+  Modal,
   Dropdown,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "./styleStd.module.css";
 import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
+import searchSVG from "../../../assets/images/global/search.svg";
 import axios from 'axios';
+import Loading from "../../classesPage/components/Loading";
 
 function mathRound(number){
   return Math.round((number) * 100)/100
@@ -21,17 +24,24 @@ function mathRound(number){
 
 function StudentsTable({ std }) {
   let navigate = useNavigate();
-  
+  const [isLoading, setIsLoading] = useState(true);
   // Handle Delete Student
-  const [studentList, setStudentList] = useState([]);
+  const [studentList, setStudentList] = useState({});
   const [studentDeleted, setStudentDeleted] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [classToDelete, setClassToDelete] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/students');
       setStudentList(result.data);
     };
     fetchData();
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 700);
   }, [studentDeleted]);
 
   const deleteHandler = async (Id) => {
@@ -43,12 +53,29 @@ function StudentsTable({ std }) {
       }
       setStudentDeleted(prevState => !prevState);
       window.location.reload();
-      alert('Xóa học viên thành công!');
+      //alert('Xóa học viên thành công!');
     } 
     catch (error) {
       console.log(error);
       alert('Đã có lỗi xảy ra khi xóa học viên!');
     }
+  };
+
+  const handleDelete = (id) => {
+    setClassToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (classToDelete) {
+      deleteHandler(classToDelete);
+    }
+    setShowConfirmation(false);
+  };
+
+  const handleCancelDelete = () => {
+    setClassToDelete(null);
+    setShowConfirmation(false);
   };
 
   // Handle Filter by Type Class
@@ -103,6 +130,7 @@ function StudentsTable({ std }) {
   const [classes, setClasses] = useState([]);
   const [filClass, setFilClass] = useState("");
   const [filEva, setFilEva] = useState("");
+  const [totalStudents, setTotalStudents] = useState([]);
   const [displayedStudents, setDisplayedStudents] = useState([]);
 
   useEffect(() => {
@@ -111,6 +139,7 @@ function StudentsTable({ std }) {
       .then((res) => {
         //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
         setDisplayedStudents(res.data.ResponseResult.Result);
+        setTotalStudents(res.data.ResponseResult.Result)
         console.log('Data Result');
         console.log(res.data.ResponseResult.Result);
       })
@@ -137,10 +166,40 @@ function StudentsTable({ std }) {
       });
   }, []);
 
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchValue(value);
+    search(value.toUpperCase());
+    // find(value, ['StudentName', 'StudentID']); 
+  };
+
+  const search = (value) => {
+    let tempArr = [...totalStudents].map((x) => x)
+    let temp = tempArr.filter((item) => {
+      return (item?.Student.Name.toUpperCase()).includes(value) || (item?.Student.StudentID.toUpperCase()).includes(value)
+    })
+    setDisplayedStudents(temp)
+  }
+  
+  // const find = (query) => {
+  //   const params = new URLSearchParams();
+  //   params.append('query', query);
+  //   const url = `http://localhost:3001/api/v1/student-report/total/find?${params}`;
+  //   console.log("URL API search: ",url);
+  //   axios.get(`http://localhost:3001/api/v1/student-report/total/find?${params}`)
+  //     .then((response) => {
+  //       setDisplayedStudents(response.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
   return (
     <>
       <Form className="mb-3" style={{ fontSize: 14 }}>
         <Row>
+          <div style={{display:"flex", flexDirection:"row", gap:"16px"}}>
           <Form.Group as={Col} xs="auto">
             <Form.Select name="class" style={{ fontSize: "14px", borderColor: active ? "black" : "none"}}
             onChange={onChange}>
@@ -162,8 +221,18 @@ function StudentsTable({ std }) {
               <option value="Non">Non</option>
             </Form.Select>
           </Form.Group>
+          <div className={`${styled["searchStyle"]}`}>
+              <img src={searchSVG}></img>
+              <input type="text" placeholder="Search Students..." className={`${styled["focusNone"]}`}
+              value={searchValue} 
+              onChange={handleSearchChange}></input>
+          </div>
+          </div>
         </Row>
       </Form>
+      {isLoading && <Loading isLoading={isLoading}/>}
+      {displayedStudents.length > 0 && !isLoading &&(
+
       <div className={`${styled["form"]}`}>
         <Table
           bordered
@@ -191,7 +260,7 @@ function StudentsTable({ std }) {
               <th></th>
             </tr>
           </thead>
-          <tbody style={{ backgroundColor: "white" }}>
+          <tbody style={{ backgroundColor: "white", cursor: "pointer" }}>
             {displayedStudents.map((_std) => (
               <tr key={_std.id}>
                 <td onClick={()=>{navigate(`/students/${_std.Student._id}`);}}>
@@ -257,13 +326,35 @@ function StudentsTable({ std }) {
                 <td>
                   <button><img src={editSVG} alt="edit"/></button>
                   <br></br>
-                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_std.Student._id)} /></button>
+                  <button><img src={deleteSVG} alt="delete" onClick={(e) => handleDelete(_std.Student._id)} /></button>
                 </td>
               </tr>
             ))}
           </tbody>
         </Table>
+
+        <Modal show={showConfirmation} onHide={handleCancelDelete} centered>
+        <Modal.Header closeButton>
+        <Modal.Title style={{textAlign:'center', alignItems:'center'}}>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{textAlign:'center', alignItems:'center', fontSize:'20px'}}>
+           Are you sure you want to delete this student?
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: 'none' }}>
+          <button
+            onClick={handleCancelDelete}
+            style={{ marginRight: '10px', borderRadius:'3px', padding:'7px', backgroundColor:'#3333' }}>
+            Cancel
+        </button>
+        <button 
+          style={{ marginRight: '-3px', borderRadius:'3px', color:'black', padding:'7px', backgroundColor:'#EA2027' }}
+          onClick={handleConfirmDelete}>
+          Delete
+        </button>
+        </Modal.Footer>
+      </Modal>
       </div>
+      )}
     </>
   );
 }
