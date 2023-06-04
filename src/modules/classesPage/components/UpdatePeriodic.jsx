@@ -1,6 +1,6 @@
 import classes from "./UpdatePeriodic.module.css";
 import ReactDOM from "react-dom";
-import { Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useEffect } from "react";
 import { useState } from "react";
 import moment from "moment/moment";
@@ -34,16 +34,13 @@ const UpdatePeriodicModal = (props) => {
     }
   };
 
-  const dateChangeHandler = (event) => {
-    const dateChosen = event.target.value;
-
-    if (new Date(dateChosen).getTime() > new Date().getTime()) {
+  useEffect(() => {
+    if (new Date(date).getTime() > new Date().getTime()) {
       setError("Date must be before today!");
     } else {
       const isExist = props.existingTests.find((test) => {
         return (
-          new Date(test.Date).toDateString() ===
-          new Date(dateChosen).toDateString()
+          new Date(test.Date).toDateString() === new Date(date).toDateString()
         );
       });
       if (isExist) {
@@ -53,11 +50,10 @@ const UpdatePeriodicModal = (props) => {
         const testsOfDate = props.tests.filter((test) => {
           console.log(
             new Date(test.Date).toDateString(),
-            new Date(dateChosen).toDateString()
+            new Date(date).toDateString()
           );
           return (
-            new Date(test.Date).toDateString() ===
-            new Date(dateChosen).toDateString()
+            new Date(test.Date).toDateString() === new Date(date).toDateString()
           );
         });
         if (testsOfDate.length === 1) {
@@ -71,7 +67,10 @@ const UpdatePeriodicModal = (props) => {
         setTests(testsOfDate);
       }
     }
-    setDate(dateChosen);
+  }, [date]);
+
+  const dateChangeHandler = (event) => {
+    setDate(event.target.value);
   };
 
   const testChangeHandler = (event) => {
@@ -98,7 +97,23 @@ const UpdatePeriodicModal = (props) => {
         <ModalOverlay>
           {props.tests.length === 0 && (
             <>
-              <p>There's no tests in this class</p>
+              <p>
+                <span>There's no tests in this class. </span>
+                <button
+                  style={{
+                    backgroundColor: "white",
+                    color: "#0D6EFD",
+                    border: "none",
+                    padding: 0,
+                    paddingLeft: "6px",
+                  }}
+                  size="small"
+                  onClick={props.onAddTest}
+                >
+                  Add test
+                </button>
+              </p>
+
               <div className="d-flex gap-2 justify-content-end">
                 <button
                   className="w-25 py-1 border-0 rounded-2 bg-black text-white"
@@ -130,7 +145,7 @@ const UpdatePeriodicModal = (props) => {
                   <Form.Select
                     aria-label="Default select example"
                     onChange={testChangeHandler}
-                    value={testChosen._id}
+                    value={testChosen?._id}
                     disabled={tests.length === 1}
                   >
                     {tests.map((test) => {

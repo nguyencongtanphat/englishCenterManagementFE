@@ -17,21 +17,24 @@ class StudentService {
 
   getStudentsByClass(classId) {
     return axios.get(
-      `http://localhost:3001/api/v1/students?classId=${classId}`);
+      `http://localhost:3001/api/v1/students?classId=${classId}`
+    );
   }
-
 
   getStudentReportOverviewByClass(classId) {
-    return axios.get(`http://localhost:3001/api/v1/student-report/total/${classId}`);
+    return axios.get(
+      `http://localhost:3001/api/v1/student-report/total/${classId}`
+    );
   }
-  
+
   getStudentReportOverview() {
     return axios.get(`http://localhost:3001/api/v1/student-report/total`);
   }
 
-  getTopStudents({classid} = {}) {
-    let urlString = "http://localhost:3001/api/v1/student-report/total/?istop=true"
-    urlString = classid ? urlString + '&classid=' + classid : urlString
+  getTopStudents({ classid } = {}) {
+    let urlString =
+      "http://localhost:3001/api/v1/student-report/total/?istop=true";
+    urlString = classid ? urlString + "&classid=" + classid : urlString;
     return axios.get(urlString);
   }
 
@@ -57,7 +60,7 @@ class StudentService {
     );
   }
 
-  getStudiedDate(studentId){
+  getStudiedDate(studentId) {
     return axios.get(
       `http://localhost:3001/api/v1/student-report/date/` + studentId
     );
@@ -84,7 +87,7 @@ export class HomeService {
   static async getDateCenter() {
     try {
       const response = await axios.get(`${url}/center-report/date`);
-     return  response.data.ResponseResult.Result;
+      return response.data.ResponseResult.Result;
     } catch (e) {
       throw new Error(e.message);
     }
@@ -109,14 +112,14 @@ export class HomeService {
     }
   }
   static async getPieChartData({
-    month= null,
-    date= null,
-    isPeriod= null,
-    year=2023
+    month = null,
+    date = null,
+    isPeriod = null,
+    year = 2023,
   } = {}) {
     try {
-      console.log("getPieChartData month date", month, date)
-      if(month){
+      console.log("getPieChartData month date", month, date);
+      if (month) {
         console.log(
           "url pie chart month",
           `${url}/student-report/monthly/?month=${month}`
@@ -141,23 +144,24 @@ export class HomeService {
           { name: "Not-Good", value: badNumber },
         ];
         return data;
-      }else if(date){
-        console.log("date here")
+      } else if (date) {
+        console.log("date here");
         // eslint-disable-next-line no-useless-concat
         console.log(
           "url pie chart date",
           `${url}/center-report` + "?date=" + date.slice(0, 10)
         );
         let currentReport;
-        const response = await axios.get(`${url}/center-report` + "?date=" + date.slice(0,10));
+        const response = await axios.get(
+          `${url}/center-report` + "?date=" + date.slice(0, 10)
+        );
         const reports = response.data.ResponseResult.Result.reports;
-        reports.forEach(report => {
-          const reportDate = report.Date.slice(0, 10); 
+        reports.forEach((report) => {
+          const reportDate = report.Date.slice(0, 10);
           date = date.slice(0, 10);
           console.log("current date", date, reportDate);
-          if(reportDate === date)
-            currentReport = report
-        })
+          if (reportDate === date) currentReport = report;
+        });
         const data = [
           { name: "Good", value: currentReport["GoodLevel"] },
           { name: "Medium", value: currentReport["MediumLevel"] },
@@ -165,7 +169,6 @@ export class HomeService {
         ];
         return data;
       }
-      
     } catch (e) {
       throw new Error(e.message);
     }
@@ -176,20 +179,18 @@ export class HomeService {
     isPeriod = false,
   } = {}) {
     try {
-      if(isPeriod){
-         console.log("url line chart", `${url}/center-report/monthly`);
-         const response = await axios.get(
-           `${url}/center-report/monthly` 
-         );
-         const reports = response.data.ResponseResult.Result;
-         const pieChart = reports.map(report =>{
-            return {
-              key: report["_id"]["Month"],
-              value: report["AvgCenterScore"],
-            };
-         })
-         return pieChart;
-      }else{
+      if (isPeriod) {
+        console.log("url line chart", `${url}/center-report/monthly`);
+        const response = await axios.get(`${url}/center-report/monthly`);
+        const reports = response.data.ResponseResult.Result;
+        const pieChart = reports.map((report) => {
+          return {
+            key: report["_id"]["Month"],
+            value: report["AvgCenterScore"],
+          };
+        });
+        return pieChart;
+      } else {
         let query = "";
         if (date) query = "?date=" + date.slice(0, 10);
         if (month) query = "?month=" + month;
@@ -211,7 +212,6 @@ export class HomeService {
         });
         return lineChartData;
       }
-     
     } catch (e) {
       throw new Error(e.message);
     }
@@ -315,8 +315,19 @@ export class TestsService {
 
   static getPeriodicTests(classId) {
     return axios.get(
-      `http://localhost:3001/api/v1/tests/periodic-tests/TOE700.1`
+      `http://localhost:3001/api/v1/tests/periodic-tests/${classId}`
     );
+  }
+
+  static addPeriodicTest(test) {
+    return axios.post(`http://localhost:3001/api/v1/tests/periodic-tests/`, {
+      ...test,
+    });
+  }
+  static addHomeworkTest(test) {
+    return axios.post(`http://localhost:3001/api/v1/tests/homework/`, {
+      ...test,
+    });
   }
 }
 

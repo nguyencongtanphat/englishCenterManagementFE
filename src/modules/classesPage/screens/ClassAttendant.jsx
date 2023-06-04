@@ -132,7 +132,7 @@ function ClassAttendant() {
     let newAttandances = [];
     students.forEach((student) => {
       const newAttandance = {
-        Date: new Date(date),
+        Date: new Date(date).toISOString().split("T")[0],
         Attendance: false,
         StudentID: student,
       };
@@ -286,9 +286,7 @@ function ClassAttendant() {
         </Col>
       </Row>
 
-      {isLoading && (
-        <Loading isLoading={isLoading}/>
-      )}
+      {isLoading && <Loading isLoading={isLoading} />}
 
       {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
@@ -328,7 +326,10 @@ function ClassAttendant() {
                         onCancelDelete={() => {
                           setIsDeleting(false);
                         }}
-                        onAcceptDelete={() => deleteAttendanceHandler(date)}
+                        onAcceptDelete={() => {
+                          deleteAttendanceHandler(date);
+                          setIsDeleting(false);
+                        }}
                       />
                     )}
                   </>
