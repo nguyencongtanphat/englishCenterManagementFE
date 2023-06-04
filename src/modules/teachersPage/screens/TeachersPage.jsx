@@ -8,6 +8,7 @@ import { Table, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import { TeacherService } from "../../../service.js";
+import deleteSVG from "../../../assets/images/global/delete.svg";
 import moment from "moment";
 import axios from "axios";
 
@@ -21,6 +22,7 @@ function calculateExperience(startDate) {
 function TeachersPage() {
   let navigate = useNavigate();
   // Gọi API:
+  const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   // useEffect(() => {
   //   TeacherService.getAll()
@@ -32,7 +34,7 @@ function TeachersPage() {
 
   //Bộ lọc:
   const [selectedCertificate, setSelectedCertificate] = useState("");
-
+const [selectedTeacherId, setSelectedTeacherId] = useState("");
   const handleCertificateChange = (event) => {
     setSelectedCertificate(event.target.value);
   };
@@ -54,6 +56,63 @@ function TeachersPage() {
     } catch (error) {
       // Xử lý lỗi nếu có
       console.error(error);
+    }
+  };
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/api/v1/class/td", {
+          params: { teacherId: selectedTeacherId },
+        });
+        const classList = response.data.ResponseResult.Result;
+        setClasses(classList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchClasses();
+  }, [selectedTeacherId]);
+  // Handle Delete Teacher
+  const [teacherList, setTeacherList] = useState([]);
+  const [teacherDeleted, setTeacherDeleted] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('http://localhost:3001/api/v1/teacher');
+      setTeacherList(result.data);
+    };
+    fetchData();
+  }, [teacherDeleted]);
+
+  const deleteHandler = async (Id) => {
+    try {
+      const response = await axios.delete(`http://localhost:3001/api/v1/teacher/${Id}`);
+      console.log(response.data.message);
+      if (Array.isArray(teacherList)) {
+        setTeacherList(teacherList.filter((tcs) => tcs._id !== Id));
+      }
+      setTeacherDeleted(prevState => !prevState);
+      window.location.reload();
+      alert('Xóa teacher thành công!');
+    } 
+    catch (error) {
+      console.log(error);
+      alert('Đã có lỗi xảy ra khi xóa teacher!');
+    }
+  };
+  const fetchClassNames = async (classIds) => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/v1/class", {
+        params: { classIds },
+      });
+
+
+      const classList = response.data.ResponseResult.Result;
+      return classList.map((classItem) => classItem.name);
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   };
 
@@ -81,6 +140,7 @@ function TeachersPage() {
   //       console.log(error);
   //     });
   // };
+
 
   return (
     <>
@@ -123,6 +183,21 @@ function TeachersPage() {
               <b>Teacher List</b>
             </h3>
             <Row>
+
+              <Form.Group as={Col} xs="auto">
+                <Form.Select
+                  name="Certificate"
+                  style={{ fontSize: "14px" }}
+                  value={selectedCertificate}
+                  onChange={handleCertificateChange}
+                >
+                  <option hidden>Expertise</option>
+                  <option value="TOEIC">TOEIC</option>
+                  <option value="IELTS">IELTS</option>
+                  <option value="TOEFL">TOEFL</option>
+                </Form.Select>
+              </Form.Group>
+
               <Col xs="auto">
                 <Form.Group as={Col} xs="auto">
                   <Form.Select
@@ -150,6 +225,7 @@ function TeachersPage() {
                   />
                 </Form.Group>
               </Col>
+
             </Row>
           </Col>
 
@@ -190,19 +266,19 @@ function TeachersPage() {
                 <th>EMAIL</th>
                 <th>EXPERTISE</th>
                 <th>EXPERIENCE</th>
+
+                <th>CLASS</th>
+                <th></th>
+
                 {/* <th>CLASS</th> */}
+
               </tr>
             </thead>
 
             <tbody>
               {teachers.map((teacher) => (
-                <tr
-                  key={teacher.id}
-                  onClick={() => {
-                    navigate(`/teachers/${teacher._id}`);
-                  }}
-                >
-                  <td className="d-flex">
+                <tr key={teacher.id}>
+                  <td onClick={() => {navigate(`/teachers/${teacher._id}`);}} className="d-flex" style={{ cursor: 'pointer' }}>
                     <Image
                       src={teacher.ImageURL}
                       roundedCircle="true"
@@ -223,7 +299,26 @@ function TeachersPage() {
                     {/* {teacher.Score} */}
                   </td>
                   <td>{calculateExperience(teacher.StartedDate)}</td>
+
+                  <td>
+                      {Array.isArray(teacher.classes) && teacher.classes.length > 0 ? (
+                      teacher.classes.map((classItem) => (
+                        <div key={classItem._id}>{classItem.name}</div>
+                      ))
+                    ) : (
+                      <div>No classes</div>
+                    )}
+                 </td>
+                  {/* {teacher.classIds.join(", ")} */}
+                  <td>
+                  {/* <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(teacher._id)} /></button> */}
+                  <button onClick={(e) => deleteHandler(teacher._id)}>
+                  <img src={deleteSVG} alt="delete" />
+                </button>
+                  </td>
+
                   {/* <td>{teacher.class}</td> */}
+
                 </tr>
               ))}
             </tbody>
