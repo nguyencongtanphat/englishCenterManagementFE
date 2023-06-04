@@ -22,6 +22,7 @@ function calculateExperience(startDate) {
 function TeachersPage() {
   let navigate = useNavigate();
   // Gọi API:
+  const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
   // useEffect(() => {
   //   TeacherService.getAll()
@@ -33,7 +34,7 @@ function TeachersPage() {
 
   //Bộ lọc:
   const [selectedCertificate, setSelectedCertificate] = useState("");
-
+const [selectedTeacherId, setSelectedTeacherId] = useState("");
   const handleCertificateChange = (event) => {
     setSelectedCertificate(event.target.value);
   };
@@ -57,6 +58,21 @@ function TeachersPage() {
       console.error(error);
     }
   };
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/api/v1/class/td", {
+          params: { teacherId: selectedTeacherId },
+        });
+        const classList = response.data.ResponseResult.Result;
+        setClasses(classList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchClasses();
+  }, [selectedTeacherId]);
   // Handle Delete Teacher
   const [teacherList, setTeacherList] = useState([]);
   const [teacherDeleted, setTeacherDeleted] = useState(false);
@@ -83,6 +99,19 @@ function TeachersPage() {
     catch (error) {
       console.log(error);
       alert('Đã có lỗi xảy ra khi xóa teacher!');
+    }
+  };
+  const fetchClassNames = async (classIds) => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/v1/class", {
+        params: { classIds },
+      });
+
+      const classList = response.data.ResponseResult.Result;
+      return classList.map((classItem) => classItem.name);
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   };
   return (
@@ -207,9 +236,21 @@ function TeachersPage() {
                     {teacher.Certificate} {teacher.Score}
                   </td>
                   <td>{calculateExperience(teacher.StartedDate)}</td>
-                  <td>{teacher.class}</td>
                   <td>
-                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(teacher._id)} /></button>
+                      {Array.isArray(teacher.classes) && teacher.classes.length > 0 ? (
+                      teacher.classes.map((classItem) => (
+                        <div key={classItem._id}>{classItem.name}</div>
+                      ))
+                    ) : (
+                      <div>No classes</div>
+                    )}
+                 </td>
+                  {/* {teacher.classIds.join(", ")} */}
+                  <td>
+                  {/* <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(teacher._id)} /></button> */}
+                  <button onClick={(e) => deleteHandler(teacher._id)}>
+                  <img src={deleteSVG} alt="delete" />
+                </button>
                   </td>
                 </tr>
               ))}
