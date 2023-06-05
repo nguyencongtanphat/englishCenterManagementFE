@@ -158,7 +158,25 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
       return [];
     }
   };
+  const [filTeacher, setFilTeacher] = useState("");
+  const [filEva, setFilEva] = useState("");
+  const [totalTeachers, setTotalTeachers] = useState([]);
+  const [displayedStudents, setDisplayedStudents] = useState([]);
 
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:3001/api/v1/student-report/total')
+  //     .then((res) => {
+  //       //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
+  //       setDisplayedStudents(res.data.ResponseResult.Result);
+  //       setTotalStudents(res.data.ResponseResult.Result)
+  //       console.log('Data Result');
+  //       console.log(res.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
   //search teachers:
   // const [searchValue, setSearchValue] = useState("");
 
@@ -261,7 +279,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                 <Form.Group>
                   <Form.Control
                     type="text"
-                    placeholder="Search Class..."
+                    placeholder="Search Teacher..."
                     style={{ fontSize: "14px" }}
                     // value={searchValue}
                     // onChange={handleSearchChange}

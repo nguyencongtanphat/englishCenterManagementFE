@@ -160,7 +160,7 @@ function TeacherDetail() {
                   />
                   <label style={{ color: "#6B7280", fontSize: "14px" }}>
 
-                    {moment(teacher.DateOfBirth).format("MMMM Do, YYYY")}
+                    {/* {moment(teacher.DateOfBirth).format("MMMM Do, YYYY")} */}
 
                     {/* {teacher.DateOfBirth} */}
                     {`${formatDate(teacher.DateOfBirth)}`}
