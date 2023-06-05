@@ -36,7 +36,33 @@ function TeachersPage() {
   //     })
   //     .catch((err) => console.log(err));
   // }, []);
+// Search teacher
+const [searchValue, setSearchValue] = useState("");
+  
+//Search handle
+const handleSearchChange = (event) => {
+  const value = event.target.value;
+  setSearchValue(value);
 
+  find(value, ['TeacherName', 'ClassID']); 
+};
+
+const find = (query) => {
+  const params = new URLSearchParams();
+  params.append('query', query);
+  const url = `http://localhost:3001/api/v1/teacher/find?${params}`;
+  console.log("URL API search: ",url);
+  axios.get(`http://localhost:3001/api/v1/teacher/find?${params}`)
+    .then((response) => {
+      setTeachers(response.data.ResponseResult.Result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+useEffect(() => {
+  find(searchValue);
+}, [searchValue]);
   //Bộ lọc:
   const [selectedCertificate, setSelectedCertificate] = useState("");
 const [selectedTeacherId, setSelectedTeacherId] = useState("");
@@ -281,8 +307,8 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                     type="text"
                     placeholder="Search Teacher..."
                     style={{ fontSize: "14px" }}
-                    // value={searchValue}
-                    // onChange={handleSearchChange}
+                    value={searchValue}
+                    onChange={handleSearchChange}
                   />
                 </Form.Group>
               </Col>
