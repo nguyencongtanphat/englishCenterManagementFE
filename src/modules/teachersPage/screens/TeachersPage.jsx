@@ -1,18 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Container, Col, Row, Form, Stack } from "react-bootstrap";
+import { Container, Col, Row, Form, Stack, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faPlusCircle } from "@fortawesome/fontawesome-free-solid";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Table, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
-import { TeacherService } from "../../../service.js";
 import deleteSVG from "../../../assets/images/global/delete.svg";
-import editSVG from "../../../assets/images/global/edit.svg";
-import axios from 'axios';
+import axios from "axios";
 import moment from "moment";
 
+import Loading from "../../classesPage/components/Loading.jsx";
+import NoTeacher from "../../classesPage/components/NoTeacher.jsx";
 
 function calculateExperience(startDate) {
   const today = moment();
@@ -21,10 +21,15 @@ function calculateExperience(startDate) {
   return yearsOfExperience;
 }
 
-function TeachersPage({ teacher}) {
+function TeachersPage() {
+  const [isLoading, setIsLoading]= useState(true);
   let navigate = useNavigate();
   // Gọi API:
+  const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
+  const [teacherClasses, setTeacherClasses] = useState([]);
+  const [teacherClassIDs, setTeacherClassIDs] = useState([]);
+
   // useEffect(() => {
   //   TeacherService.getAll()
   //     .then((res) => {
@@ -35,43 +40,84 @@ function TeachersPage({ teacher}) {
 
   //Bộ lọc:
   const [selectedCertificate, setSelectedCertificate] = useState("");
-
+const [selectedTeacherId, setSelectedTeacherId] = useState("");
   const handleCertificateChange = (event) => {
     setSelectedCertificate(event.target.value);
   };
   useEffect(() => {
-    TeacherService.getAll()
-      .then((res) => {
-        setTeachers(res.data.ResponseResult.Result);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const monthNames = [
-      'Jan', 'Feb', 'Mar',
-      'Apr', 'May', 'Jun', 'Jul',
-      'Aug', 'Sep', 'Oct',
-      'Nov', 'Dec'
-    ];
-    const monthIndex = date.getMonth();
-    const day = date.getDate();
-    const year = date.getFullYear();
-  
-    return `${monthNames[monthIndex]} ${day} ${year}`;
+    setIsLoading(true);
+    fetchTeachers();
+
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
+  }, [selectedCertificate]);
+
+  const fetchTeachers = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/v1/teacher", {
+        params: { Certificate: selectedCertificate }, 
+      });
+
+      const teacherList = response.data.ResponseResult.Result;
+      setTeachers(teacherList);
+
+      // GetClassByTeacher
+      const classPromises = teacherList.map((teacher) =>
+      axios.get(`http://localhost:3001/api/v1/class/teacherid/${teacher._id}`)
+      );
+      const classResponses = await Promise.all(classPromises);
+      const classLists = classResponses.map((response) => response.data.ResponseResult.Result);
+      setTeacherClasses(classLists);
+
+      const classIDs = classLists.map((classList) =>
+      classList.map((classItem) => classItem.ClassID));
+      setTeacherClassIDs(classIDs);
+
+    } 
+    catch (error) {
+      console.error(error);
+    }
   };
-  
-  // Handle Delete Teacher
-  const [teacherList, setTeacherList] = useState([]);
-  const [teacherDeleted, setTeacherDeleted] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get('http://localhost:3001/api/v1/teacher');
-      setTeacherList(result.data);
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/api/v1/class/td", {
+          params: { teacherId: selectedTeacherId },
+        });
+        const classList = response.data.ResponseResult.Result;
+        setClasses(classList);
+      } catch (error) {
+        console.error(error);
+      }
     };
-    fetchData();
-  }, [teacherDeleted]);
+  
+    fetchClasses();
+  }, [selectedTeacherId]);
+
+  const [teacherList, setTeacherList] = useState([]);
+  const [teacherDeleted, setTeacherDeleted] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [teacherToDelete, setTeacherToDelete] = useState(null);
+
+  //delete Teacher
+  const handleDelete = (id) => {
+    setTeacherToDelete(id);
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (teacherToDelete) {
+      deleteHandler(teacherToDelete);
+    }
+    setShowConfirmation(false);
+  };
+
+  const handleCancelDelete = () => {
+    setTeacherToDelete(null);
+    setShowConfirmation(false);
+  };
 
   const deleteHandler = async (Id) => {
     try {
@@ -82,13 +128,82 @@ function TeachersPage({ teacher}) {
       }
       setTeacherDeleted(prevState => !prevState);
       window.location.reload();
-      alert('Xóa teacher thành công!');
     } 
     catch (error) {
       console.log(error);
       alert('Đã có lỗi xảy ra khi xóa teacher!');
     }
   };
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get('http://localhost:3001/api/v1/teacher');
+      setTeacherList(result.data);
+    };
+    fetchData();
+  }, [teacherDeleted]);
+
+
+  const fetchClassNames = async (classIds) => {
+    try {
+      const response = await axios.get("http://localhost:3001/api/v1/class", {
+        params: { classIds },
+      });
+
+
+      const classList = response.data.ResponseResult.Result;
+      return classList.map((classItem) => classItem.name);
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
+  };
+  const [filTeacher, setFilTeacher] = useState("");
+  const [filEva, setFilEva] = useState("");
+  const [totalTeachers, setTotalTeachers] = useState([]);
+  const [displayedStudents, setDisplayedStudents] = useState([]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:3001/api/v1/student-report/total')
+  //     .then((res) => {
+  //       //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
+  //       setDisplayedStudents(res.data.ResponseResult.Result);
+  //       setTotalStudents(res.data.ResponseResult.Result)
+  //       console.log('Data Result');
+  //       console.log(res.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+  //search teachers:
+  // const [searchValue, setSearchValue] = useState("");
+
+  // //Search handle
+  // const handleSearchChange = (event) => {
+  //   const value = event.target.value;
+  //   setSearchValue(value);
+
+  //   find(value, ["TeacherName", "ClassID"]);
+  // };
+
+  // const find = (query) => {
+  //   const params = new URLSearchParams();
+  //   params.append("query", query);
+
+  //   axios
+  //     .get(`http://localhost:3001/api/v1/teacher/search?${params}`)
+  //     .then((response) => {
+  //       setTeachers(response.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+
+
   return (
     <>
       {/* Filter */}
@@ -130,19 +245,49 @@ function TeachersPage({ teacher}) {
               <b>Teacher List</b>
             </h3>
             <Row>
-              <Form.Group as={Col} xs="auto">
+
+              {/* <Form.Group as={Col} xs="auto">
                 <Form.Select
                   name="Certificate"
                   style={{ fontSize: "14px" }}
                   value={selectedCertificate}
                   onChange={handleCertificateChange}
                 >
-                  <option hidden>Certificate</option>
+                  <option hidden>Expertise</option>
                   <option value="TOEIC">TOEIC</option>
                   <option value="IELTS">IELTS</option>
                   <option value="TOEFL">TOEFL</option>
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
+
+              <Col xs="auto">
+                <Form.Group as={Col} xs="auto">
+                  <Form.Select
+                    name="Certificate"
+                    style={{ fontSize: "14px", cursor: "pointer" }}
+                    value={selectedCertificate}
+                    onChange={handleCertificateChange}
+                  >
+                    <option hidden>Expertise</option>
+                    <option value="TOEIC">TOEIC</option>
+                    <option value="IELTS">IELTS</option>
+                    <option value="TOEFL">TOEFL</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+
+              <Col xs="auto">
+                <Form.Group>
+                  <Form.Control
+                    type="text"
+                    placeholder="Search Teacher..."
+                    style={{ fontSize: "14px" }}
+                    // value={searchValue}
+                    // onChange={handleSearchChange}
+                  />
+                </Form.Group>
+              </Col>
+
             </Row>
           </Col>
 
@@ -160,73 +305,112 @@ function TeachersPage({ teacher}) {
             </Link>
           </Col>
         </Row>
-        <Row>
-          <Table
-            bordered
-            hover
-            style={{
-              fontSize: 14,
-              borderCollapse: "collapse",
-              borderRadius: "8px",
-              overflow: "hidden",
-              borderColor: "#E5E7EB",
-              marginLeft: "12px",
-            }}
-          >
-            <thead>
-              <tr
-                className="text-uppercase text-secondary"
-                style={{ backgroundColor: "#F9FAFB" }}
-              >
-                <th>NAME</th>
-                <th>PHONE</th>
-                <th>EMAIL</th>
-                <th>CERTIFICATE</th>
-                <th>EXPERIENCE</th>
-                <th>CLASS</th>
-                <th></th>
-              </tr>
-            </thead>
 
-            <tbody>
-              {teachers.map((_teacher) => (
-                <tr
-                  key={_teacher.id}
-                  onClick={() => {
-                    navigate(`/teachers/${_teacher._id}`);
-                  }}
-                >
-                  <td className="d-flex">
-                    <Image
-                      src={_teacher.ImageURL}
-                      roundedCircle="true"
-                      width="40px"
-                      height="40px"
-                    ></Image>
-                    <div style={{ marginLeft: "8px" }}>
-                      <div style={{ fontWeight: "600" }}>{_teacher.Name}</div>
-                      <div style={{ fontSize: "12px" }}>
-                        {_teacher.TeacherID}
-                      </div>
-                    </div>
-                  </td>
-                  <td>{_teacher.PhoneNumber}</td>
-                  <td>{_teacher.Email}</td>
-                  <td>{_teacher.Certificate}</td>
-                  <td>{_teacher.dob}</td>
-                  <td></td>
-                  <td>
-                  <button><img src={editSVG} alt="edit"/></button>
-                  <br></br>
-                  <button><img src={deleteSVG} alt="delete" onClick={(e) => deleteHandler(_teacher._id)} /></button>
-                </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Row>
+        {isLoading && <Loading isLoading={isLoading}/>}
+
+        {teachers.length > 0 && !isLoading &&(
+             <Row style={{ cursor: "pointer" }}>
+             <Table
+               bordered
+               hover
+               style={{
+                 fontSize: 14,
+                 borderCollapse: "collapse",
+                 borderRadius: "8px",
+                 overflow: "hidden",
+                 borderColor: "#E5E7EB",
+                 marginLeft: "12px",
+               }}
+             >
+               <thead>
+                 <tr
+                   className="text-uppercase text-secondary"
+                   style={{ backgroundColor: "#F9FAFB" }}
+                 >
+                   <th>NAME</th>
+                   <th>PHONE</th>
+                   <th>EMAIL</th>
+                   <th>EXPERTISE</th>
+                   <th>EXPERIENCE</th>
+                   <th>TEACHING CLASS</th>
+                   <th></th>
+                 </tr>
+               </thead>
+   
+               <tbody>
+                 {teachers.map((teacher, index) => (
+                   <tr key={teacher.id} >
+                      <td onClick={()=>{navigate(`/teachers/${teacher._id}`);}}>
+                        <Container>
+                          <Row>
+                            <Col md="auto">
+                            <Image
+                              src={teacher.ImageURL}
+                              roundedCircle="true"
+                              width="40px"
+                              height="40px"
+                            ></Image>
+                            </Col>
+                            <Col>
+                              <b>{teacher.Name}</b>
+                              <br />
+                              <label style={{ color: "#6B7280" }}>{teacher.TeacherID}</label>
+                            </Col>
+                          </Row>
+                        </Container>
+                      </td>
+
+                     <td>{teacher.PhoneNumber}</td>
+                     <td>{teacher.Email}</td>
+                     <td>
+                       {teacher.Certificate}
+                     </td>
+                     <td>{calculateExperience(teacher.StartedDate)+' Years'}</td>
+   
+                     <td>
+                       {Array.isArray(teacherClassIDs[index]) && teacherClassIDs[index].length > 0 ? (
+                       teacherClassIDs[index].map((classID) => (
+                         <div key={classID}>{classID}</div>
+                       ))
+                       ) : (
+                         <div>No classes</div>
+                       )}
+                    </td>
+                     {/* {teacher.classIds.join(", ")} */}
+                     <td>
+                      <button onClick={() => handleDelete(teacher._id)}>
+                        <img src={deleteSVG} alt="delete" />
+                      </button>
+                     </td>
+                   </tr>
+                 ))}
+               </tbody>
+             </Table>
+           </Row>
+        )}
+      {teachers.length === 0 && !isLoading && <NoTeacher />}
+
+      <Modal show={showConfirmation} onHide={handleCancelDelete} centered>
+        <Modal.Header closeButton>
+        <Modal.Title style={{textAlign:'center', alignItems:'center'}}>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{textAlign:'center', alignItems:'center', fontSize:'20px'}}>
+           Are you sure you want to delete this Teacher?
+        </Modal.Body>
+        <Modal.Footer style={{ borderTop: 'none' }}>
+          <button
+            onClick={handleCancelDelete}
+            style={{ marginRight: '10px', borderRadius:'3px', padding:'7px', backgroundColor:'#3333' }}>
+            Cancel
+        </button>
+        <button 
+            style={{ marginRight: '-3px', borderRadius:'3px', color:'black', padding:'7px', backgroundColor:'#EA2027' }}
+            onClick={handleConfirmDelete}>
+            Delete
+        </button>
+        </Modal.Footer>
+      </Modal>
       </Container>
-      {/* Teachers table */}
     </>
   );
 }

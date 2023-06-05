@@ -57,32 +57,34 @@ const ScanningPopup = ({ onCancelScanning, onSaveScanning }) => {
           >
             Check in by scanning code
           </h3>
-                <span style={{ color: "#1b64f2" }}>Scan codes</span> in student
-                cards:
-              <textarea placeholder="Scan codes into here..."
-                value={studentIdsString}
-                onChange={inputChangeHandler}
-                style={{width:"100%", height:"120px",
-                border: "1px solid #D1D5DB",
-                boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
-                borderRadius: "6px",
-                padding: "12px 12px",
-                marginTop: "4px"}}
-              />
-            <div className="d-flex gap-2 justify-content-end">
-              <button
-                className="w-25 py-1 border-0 rounded-2 bg-white text-dark text-opacity-50"
-                onClick={onCancelScanning}
-              >
-                Cancel
-              </button>
-              <button
-                className="w-25 py-1 border-0 rounded-2 bg-black text-white"
-                onClick={saveScanningHandler}
-              >
-                Save
-              </button>
-            </div>
+          <span style={{ color: "#1b64f2" }}>Scan codes</span> in student cards:
+          <input
+            placeholder="Scan codes into here..."
+            value={studentIdsString}
+            onChange={inputChangeHandler}
+            style={{
+              width: "100%",
+              border: "1px solid #D1D5DB",
+              boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.05)",
+              borderRadius: "6px",
+              padding: "12px 12px",
+              marginTop: "4px",
+            }}
+          />
+          <div className="d-flex gap-2 justify-content-end">
+            <button
+              className="w-25 py-1 border-0 rounded-2 bg-white text-dark text-opacity-50"
+              onClick={onCancelScanning}
+            >
+              Cancel
+            </button>
+            <button
+              className="w-25 py-1 border-0 rounded-2 bg-black text-white"
+              onClick={saveScanningHandler}
+            >
+              Save
+            </button>
+          </div>
         </ModalOverlay>,
         document.getElementById("overlays")
       )}

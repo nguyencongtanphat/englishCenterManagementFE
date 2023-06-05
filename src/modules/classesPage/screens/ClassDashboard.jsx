@@ -3,16 +3,16 @@ import AppLineChart from '../../../globalComponents/LineChart'
 import StudentCenterInfo from '../../homePage/components/StudentCenterInfo'
 import ClassesStudentList from '../components/ClassesStudentList'
 import StudentService from "../../../service.js"
-import { useParams } from 'react-router'
+import { useParams } from 'react-router-dom';
 
 function ClassDashboard() {
-    const [students, setStudents] = useState([]);
     const [topStudents, setTopStudents] = useState([]);
-    const params = useParams()
+    const [students, setStudents] = useState([]);
+    const { classId } = useParams();
+    console.log(classId);
     
     useEffect(() => {
-        // StudentService.getAll()
-        StudentService.getStudentReportOverview()
+        StudentService.getStudentReportOverviewByClass(classId)
         .then((res) => {
             console.log('Student List: ',res.data.ResponseResult.Result);
             setStudents(res.data.ResponseResult.Result);
@@ -20,14 +20,17 @@ function ClassDashboard() {
         .catch(err => console.log(err));
 
         // GetTopStudent
-        StudentService.getTopStudents({classid: params.classId})
+        StudentService.getTopStudents({classid: classId.classId})
         .then((res) => {
             console.log('Top Student List: ',res.data.ResponseResult.Result);
             setTopStudents(res.data.ResponseResult.Result);
         })
         .catch(err => console.log(err));
-    }, []);
-    
+    }, [classId]);
+
+    if (!Array.isArray(students)) {
+        return <div>Invalid student data</div>;
+    }
 
     return (
         <>

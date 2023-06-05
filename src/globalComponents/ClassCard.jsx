@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
 
 function ClassCard({ classInfo, bgColor }) {
-  const { ClassID, Name, ScoreTarget, TeacherName, TermFrom, TermTo } =
+  const { ClassID, Name,NumberOfStudent, ScoreTarget, TeacherName, TermFrom, TermTo } =
     classInfo;
     const TermFromDate = new Date(TermFrom);
     const TermToDate = new Date(TermTo);
@@ -50,7 +50,7 @@ function ClassCard({ classInfo, bgColor }) {
           className="text-center"
           style={{ fontSize: "14px", fontWeight: 400, marginBottom: "4px" }}
         >
-          {TeacherName} | {500} students
+          {TeacherName} | {NumberOfStudent} students
         </Card.Text>
         <Card.Text
           className="text-center"
