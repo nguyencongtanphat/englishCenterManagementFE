@@ -130,7 +130,7 @@ const UpdatePeriodicModal = (props) => {
                   <Form.Select
                     aria-label="Default select example"
                     onChange={testChangeHandler}
-                    value={testChosen._id}
+                    value={testChosen?._id}
                     disabled={tests.length === 1}
                   >
                     {tests.map((test) => {
