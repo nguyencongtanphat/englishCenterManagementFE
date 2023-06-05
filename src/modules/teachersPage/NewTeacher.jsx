@@ -198,13 +198,34 @@ function TeacherAdd(){
                         </Col> 
                     </Row> */}
                 </Form>
-                <div className={`${styled['div_save']}`}>
+                {/* <div className={`${styled['div_save']}`}>
                         <Button
                             style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px"}}
                             variant="dark" onClick={saveHandler}>
                             Save
                         </Button>
-                </div>
+                </div> */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button
+                        style={{
+                        display:'flex',
+                        position:'absolute',
+                        padding: '5px',
+                        left: '667px',
+                        bottom:'126px',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        paddingInline: '16px',
+                        color: 'white',
+                        backgroundColor: 'black',
+                        cursor: 'pointer',
+                        borderRadius: '6px',
+                        }}
+                        onClick={saveHandler}
+                    >
+                        Save
+                    </button>
+                    </div>
             </div>
         </div>
     );
