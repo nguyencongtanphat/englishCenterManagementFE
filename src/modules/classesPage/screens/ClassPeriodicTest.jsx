@@ -14,8 +14,9 @@ import StudentService, {
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
-import Notification from './../components/Notification'
+import Notification from "./../components/Notification";
 import Loading from "../components/Loading";
+import AddTest from "../components/AddTest";
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -25,13 +26,14 @@ function ClassPeriodicTest() {
   const [isAddingPeriodic, setIsAddingPeriodic] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAddTest, setIsAddTest] = useState(false);
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     TestsService.getPeriodicTests(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -56,11 +58,11 @@ function ClassPeriodicTest() {
         throw err;
       });
     setTimeout(() => {
-      setIsLoading(false)
+      setIsLoading(false);
     }, 1000);
   }, []);
 
-  let studentTest = []
+  let studentTest = [];
   if (students.length > 0) {
     studentTest = students.map((student) => {
       let sumScores = 0;
@@ -86,7 +88,7 @@ function ClassPeriodicTest() {
         return {
           ...student,
           periTests,
-          averageScore: Math.round(sumScores / periTests.length),
+          averageScore: (sumScores / periTests.length).toFixed(1),
         };
       }
     });
@@ -130,17 +132,18 @@ function ClassPeriodicTest() {
     let newPeriodicTests = [];
     students.forEach((student) => {
       const newPeriodicTest = {
-        Date: new Date(date),
+        Date: new Date(date).toISOString().split("T")[0],
         Score: 0,
         TestID: testId,
         StudentID: student,
-        RequiredScore: score === "" ? null : parseInt(score),
+        RequiredScore: score === "" ? null : parseFloat(score),
       };
       newPeriodicTests.push(newPeriodicTest);
     });
     setPeriodicTests((prevTests) => [...prevTests, ...newPeriodicTests]);
     setIsAddingPeriodic(false);
     setIsEditable(true);
+    setIsDeleting(false)
     setIsUpdating(true);
   };
 
@@ -153,12 +156,11 @@ function ClassPeriodicTest() {
     });
 
     const periodicTestsCopy = [...periodicTests];
-    periodicTestsCopy[index].Score = parseInt(value);
+    periodicTestsCopy[index].Score = parseFloat(value);
     setPeriodicTests(periodicTestsCopy);
   };
 
   const completeUpdateHandler = async () => {
-    // console.log(periodicTests);
     setIsEditable(false);
     setIsUpdating(false);
     await StatisticsService.postPeriodicTest(classId, periodicTests);
@@ -173,6 +175,18 @@ function ClassPeriodicTest() {
       });
     });
     await StatisticsService.deletePeriodicTest(classId, date);
+  };
+
+  const saveTest = async (test) => {
+    await TestsService.addPeriodicTest(test);
+    setIsAddTest(false);
+    TestsService.getPeriodicTests(classId)
+      .then((res) => {
+        setTests(res.data.ResponseResult.Result);
+      })
+      .catch((err) => {
+        throw err;
+      });
   };
 
   return (
@@ -221,7 +235,7 @@ function ClassPeriodicTest() {
         </Col>
       </Row>
 
-      {isLoading && <Loading isLoading={isLoading}/>}
+      {isLoading && <Loading isLoading={isLoading} />}
 
       {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
@@ -243,27 +257,27 @@ function ClassPeriodicTest() {
                 <th>AVERAGE</th>
                 {testDates.map((date) => (
                   <>
-                  <th key={Math.random()}>
-                    <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + (date.getMonth() + 1)}
-                    </span>
-                    {isUpdating && (
-                      <button
-                        onClick={() => setIsDeleting(true)}
-                      >
-                        <FontAwesomeIcon icon={faTimesCircle} />
-                      </button>
-                    )}
-                  </th>
-                  {isDeleting && (
+                    <th key={Math.random()}>
+                      <span style={{ marginRight: "4px" }}>
+                        {date.getDate() + "/" + (date.getMonth() + 1)}
+                      </span>
+                      {isUpdating && (
+                        <button onClick={() => setIsDeleting(true)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </button>
+                      )}
+                    </th>
+                    {isDeleting && (
                       <Notification
                         message="Are you sure to delete this periodic tests results? This action can not be
               undone."
-                        onCancelDelete={() => { setIsDeleting(false) }}
+                        onCancelDelete={() => {
+                          setIsDeleting(false);
+                        }}
                         onAcceptDelete={() => deletePeriodicTestHandler(date)}
                       />
                     )}
-                    </>
+                  </>
                 ))}
                 {isUpdating && (
                   <th>
@@ -297,6 +311,18 @@ function ClassPeriodicTest() {
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={savePeriodicHandler}
+          onAddTest={() => {
+            setIsAddingPeriodic(false);
+            setIsAddTest(true);
+          }}
+        />
+      )}
+
+      {isAddTest && (
+        <AddTest
+          onCloseModal={() => setIsAddTest(false)}
+          onSave={saveTest}
+          classId={students[0].ClassID}
         />
       )}
     </Container>

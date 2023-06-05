@@ -1,16 +1,22 @@
 import React from "react";
 import classes from "./../screens/ClassPeriodicTest.module.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AttendanceTableRow({ sdta, isUpdating, isEditable, onChange }) {
+  const navigate = useNavigate();
   const changeHandler = (event) => {
     onChange(event.target.checked, sdta.StudentID, event.target.dataset.date);
   };
 
   return (
-    <tr key={sdta.StudentID}>
+    <tr key={sdta.StudentID} style={{ cursor: "pointer" }}>
       {/* Student info */}
-      <th>
+      <th
+        onClick={() => {
+          navigate("/students/" + sdta._id);
+        }}
+      >
         <div className={classes.imgDiv}>
           <img
             style={{
