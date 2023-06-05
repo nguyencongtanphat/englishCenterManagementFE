@@ -1,38 +1,37 @@
-import React from 'react'
+import React, { useState } from "react";
+import { useAuthContext } from '../../modules/loginPage/AuthContext';
 
 export default function HeaderAccount() {
-  return (
-    <div>
-           {/* <div class="dropdown">
-            <button class="btn btn-primary" type="button" id="dropdownMenuButton"
-                data-mdb-toggle="dropdown" aria-expanded="false">
-                Dropdown button
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-            </div> */}
+    const { user } = useAuthContext(); 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-        <div class="dropdown">
-            <button class="btn bg-dark dropdown-toggle text-white" type="button" id="dropdownMenuButton"
-                data-mdb-toggle="dropdown" aria-expanded="false" 
-                style={{width:"100px", height: "44px", fontWeight: "600", borderRadius: "100px"}}>
-                <span style={{marginRight: "2px", fontSize:"14px", fontWeight:600}}> Admin </span>
+    const handleDropdownToggle = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+      };
+  return (
+         <div className="dropdown" onMouseEnter={handleDropdownToggle} onMouseLeave={handleDropdownToggle}>
+            <button 
+                class="btn bg-dark dropdown-toggle text-white" 
+                type="button" id="dropdownMenuButton"
+                data-mdb-toggle="dropdown" 
+                aria-expanded={isDropdownOpen ? "true" : "false"}
+                style={{maxWidth:"300px", height: "39px", fontWeight: "600", borderRadius: "0.375rem"}}>
+                <span style={{ marginRight: "2px", fontSize: "14px", fontWeight: 600 }}>
+                    {user === 'admin' ? 'Admin' : 'Teacher: ' + user}
+                </span>
             </button>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li>
-                            <a class="dropdown-item" href='#'>Edit</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href='/login'>Log out</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href='#'>Info</a>
-                        </li>
-                    </ul>
-                </div>
-    </div>
+
+            <ul className={`dropdown-menu${isDropdownOpen ? ' show' : ''}`} aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" href='#'>Edit</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href='#'>Info</a>
+                </li>
+                <li>
+                    <a class="dropdown-item" href='/introduction'>Logout</a>
+                </li>
+            </ul>
+        </div>
   )
 }

@@ -20,7 +20,7 @@ export default function Header() {
                 {/* Header Logo */}
                 <Col className='col-1'>
                    <div>
-                        <a href='#'> 
+                        <a href='/'> 
                             <img src={LogoImg} style={{lineHeight: '46px', height: '46px', padding: '6px'}}/>
                         </a> 
                    </div>
