@@ -31,7 +31,7 @@ function ClassCard({ classInfo, bgColor }) {
         cursor: "pointer",
       }}
       className="mb-3"
-      onClick={()=>{navigate(`/classes/${ClassID}`);}}
+      onClick={()=>{navigate(`/classes/${ClassID}/dashboard`);}}
     >
       <Card.Body>
         <div

@@ -1,8 +1,11 @@
 import Card from "react-bootstrap/Card";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ClassCard({ classInfo, bgColor }) {
   const { ClassID, Name,NumberOfStudent, ScoreTarget, TeacherName, TermFrom, TermTo } = classInfo;
+  let navigate = useNavigate();
+
     const TermFromDate = new Date(TermFrom);
     const TermToDate = new Date(TermTo);
 
@@ -21,6 +24,7 @@ function ClassCard({ classInfo, bgColor }) {
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
       style={{ backgroundColor: bgColor, minHeight:"140px"}}
+      onClick={()=>{navigate(`/classes/${ClassID}/dashboard`);}}
       className="mb-3"
     >
       <Card.Body>
