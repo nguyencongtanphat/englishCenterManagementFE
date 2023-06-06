@@ -28,6 +28,7 @@ function ClassHomework() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddTest, setIsAddTest] = useState(false);
+  const [defaultDateAddTest, setDefaultDateAddTest] = useState(new Date());
 
   const params = useParams();
   const { classId } = params;
@@ -190,6 +191,12 @@ function ClassHomework() {
       });
   };
 
+  const addTestHandler = (date) => {
+    setDefaultDateAddTest(date);
+    setIsAddingHomework(false);
+    setIsAddTest(true);
+  };
+
   return (
     <Container
       className="bg-white p-4 rounded-4"
@@ -312,10 +319,7 @@ function ClassHomework() {
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={saveHomeworkHandler}
-          onAddTest={() => {
-            setIsAddingHomework(false);
-            setIsAddTest(true);
-          }}
+          onAddTest={addTestHandler}
         />
       )}
 
@@ -324,6 +328,7 @@ function ClassHomework() {
           onCloseModal={() => setIsAddTest(false)}
           onSave={saveTest}
           classId={students[0].ClassID}
+          defaultDate={defaultDateAddTest}
         />
       )}
     </Container>
