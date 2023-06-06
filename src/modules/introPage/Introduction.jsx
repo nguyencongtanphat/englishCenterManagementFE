@@ -18,7 +18,7 @@ const Introduction = () => {
 
   return (
     <div style={{display:"flex", flexDirection:"column"}}>
-      <div style={{ backgroundImage: `url(${background})`, height: "720px", width: "100%", order: 0, backgroundSize: "100%"}}>
+      <div style={{ backgroundImage: `url(${background})`, height: "750px", width: "100%", order: 0, backgroundSize: "100%"}}>
         <div style={{position: "absolute", width: "100%", height: "80px", left: "0px", top: "0px"}}>
           <img src={logo} style={{position: "absolute", width: "100px", left: "100px", top: "10px"}}></img>
           <div style={{display: "flex", flexDirection: "row", alignItems: "center", padding: "0px", gap: "24px",
