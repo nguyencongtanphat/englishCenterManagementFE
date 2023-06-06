@@ -108,7 +108,7 @@ const UpdatePeriodicModal = (props) => {
                     paddingLeft: "6px",
                   }}
                   size="small"
-                  onClick={props.onAddTest}
+                  onClick={() => props.onAddTest()}
                 >
                   Add test
                 </button>
@@ -127,7 +127,27 @@ const UpdatePeriodicModal = (props) => {
           {props.tests.length > 0 && (
             <>
               <h4 className="text-center">Additional Request</h4>
-              {error && <p className="text-danger">{error}</p>}
+              {error && (
+                <p className="text-danger">
+                  <span>{error}</span>
+                  {error === "No test on this day!" && (
+                    <button
+                      style={{
+                        backgroundColor: "white",
+                        color: "#0D6EFD",
+                        border: "none",
+                        padding: 0,
+                        paddingLeft: "6px",
+                      }}
+                      size="small"
+                      onClick={() => props.onAddTest(date)}
+                    >
+                      Add test
+                    </button>
+                  )}
+                </p>
+              )}
+
               <Form className="mt-2">
                 <Form.Group className="mb-3">
                   <Form.Label>
@@ -158,15 +178,6 @@ const UpdatePeriodicModal = (props) => {
                       );
                     })}
                   </Form.Select>
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Input a required score of this test</Form.Label>
-                  <Form.Control
-                    type="number"
-                    min="0"
-                    value={score}
-                    onChange={scoreChangeHandler}
-                  />
                 </Form.Group>
                 <div className="d-flex gap-2 justify-content-end">
                   <button

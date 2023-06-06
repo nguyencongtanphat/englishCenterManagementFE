@@ -28,6 +28,7 @@ function ClassPeriodicTest() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddTest, setIsAddTest] = useState(false);
+  const [defaultDateAddTest, setDefaultDateAddTest] = useState(new Date());
 
   const params = useParams();
   const { classId } = params;
@@ -143,7 +144,7 @@ function ClassPeriodicTest() {
     setPeriodicTests((prevTests) => [...prevTests, ...newPeriodicTests]);
     setIsAddingPeriodic(false);
     setIsEditable(true);
-    setIsDeleting(false)
+    setIsDeleting(false);
     setIsUpdating(true);
   };
 
@@ -187,6 +188,12 @@ function ClassPeriodicTest() {
       .catch((err) => {
         throw err;
       });
+  };
+
+  const addTestHandler = (date) => {
+    setDefaultDateAddTest(date);
+    setIsAddingPeriodic(false);
+    setIsAddTest(true);
   };
 
   return (
@@ -311,10 +318,7 @@ function ClassPeriodicTest() {
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={savePeriodicHandler}
-          onAddTest={() => {
-            setIsAddingPeriodic(false);
-            setIsAddTest(true);
-          }}
+          onAddTest={addTestHandler}
         />
       )}
 
@@ -323,6 +327,7 @@ function ClassPeriodicTest() {
           onCloseModal={() => setIsAddTest(false)}
           onSave={saveTest}
           classId={students[0].ClassID}
+          defaultDate={defaultDateAddTest}
         />
       )}
     </Container>
