@@ -6,6 +6,7 @@ import AppLineChart from "../../../globalComponents/LineChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
 import moment from "moment-timezone";
+import { useAuthContext } from '../../loginPage/AuthContext';
 
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -84,10 +85,12 @@ function HomePage() {
     getHomeData();
   }, [ date, isPeriod, month]);
 
-  
+  const { user } = useAuthContext(); 
+console.log("aaaaa: ",user);
+
   return (
     <Container fluid="md">
-      {selectValue}
+      
       <Row className="mt-3">
         <Col>
           <Link

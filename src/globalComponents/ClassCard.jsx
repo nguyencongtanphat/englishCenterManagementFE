@@ -27,7 +27,7 @@ function ClassCard({ classInfo, bgColor }) {
       text={bgColor === "light" ? "dark" : "white"}
       style={{
         backgroundColor: bgColor,
-        minHeight: "180px",
+        minHeight: "140px",
         cursor: "pointer",
       }}
       className="mb-3"

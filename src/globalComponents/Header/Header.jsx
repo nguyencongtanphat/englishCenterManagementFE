@@ -20,12 +20,12 @@ export default function Header() {
                 <Col className='col-1'>
                    <div>
                         <a href='/'> 
-                            <img src={LogoImg} style={{lineHeight: '46px', height: '46px', padding: '1px', marginLeft:'36px'}}/>
+                            <img src={LogoImg} style={{lineHeight: '32px', height: '32px', padding: '1px', marginLeft:'8px', marginTop:"6px"}}/>
                         </a> 
                    </div>
                 </Col>
                 <Col className='col-2'>
-                  <a href='/' style={{lineHeight:'46px', textDecoration:'none', fontSize:'20px', color:'#2877fd', fontWeight:'bold', cursor:'pointer'}} >Earth Center English</a>
+                  <a href='/' style={{lineHeight:'46px', textDecoration:'none', fontSize:'20px', color:'black', fontWeight:'bold', cursor:'pointer'}} >Earth Center English</a>
                 </Col>
                 <Col className='col-3'>
                     <HeaderSearchBar />

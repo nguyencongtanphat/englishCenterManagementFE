@@ -32,6 +32,8 @@ function LoginPage() {
       else {
         const teacher = teacherList.find((tea) => tea.TeacherID === email && tea.Password === password);
         if (teacher) {
+          console.log(teacher);
+          localStorage.setItem('teacherID', teacher._id); 
           login(teacher.Name); 
           navigate('/');
         } 
@@ -80,7 +82,7 @@ function LoginPage() {
           </div>
         ))}
       
-      <button type="submit" style={{backgroundColor:'#2877fd', width:'100%', marginTop:'7px', padding:'10px 10px', color:'white', fontWeight:'bold'}}>
+      <button type="submit" style={{backgroundColor:'#2877fd', width:'100%', marginTop:'7px', padding:'10px 10px', color:'white', fontWeight:'bold', borderRadius:"8px"}}>
         Sign in
       </button>
     </Form>
