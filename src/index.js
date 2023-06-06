@@ -26,6 +26,9 @@ import TeacherDetail from "./modules/teachersPage/screens/TeacherDetail";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import { Counter } from "./features/counter/Counter";
+import RootTea from "./modules/TeacherRolePage/components/RootTea";
+import DashboardTeacher from "./modules/TeacherRolePage/screens/DashboardTeacher";
+import ClassOfTeacher from "./modules/TeacherRolePage/screens/ClassOfTeacher";
 
 const router = createBrowserRouter([
   {
@@ -118,6 +121,23 @@ const router = createBrowserRouter([
     path: "/login",
       element: <Login/>,
     },
+    {
+      path: "/teacher-role",
+      element: <RootTea/>,
+      errorElement: <ErrorPage />,
+      children: [
+        {
+          path: "/teacher-role",
+          element: <DashboardTeacher />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "classes",
+          element: <ClassOfTeacher />,
+          errorElement: <ErrorPage />,
+        }
+      ]
+      }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

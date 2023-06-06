@@ -102,10 +102,11 @@ function LoginPage() {
           </div>
         ))}
       
-      <Button variant="primary" type="submit" className="w-100 mt-3">
-        
+      <button variant="primary" type="submit" className="w-100 mt-3" style={{backgroundColor:"#1C64F2",
+    color: "white", width: "448px", height: "38px", borderRadius:"8px"}}>
+        <FontAwesomeIcon icon="fa-solid fa-lock" style={{marginRight:"12px"}}/>
         Sign in
-      </Button>
+      </button>
     </Form>
   </Container>
   );

@@ -86,7 +86,6 @@ function HomePage() {
   
   return (
     <Container fluid="md">
-      {selectValue}
       <Row className="mt-3">
         <Col>
           <Link
