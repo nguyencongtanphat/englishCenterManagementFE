@@ -26,7 +26,7 @@ export default function HeaderAccount() {
                             <a class="dropdown-item" href='#'>Edit</a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href='#'>Log out</a>
+                            <a class="dropdown-item" href='/login'>Log out</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href='#'>Info</a>

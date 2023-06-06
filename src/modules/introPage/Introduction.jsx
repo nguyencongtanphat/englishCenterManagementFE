@@ -11,8 +11,11 @@ import styled from '../introPage/introStyle.module.css'
 import photo from '../../assets/images/global/photo.png'
 import social from '../../assets/images/global/socialmedia.png'
 import send from '../../assets/images/global/sendIcon.png'
+import { useNavigate } from "react-router-dom";
 
 const Introduction = () => {
+  let navigate = useNavigate();
+
   return (
     <div style={{display:"flex", flexDirection:"column"}}>
       <div style={{ backgroundImage: `url(${background})`, height: "720px", width: "100%", order: 0, backgroundSize: "100%"}}>
@@ -44,7 +47,7 @@ const Introduction = () => {
             </div>
             <div className={`${styled['Login']}`}>
               {/* LOGIN LINK HERE! */}
-              <button style={{color: "#1C64F2"}}>Login</button>
+              <button style={{color: "#1C64F2"}} onClick={()=>{navigate(`/login`);}}>Login</button>
             </div>
           </div>
         </div>
