@@ -17,19 +17,19 @@ export default function Header() {
             borderBottom: "1px solid #E5E7EB"
             }}>
             <Row>
-                {/* Header Logo */}
                 <Col className='col-1'>
                    <div>
-                        <a href='#'> 
-                            <img src={LogoImg} style={{lineHeight: '46px', height: '46px', padding: '6px'}}/>
+                        <a href='/'> 
+                            <img src={LogoImg} style={{lineHeight: '32px', height: '32px', padding: '1px', marginLeft:'8px', marginTop:"6px"}}/>
                         </a> 
                    </div>
                 </Col>
-                {/* Search */}
-                <Col className='col-5'>
+                <Col className='col-2'>
+                  <a href='/' style={{lineHeight:'46px', textDecoration:'none', fontSize:'20px', color:'black', fontWeight:'bold', cursor:'pointer'}} >Earth Center English</a>
+                </Col>
+                <Col className='col-3'>
                     <HeaderSearchBar />
                 </Col>
-                {/* Account Info */}
                 <Col className='col-6 d-flex justify-content-end'>
                     <HeaderNotification/>
                     <HeaderAccount />

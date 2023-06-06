@@ -8,10 +8,12 @@ import { Table, Image } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { faChevronRight } from "@fortawesome/fontawesome-free-solid";
 import deleteSVG from "../../../assets/images/global/delete.svg";
-import moment from "moment";
 import axios from "axios";
+import moment from "moment";
+
 import Loading from "../../classesPage/components/Loading.jsx";
 import NoTeacher from "../../classesPage/components/NoTeacher.jsx";
+import { useAuthContext } from '../../loginPage/AuthContext';
 
 function calculateExperience(startDate) {
   const today = moment();
@@ -23,6 +25,8 @@ function calculateExperience(startDate) {
 function TeachersPage() {
   const [isLoading, setIsLoading]= useState(true);
   let navigate = useNavigate();
+  const { user } = useAuthContext(); // Accessing the user from the authentication context
+
   // Gọi API:
   const [classes, setClasses] = useState([]);
   const [teachers, setTeachers] = useState([]);
@@ -270,21 +274,6 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
               <b>Teacher List</b>
             </h3>
             <Row>
-
-              {/* <Form.Group as={Col} xs="auto">
-                <Form.Select
-                  name="Certificate"
-                  style={{ fontSize: "14px" }}
-                  value={selectedCertificate}
-                  onChange={handleCertificateChange}
-                >
-                  <option hidden>Expertise</option>
-                  <option value="TOEIC">TOEIC</option>
-                  <option value="IELTS">IELTS</option>
-                  <option value="TOEFL">TOEFL</option>
-                </Form.Select>
-              </Form.Group> */}
-
               <Col xs="auto">
                 <Form.Group as={Col} xs="auto">
                   <Form.Select
@@ -315,8 +304,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
 
             </Row>
           </Col>
-
-          {/* Add teacher: */}
+          {user === "admin" && (
           <Col className="text-end" style={{ marginTop: "32px" }}>
             <Link
               to="/newteacher"
@@ -329,12 +317,16 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
               </span>
             </Link>
           </Col>
+          )}
         </Row>
 
         {isLoading && <Loading isLoading={isLoading}/>}
 
         {teachers.length > 0 && !isLoading &&(
-             <Row style={{ cursor: "pointer" }}>
+             <Row 
+              style={{ cursor: user !== "admin" ? "not-allowed" : "pointer" }}
+              disabled={user!== "admin"}
+             >
              <Table
                bordered
                hover
@@ -365,7 +357,11 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                <tbody>
                  {teachers.map((teacher, index) => (
                    <tr key={teacher.id} >
-                      <td onClick={()=>{navigate(`/teachers/${teacher._id}`);}}>
+                      <td 
+                      // onClick={()=>{navigate(`/teachers/${teacher._id}`);}}
+                      onClick={user === "admin" ? () => navigate(`/teachers/${teacher._id}`) : null}
+                      style={{ cursor: user!== "admin" ? "not-allowed" : "pointer" }}
+                      >
                         <Container>
                           <Row>
                             <Col md="auto">
@@ -403,9 +399,14 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                     </td>
                      {/* {teacher.classIds.join(", ")} */}
                      <td>
-                      <button onClick={() => handleDelete(teacher._id)}>
+                      {/* <button onClick={() => handleDelete(teacher._id)}>
                         <img src={deleteSVG} alt="delete" />
-                      </button>
+                      </button> */}
+                      {user === "admin" && (
+                        <button onClick={() => handleDelete(teacher._id)}>
+                          <img src={deleteSVG} alt="delete" />
+                        </button>
+                      )}
                      </td>
                    </tr>
                  ))}

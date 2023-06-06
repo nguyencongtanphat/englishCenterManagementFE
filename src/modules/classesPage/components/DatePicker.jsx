@@ -1,22 +1,19 @@
 import React from "react";
 import { useState } from "react";
-import styled from "./styleHome.module.css";
+import styled from "./DatePicker.module.css";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/light.css";
-import { useEffect } from "react";
-import { HomeService } from "../../../service";
+
 
 function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
 
-  
   const handleDateChange = (date) => {
-    console.log("Date changed,", date)
+    console.log("Date changed,", date);
     props.onChangeSelectedDate(date);
   };
 
- 
   const onChange = (event) => {
     const value = event.target.value;
     props.onChangeSelectedType(value);

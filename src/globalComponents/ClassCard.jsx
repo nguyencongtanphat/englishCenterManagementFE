@@ -1,7 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../modules/loginPage/AuthContext";
 
 function ClassCard({ classInfo, bgColor }) {
+  const { user } = useAuthContext(); 
+
   const { ClassID, Name,NumberOfStudent, ScoreTarget, TeacherName, TermFrom, TermTo } =
     classInfo;
     const TermFromDate = new Date(TermFrom);
@@ -17,13 +21,20 @@ function ClassCard({ classInfo, bgColor }) {
   )
     .toString()
     .padStart(2, "0")}/${TermToDate.getFullYear().toString()}`;
+  
+  let navigate = useNavigate();
   return (
     <Card
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{ backgroundColor: bgColor, minHeight:"180px"}}
+      style={{
+        backgroundColor: bgColor,
+        minHeight: "140px",
+        cursor: "pointer",
+      }}
       className="mb-3"
-    >
+      onClick={user ==='admin' ? () => navigate(`/classes/${ClassID}/dashboard`) : undefined}
+      >
       <Card.Body>
         <div
           style={{

@@ -27,7 +27,7 @@ const ClassesStudentList = ({std}) => {
     <div style={{borderRadius:"10px"}}>
       <Row>
           <Col>
-            <p style={{fontWeight:700, fontSize:"20px"}}>STUDENTS LIST</p>
+            <p style={{fontWeight:700, fontSize:"20px"}}>Student list</p>
           </Col>
           <Col lg='auto' className='pt-4 pb-4 d-flex'>
             <button style={{color:'white', padding:'5px', borderRadius:'6px', backgroundColor:'black'}}>Daily</button>

@@ -4,7 +4,7 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import ListStudentView from "./ListView";
 import AppCard from "../../../globalComponents/Card";
 
-function StudentCenterInfo({ topStudents, pieChartData }) {
+function StudentCenterInfo({timeInfo, topStudents, pieChartData }) {
   return (
     <div className="my-3">
       <Row>
@@ -12,6 +12,7 @@ function StudentCenterInfo({ topStudents, pieChartData }) {
           <AppCard className="p-6 h-full">
             <p style={{ fontWeight: 700, fontSize: "20px" }}>Classify</p>
             <AppCircleChart pieChartData={pieChartData} />
+            <p className="text-center font-bold">Time: {timeInfo}</p>
           </AppCard>
         </Col>
         <Col>

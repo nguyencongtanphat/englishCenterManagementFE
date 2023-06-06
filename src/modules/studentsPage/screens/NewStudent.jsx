@@ -214,11 +214,12 @@ function ClassesAdd(){
                     </Row>
                 </Form>
                 <div className={`${styled['div_save']}`}>
-                        <Button
-                            style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px"}}
-                            variant="dark" onClick={saveHandler}>
+                        <button
+                            style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px", cursor: "pointer", background: "black", color: "white", padding: "9px 17px",
+                        borderRadius:"6px"}}
+                            onClick={saveHandler}>
                             Save
-                        </Button>
+                        </button>
                 </div>
             </div>
 
@@ -261,9 +262,10 @@ function ClassesAdd(){
                         <Button variant="secondary" style={{backgroundColor:"transparent", borderColor:"transparent"}} onClick={handleClose}>
                             <label style={{color: "#9CA3AF", fontSize:"14px"}}>Cancel</label>
                         </Button>
-                        <Button variant="dark" onClick={handleAdd} style={{paddingInline: "16px"}}>
+                        <button onClick={handleAdd} style={{fontSize: "14px", fontWeight: "bold", paddingInline: "16px", cursor: "pointer", background: "black", color: "white", padding: "9px 17px",
+                        borderRadius:"6px"}}>
                             <label style={{fontSize:"14px", fontWeight:"bold"}}>Add</label>
-                        </Button>
+                        </button>
                     </div>
                     </div>
                 </Modal.Body>
