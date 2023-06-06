@@ -9,7 +9,8 @@ import { HomeService } from "../../../service";
 function DatePicker(props) {
   const [visibleDate, setVisibilityDate] = useState(true);
   const [visibleMonth, setVisibilityMonth] = useState(false);
- 
+
+  
   const handleDateChange = (date) => {
     console.log("Date changed,", date)
     props.onChangeSelectedDate(date);
@@ -31,6 +32,7 @@ function DatePicker(props) {
       setVisibilityMonth(false);
     }
   };
+
   return (
     <div className={`${styled["filterTime"]}`}>
       <select onChange={onChange} className={`${styled["dropDown"]}`}>
@@ -46,8 +48,6 @@ function DatePicker(props) {
           style={{ width: "90px" }}
           options={{
             enable: props.datesList,
-            maxDate: props.datesList[props.datesList.length - 1],
-            minDate: props.datesList[0],
             mode: "single",
           }}
           onChange={handleDateChange}

@@ -118,6 +118,13 @@ function HomePage() {
       <AppLineChart data={lineChartData} />
 
       <StudentCenterInfo
+        timeInfo={
+          date
+            ? moment(date).format("YYYY-MM-DD")
+            : month
+            ? `month ${month}`
+            : "Total"
+        }
         pieChartData={pieChartData}
         topStudents={topStudents}
       />

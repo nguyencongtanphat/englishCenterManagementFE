@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
+import { Link, useNavigate } from "react-router-dom";
+
 
 function ClassCard({ classInfo, bgColor }) {
   const { ClassID, Name,NumberOfStudent, ScoreTarget, TeacherName, TermFrom, TermTo } =
@@ -17,12 +19,19 @@ function ClassCard({ classInfo, bgColor }) {
   )
     .toString()
     .padStart(2, "0")}/${TermToDate.getFullYear().toString()}`;
+  
+  let navigate = useNavigate();
   return (
     <Card
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{ backgroundColor: bgColor, minHeight:"180px"}}
+      style={{
+        backgroundColor: bgColor,
+        minHeight: "180px",
+        cursor: "pointer",
+      }}
       className="mb-3"
+      onClick={()=>{navigate(`/classes/${ClassID}`);}}
     >
       <Card.Body>
         <div
