@@ -74,6 +74,7 @@ function HomePage() {
           HomeService.getLineChartData({ month: month, date: date, isPeriod: isPeriod }),
           HomeService.getPieChartData({month: month, date: date, isPeriod: isPeriod})
         ]);
+      
         setPieChartData(pieChartReport);
         setLineChartData(centerReport);
       } catch (e) {

@@ -183,12 +183,14 @@ export class HomeService {
         console.log("url line chart", `${url}/center-report/monthly`);
         const response = await axios.get(`${url}/center-report/monthly`);
         const reports = response.data.ResponseResult.Result;
+        console.log("centerReport:", reports);
         const pieChart = reports.map((report) => {
           return {
             key: report["_id"]["Month"],
             value: report["AvgCenterScore"],
           };
         });
+        pieChart.sort((a,b)=> a.key - b.key)
         return pieChart;
       } else {
         let query = "";
@@ -198,6 +200,10 @@ export class HomeService {
         console.log("url line chart", `${url}/center-report` + query);
         const response = await axios.get(`${url}/center-report` + query);
         const reports = response.data.ResponseResult.Result.reports;
+
+        reports.sort((a, b) => {
+          return Date.parse(a.Date) - Date.parse(b.Date);
+        });
         //extra data for line chart
         const lineChartData = reports.map((report) => {
           const dateReport = new Date(report.Date);
