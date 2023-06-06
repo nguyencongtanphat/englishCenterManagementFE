@@ -1,19 +1,18 @@
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Image } from 'react-bootstrap';
 import { useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  Logo  from '../../assets/images/global/LogoLogin.svg'
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
-
+import { useAuthContext } from './AuthContext';
 
 function LoginPage() {
-  const [teacherList, setTeacherList] = useState([]);
+    const { login } = useAuthContext();
+    const [teacherList, setTeacherList] = useState([]);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     
     useEffect(() => {
       const fetchData = async () => {
@@ -26,61 +25,40 @@ function LoginPage() {
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      console.log('Email:', email);
-      console.log('Password:', password);
       if (email=="admin" && password=="admin"){
+        login('admin');
         navigate('/');
-      } else {
-        const results = [];
-        teacherList.forEach((tea, index) => {
-          results.push(
-            tea.TeacherID
-          );
-        });
-        console.log('TeacherID: ',results);
-        if (results.includes(email) && password=="teacher") {
-          navigate('/teachers');
-        }
-        else{
-          alert("The Username of Password is incorrect. Please try again!")
+      } 
+      else {
+        const teacher = teacherList.find((tea) => tea.TeacherID === email && tea.Password === password);
+        if (teacher) {
+          login(teacher.Name); 
+          navigate('/');
+        } 
+        else {
+          alert("The Username or Password is incorrect. Please try again!");
         }
       }
     }
   return (
-    // <Container>
-    //   <Form>
-    //     <Form.Group controlId="formBasicEmail">
-    //       <Form.Control type="email" placeholder="Account" />
-    //     </Form.Group>
-
-    //     <Form.Group controlId="formBasicPassword">
-    //       <Form.Control type="password" placeholder="Password" />
-    //     </Form.Group>
-
-    //     <Button variant="primary" type="submit">
-    //       Submit
-    //     </Button>
-    //   </Form>
-    // </Container>
     <Container className="d-flex flex-column justify-content-center align-items-center" style={{marginTop: "60px"}}>
     <img src={Logo} alt="Logo image" fluid style={{marginTop: "40px", marginBottom: "20px"}}/>
     <h2>Sign in to your account</h2>
-    <p className='mb-5'>Or <Link style={{textDecoration:"none"}} to="/">contact admin to create new account</Link></p> 
+    <p className='mb-5'>Or <Link style={{textDecoration:"none"}} to="">contact admin to create new account</Link></p> 
     <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formBasicEmail" style={{ width: '500px'}}>
+      <Form.Group controlId="formBasicEmail" style={{ width: '400px'}}>
         <Form.Control 
           type="text" 
           placeholder="Username"
           value={email}
-          style={{borderRadius: "8px 8px 0px 0px"}}
+          style={{borderRadius: "6px", marginBottom:'10px'}}
           onChange={(e) => setEmail(e.target.value)} />
       </Form.Group>
-
       <Form.Group controlId="formBasicPassword">
         <Form.Control 
           type="password" 
           placeholder="Password"
-          style={{borderRadius: "0px 0px 8px 8px"}}
+          style={{borderRadius: "6px"}}
           value={password}
           onChange={(e) => setPassword(e.target.value)} />
       </Form.Group>
@@ -95,17 +73,16 @@ function LoginPage() {
                 />
               </Col>
               <Col className="d-flex justify-content-end">
-                <Link style={{textDecoration:"none"}} to="/">Forgot your password?</Link>
+                <Link style={{textDecoration:"none"}} to="">Forgot your password?</Link>
               </Col>
             </Row>
             
           </div>
         ))}
       
-      <Button variant="primary" type="submit" className="w-100 mt-3">
-        
+      <button type="submit" style={{backgroundColor:'#2877fd', width:'100%', marginTop:'7px', padding:'10px 10px', color:'white', fontWeight:'bold'}}>
         Sign in
-      </Button>
+      </button>
     </Form>
   </Container>
   );
