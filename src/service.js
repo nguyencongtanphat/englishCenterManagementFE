@@ -81,6 +81,118 @@ export class ClassService {
   static create(data) {
     return axios.post(`http://localhost:3001/api/v1/class`, data);
   }
+
+  static async getLineChartData({
+    date = null,
+    month = null,
+    year = null,
+    isPeriod = false,
+    classId = "",
+  } = {}) {
+    console.log("class chart data call");
+    try {
+      if (isPeriod) {
+        console.log("url line chart", `${url}/center-report/monthly`);
+        const response = await axios.get(`${url}/center-report/monthly`);
+        const reports = response.data.ResponseResult.Result;
+        console.log("centerReport:", reports);
+        const pieChart = reports.map((report) => {
+          return {
+            key: report["_id"]["Month"],
+            value: report["AvgCenterScore"],
+          };
+        });
+        pieChart.sort((a, b) => a.key - b.key);
+        return pieChart;
+      } else {
+        let query = "?classId=" + classId;
+        if (date) query = query + "&date=" + date.slice(0, 10);
+        if (month) query = query + "&month=" + month;
+        if (year) query = query + "&year=" + year;
+
+        if (isPeriod) query = "/monthly";
+
+        console.log("url line chart", `${url}/class-report` + query);
+        const response = await axios.get(`${url}/class-report` + query);
+        const reports = response.data.ResponseResult.Result.reports;
+
+        reports.sort((a, b) => {
+          return Date.parse(a.Date) - Date.parse(b.Date);
+        });
+        //extra data for line chart
+        const lineChartData = reports.map((report) => {
+          const dateReport = new Date(report.Date);
+          return {
+            key: `${dateReport.getDate().toString().padStart(2, "0")}/${(
+              dateReport.getMonth() + 1
+            )
+              .toString()
+              .padStart(2, "0")}/${dateReport.getFullYear().toString()}`,
+            value: report.ClassScore,
+          };
+        });
+        return lineChartData;
+      }
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  static async getPieChartData({ classId = null, month = null, date = null, isPeriod = null}={}) {
+    try{
+       console.log("getPieChartData month date", month, date);
+       if(date){
+        console.log("date here");
+        console.log(
+          "url pie chart class date",
+          `${url}/class-report?classId=${classId}` +
+            "&date=" +
+            date.slice(0, 10)
+        );
+        let currentReport;
+         const response = await axios.get(
+           `${url}/class-report?classId=${classId}` +
+             "&date=" +
+             date.slice(0, 10)
+         );
+        const reports = response.data.ResponseResult.Result.reports;
+        reports.forEach((report) => {
+          const reportDate = report.Date.slice(0, 10);
+          date = date.slice(0, 10);
+          console.log("current date", date, reportDate);
+          if (reportDate === date) currentReport = report;
+        });
+        const data = [
+          { name: "Good", value: currentReport["GoodLevel"] },
+          { name: "Medium", value: currentReport["MediumLevel"] },
+          { name: "Not-Good", value: currentReport["BadLevel"] },
+        ];
+        return data;
+       }
+    }catch(e){
+
+    }
+  }
+
+  static async getDateClass(classId) {
+    try {
+      const response = await axios.get(`${url}/class-report/${classId}/date`);
+      return response.data.ResponseResult.Result;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
+
+  static async getClassInfo(classId) {
+    try {
+      const response = await axios.get(
+        `${url}/class/get-class-info/${classId}`
+      );
+      return response.data.ResponseResult.Result;
+    } catch (e) {
+      throw new Error(e.message);
+    }
+  }
 }
 
 export class HomeService {
@@ -190,7 +302,7 @@ export class HomeService {
             value: report["AvgCenterScore"],
           };
         });
-        pieChart.sort((a,b)=> a.key - b.key)
+        pieChart.sort((a, b) => a.key - b.key);
         return pieChart;
       } else {
         let query = "";
