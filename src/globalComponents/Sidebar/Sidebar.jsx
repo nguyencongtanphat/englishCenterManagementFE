@@ -135,7 +135,7 @@ export default function Sidebar() {
                                 </div>
                                 </NavLink>
         
-                                {item.isEnd && item.isEnd === true && <hr style={{marginTop: "10px"}}></hr>}
+                                {item.title=="Help" && <hr style={{marginTop: "-50px"}}></hr>}
                             </div>
                             
                     </div>
