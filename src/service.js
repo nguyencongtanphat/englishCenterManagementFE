@@ -150,11 +150,11 @@ export class ClassService {
             date.slice(0, 10)
         );
         let currentReport;
-         const response = await axios.get(
+        const response = await axios.get(
            `${url}/class-report?classId=${classId}` +
              "&date=" +
              date.slice(0, 10)
-         );
+        );
         const reports = response.data.ResponseResult.Result.reports;
         reports.forEach((report) => {
           const reportDate = report.Date.slice(0, 10);
@@ -168,9 +168,59 @@ export class ClassService {
           { name: "Not-Good", value: currentReport["BadLevel"] },
         ];
         return data;
+       }else if(month){
+        console.log(
+          "url pie chart month",
+          `${url}/student-report/monthly/?month=${month}&classid=${classId}`
+        );
+        const response = await axios.get(
+          `${url}/student-report/monthly/?month=${month}&classid=${classId}`
+        );
+        const reports = response.data.ResponseResult.Result.Reports;
+
+        let goodNumber = 0;
+        let mediumNumber = 0;
+        let badNumber = 0;
+        reports.forEach((report) => {
+          if (report.AvgTotalScore >= 80) goodNumber++;
+          else if (report.AvgTotalScore < 80 && report.AvgTotalScore >= 65)
+            mediumNumber++;
+          else badNumber++;
+        });
+        const data = [
+          { name: "Good", value: goodNumber },
+          { name: "Medium", value: mediumNumber },
+          { name: "Not-Good", value: badNumber },
+        ];
+        return data;
+       }else{
+         console.log(
+           "url pie chart period",
+           `${url}/student-report/monthly/?classid=${classId}`
+         );
+         const response = await axios.get(
+           `${url}/student-report/monthly/?classid=${classId}`
+         );
+         const reports = response.data.ResponseResult.Result.Reports;
+
+         let goodNumber = 0;
+         let mediumNumber = 0;
+         let badNumber = 0;
+         reports.forEach((report) => {
+           if (report.AvgTotalScore >= 80) goodNumber++;
+           else if (report.AvgTotalScore < 80 && report.AvgTotalScore >= 65)
+             mediumNumber++;
+           else badNumber++;
+         });
+         const data = [
+           { name: "Good", value: goodNumber },
+           { name: "Medium", value: mediumNumber },
+           { name: "Not-Good", value: badNumber },
+         ];
+         return data;
        }
     }catch(e){
-
+      console.log("errore", e)
     }
   }
 
@@ -194,6 +244,8 @@ export class ClassService {
     }
   }
 }
+
+
 
 export class HomeService {
   static async getDateCenter() {
@@ -245,8 +297,8 @@ export class HomeService {
         let mediumNumber = 0;
         let badNumber = 0;
         reports.forEach((report) => {
-          if (report.TotalScore >= 80) goodNumber++;
-          else if (report.TotalScore < 80 && report.TotalScore >= 65)
+          if (report.AvgTotalScore>= 80) goodNumber++;
+          else if (report.AvgTotalScore< 80 && report.AvgTotalScore>= 65)
             mediumNumber++;
           else badNumber++;
         });
@@ -278,6 +330,31 @@ export class HomeService {
           { name: "Good", value: currentReport["GoodLevel"] },
           { name: "Medium", value: currentReport["MediumLevel"] },
           { name: "Not-Good", value: currentReport["BadLevel"] },
+        ];
+        return data;
+      } else{
+        console.log(
+          "url pie chart period",
+          `${url}/student-report/monthly/`
+        );
+        const response = await axios.get(
+          `${url}/student-report/monthly/`
+        );
+        const reports = response.data.ResponseResult.Result.Reports;
+
+        let goodNumber = 0;
+        let mediumNumber = 0;
+        let badNumber = 0;
+        reports.forEach((report) => {
+          if (report.AvgTotalScore >= 80) goodNumber++;
+          else if (report.AvgTotalScore < 80 && report.AvgTotalScore >= 65)
+            mediumNumber++;
+          else badNumber++;
+        });
+        const data = [
+          { name: "Good", value: goodNumber },
+          { name: "Medium", value: mediumNumber },
+          { name: "Not-Good", value: badNumber },
         ];
         return data;
       }

@@ -16,6 +16,7 @@ function ClassDashboard() {
     const [month, setMonth] = useState(null);
     const [isPeriod, setIsPeriod] = useState(false);
     const [lineChartData, setLineChartData] = useState([]);
+    const [pieChartData, setPieChartData] = useState([]);
     const [selectValue, setSelectValue] = useState("Date");
     const [datesList, setDatesList] = useState([]);
     const [monthsList, setMonthsList] = useState([]);
@@ -86,6 +87,7 @@ function ClassDashboard() {
                       classId: classIdDB,
                     });
                     console.log("pie chart data:", pieChartData);
+                    setPieChartData(pieChartData);
                 }
               
             }catch(e){
@@ -140,7 +142,10 @@ function ClassDashboard() {
           </div>
           <div>
             <AppLineChart data={lineChartData} />
-            <StudentCenterInfo topStudents={topStudents} />
+            <StudentCenterInfo
+              pieChartData={pieChartData}
+              topStudents={topStudents}
+            />
             <DatePicker
               onChangeSelectedType={onChangeSelectedType}
               onChangeSelectedDate={onChangeSelectedDate}
