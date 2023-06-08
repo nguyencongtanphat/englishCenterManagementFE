@@ -15,7 +15,8 @@ export default function HeaderAccount() {
                 type="button" id="dropdownMenuButton"
                 data-mdb-toggle="dropdown" 
                 aria-expanded={isDropdownOpen ? "true" : "false"}
-                style={{maxWidth:"300px", height: "39px", fontWeight: "600", borderRadius: "0.375rem"}}>
+                disabled
+                style={{maxWidth:"300px", height: "39px", fontWeight: "600", borderRadius: "0.375rem", color: "black"}}>
                 <span style={{ marginRight: "2px", fontSize: "14px", fontWeight: 600 }}>
                     {user === 'admin' ? 'Admin' : 'Teacher: ' + user}
                 </span>
