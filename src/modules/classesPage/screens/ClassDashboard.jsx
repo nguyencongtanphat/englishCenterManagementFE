@@ -140,20 +140,20 @@ function ClassDashboard() {
           >
             <ClassesStudentList std={students} />
           </div>
-          <div>
-            <AppLineChart data={lineChartData} />
-            <StudentCenterInfo
-              pieChartData={pieChartData}
-              topStudents={topStudents}
-            />
-            <DatePicker
-              onChangeSelectedType={onChangeSelectedType}
-              onChangeSelectedDate={onChangeSelectedDate}
-              onChangeSelectedMonth={onChangeSelectedMonth}
-              datesList={datesList}
-              monthsList={monthsList}
-            />
-          </div>
+          <AppLineChart data={lineChartData} />
+          <StudentCenterInfo
+            pieChartData={pieChartData}
+            topStudents={topStudents}
+          />
+        </div>
+        <div>
+        <DatePicker
+          onChangeSelectedType={onChangeSelectedType}
+          onChangeSelectedDate={onChangeSelectedDate}
+          onChangeSelectedMonth={onChangeSelectedMonth}
+          datesList={datesList}
+          monthsList={monthsList}
+        />
         </div>
       </>
     );

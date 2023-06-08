@@ -24,12 +24,12 @@ const ClassesStudentList = ({std}) => {
   }, []);
 
   return (
-    <div style={{borderRadius:"10px"}}>
+    <div style={{borderRadius:"0px"}}>
       <Row>
           <Col>
             <p style={{fontWeight:700, fontSize:"20px"}}>Student list</p>
           </Col>
-          <Col lg='auto' className='pt-4 pb-4 d-flex'>
+          {/* <Col lg='auto' className='pt-4 pb-4 d-flex'>
             <button style={{color:'white', padding:'5px', borderRadius:'6px', backgroundColor:'black'}}>Daily</button>
             <button className='btn-sm' style={{paddingLeft:'15px'}}>
               <DatePicker
@@ -37,13 +37,13 @@ const ClassesStudentList = ({std}) => {
                   onChange={(date) => setSelectedDate(date)}
               />
             </button>
-          </Col>
+          </Col> */}
         </Row>
 
       {isLoading && <Loading isLoading={isLoading}/>}
 
       {std.length > 0 && !isLoading && (
-        <Table bordered hover style={{ fontSize: 14, borderCollapse: 'collapse', borderRadius: '1em', overflow: 'hidden', borderColor: '#E5E7EB'}}>
+        <Table bordered hover style={{ fontSize: 14, borderCollapse: 'collapse', overflow: 'hidden', borderColor: '#E5E7EB'}}>
             <thead>
                 <tr className='text-uppercase text-secondary'>
                     <th>Name</th>

@@ -27,7 +27,7 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 import { Counter } from "./features/counter/Counter";
 import { AuthProvider } from "./modules/loginPage/AuthContext";
-
+import ForgotPassword from "./modules/loginPage/ForgotPassword";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -118,6 +118,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
       element: <Login/>,
+    },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword/>,
     },
 ]);
 
