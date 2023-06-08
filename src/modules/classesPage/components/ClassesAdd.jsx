@@ -18,6 +18,7 @@ function ClassesAdd(){
     const scoreTargetRef = useRef("");
     const teacherNameRef = useRef("");
     const [teachers, setTeachers] = useState([]);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
 
   
     const saveHandler = async () => {
@@ -29,7 +30,8 @@ function ClassesAdd(){
                 TermTo: termToRef.current.value,
                 ScoreRequired: scoreRequiredRef.current.value,
                 ScoreTarget: scoreTargetRef.current.value,
-                TeacherName: teacherNameRef.current.value,
+                TeacherID: selectedTeacher ? selectedTeacher._id : "",
+                TeacherName: selectedTeacher ? selectedTeacher.Name : "",
             };
             setClassIn(classInfo)
             console.log('Student Info: ',classInfo);
@@ -106,10 +108,16 @@ function ClassesAdd(){
                             <Form.Group controlId="formTeacher" style={{ width: "300px" }}>
                                 <Form.Label style={{ fontWeight: "500" }}>Teacher</Form.Label>
                                 <Form.Select as="select" style={{ fontSize: "14px", marginTop:"-4px"}}
-                                ref={teacherNameRef}>
+                                ref={teacherNameRef}
+                                onChange={(e) => {
+                                    const teacherId = e.target.value;
+                                    const selectedTeacherInfo = teachers.find((teacher) => teacher._id === teacherId);
+                                    setSelectedTeacher(selectedTeacherInfo);
+                                  }}
+                                >
                                     <option hidden>Select a Teacher</option>
                                    {teachers.map(teacher => (
-                                    <option key={teacher.id} value={teacher.id}>
+                                    <option key={teacher._id} value={teacher._id}>
                                         {teacher.Name}
                                     </option>
                                     ))}

@@ -16,6 +16,7 @@ import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import searchSVG from "../../../assets/images/global/search.svg";
 import axios from 'axios';
+import Loading from "../../classesPage/components/Loading";
 
 function mathRound(number){
   return Math.round((number) * 100)/100
@@ -23,20 +24,24 @@ function mathRound(number){
 
 function StudentsTable({ std }) {
   let navigate = useNavigate();
-  
+  const [isLoading, setIsLoading] = useState(true);
   // Handle Delete Student
-  const [studentList, setStudentList] = useState([]);
+  const [studentList, setStudentList] = useState({});
   const [studentDeleted, setStudentDeleted] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [classToDelete, setClassToDelete] = useState(null);
   const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/students');
       setStudentList(result.data);
     };
     fetchData();
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 700);
   }, [studentDeleted]);
 
   const deleteHandler = async (Id) => {
@@ -125,6 +130,7 @@ function StudentsTable({ std }) {
   const [classes, setClasses] = useState([]);
   const [filClass, setFilClass] = useState("");
   const [filEva, setFilEva] = useState("");
+  const [totalStudents, setTotalStudents] = useState([]);
   const [displayedStudents, setDisplayedStudents] = useState([]);
 
   useEffect(() => {
@@ -133,6 +139,7 @@ function StudentsTable({ std }) {
       .then((res) => {
         //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
         setDisplayedStudents(res.data.ResponseResult.Result);
+        setTotalStudents(res.data.ResponseResult.Result)
         console.log('Data Result');
         console.log(res.data.ResponseResult.Result);
       })
@@ -162,23 +169,31 @@ function StudentsTable({ std }) {
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchValue(value);
-  
-    find(value, ['StudentName', 'StudentID']); 
+    search(value.toUpperCase());
+    // find(value, ['StudentName', 'StudentID']); 
   };
+
+  const search = (value) => {
+    let tempArr = [...totalStudents].map((x) => x)
+    let temp = tempArr.filter((item) => {
+      return (item?.Student.Name.toUpperCase()).includes(value) || (item?.Student.StudentID.toUpperCase()).includes(value)
+    })
+    setDisplayedStudents(temp)
+  }
   
-  const find = (query) => {
-    const params = new URLSearchParams();
-    params.append('query', query);
-    const url = `http://localhost:3001/api/v1/student-report/total/find?${params}`;
-    console.log("URL API search: ",url);
-    axios.get(`http://localhost:3001/api/v1/student-report/total/find?${params}`)
-      .then((response) => {
-        setDisplayedStudents(response.data.ResponseResult.Result);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // const find = (query) => {
+  //   const params = new URLSearchParams();
+  //   params.append('query', query);
+  //   const url = `http://localhost:3001/api/v1/student-report/total/find?${params}`;
+  //   console.log("URL API search: ",url);
+  //   axios.get(`http://localhost:3001/api/v1/student-report/total/find?${params}`)
+  //     .then((response) => {
+  //       setDisplayedStudents(response.data.ResponseResult.Result);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <>
@@ -215,6 +230,9 @@ function StudentsTable({ std }) {
           </div>
         </Row>
       </Form>
+      {isLoading && <Loading isLoading={isLoading}/>}
+      {displayedStudents.length > 0 && !isLoading &&(
+
       <div className={`${styled["form"]}`}>
         <Table
           bordered
@@ -336,6 +354,7 @@ function StudentsTable({ std }) {
         </Modal.Footer>
       </Modal>
       </div>
+      )}
     </>
   );
 }

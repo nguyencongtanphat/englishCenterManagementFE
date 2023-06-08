@@ -6,6 +6,7 @@ import AppLineChart from "../../../globalComponents/LineChart";
 import StudentCenterInfo from "../components/StudentCenterInfo";
 import ClassList from "../../../globalComponents/ClassList";
 import moment from "moment-timezone";
+import { useAuthContext } from '../../loginPage/AuthContext';
 
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
@@ -74,6 +75,7 @@ function HomePage() {
           HomeService.getLineChartData({ month: month, date: date, isPeriod: isPeriod }),
           HomeService.getPieChartData({month: month, date: date, isPeriod: isPeriod})
         ]);
+      
         setPieChartData(pieChartReport);
         setLineChartData(centerReport);
       } catch (e) {
@@ -83,10 +85,12 @@ function HomePage() {
     getHomeData();
   }, [ date, isPeriod, month]);
 
-  
+  const { user } = useAuthContext(); 
+console.log("aaaaa: ",user);
+
   return (
     <Container fluid="md">
-      {selectValue}
+      
       <Row className="mt-3">
         <Col>
           <Link
@@ -118,6 +122,13 @@ function HomePage() {
       <AppLineChart data={lineChartData} />
 
       <StudentCenterInfo
+        timeInfo={
+          date
+            ? moment(date).format("YYYY-MM-DD")
+            : month
+            ? `month ${month}`
+            : "Total"
+        }
         pieChartData={pieChartData}
         topStudents={topStudents}
       />

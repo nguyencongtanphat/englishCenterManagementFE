@@ -13,7 +13,7 @@ function Loading({isLoading}) {
         color="#0D6EFD"
         loading={isLoading}
         cssOverride={override}
-        size={80}
+        size={50}
         aria-label="Loading Spinner"
         data-testid="loader"
         speedMultiplier={0.8}

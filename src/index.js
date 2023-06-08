@@ -26,6 +26,7 @@ import TeacherDetail from "./modules/teachersPage/screens/TeacherDetail";
 import { store } from "./store";
 import { Provider } from "react-redux";
 import { Counter } from "./features/counter/Counter";
+import { AuthProvider } from "./modules/loginPage/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -89,10 +90,6 @@ const router = createBrowserRouter([
         element: <StudentsPage />,
       },
       {
-        path: "login",
-        element: <Login />,
-      },
-      {
         path: "newteacher",
         element: <NewTeacher />,
       },
@@ -118,11 +115,15 @@ const router = createBrowserRouter([
   path: "/introduction",
     element: <Introduction/>,
   },
+  {
+    path: "/login",
+      element: <Login/>,
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Provider store={store}>
+  <AuthProvider store={store}>
     <RouterProvider router={router} />
-  </Provider>
+  </AuthProvider>
 );

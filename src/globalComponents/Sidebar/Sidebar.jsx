@@ -11,7 +11,7 @@ import TeacherIcon from './SidebarIcon/TeacherIcon.jsx'
 
 import SidebarFooter from './SidebarFooter'
 import { NavLink } from 'react-router-dom'
-
+import { useAuthContext } from '../../modules/loginPage/AuthContext'
 
 export default function Sidebar() {
     const [dashboardColor, setDashboardColor] = useState("black");
@@ -21,6 +21,7 @@ export default function Sidebar() {
     const [certificateColor, setCertificateColor] = useState("black");
     const [helpColor, setHelpColor] = useState("black");
 
+    const { user } = useAuthContext();
 
     return <div className='d-flex flex-column justify-content-between sidebar-disable-copy' 
         style={{  height: '100%',
@@ -33,6 +34,9 @@ export default function Sidebar() {
         <div>
         {
             SidebarMenu.subMenuL1.map((item, index) => {
+                if (['Students', 'Certificates'].includes(item.title) && user!=='admin') {
+                    return null; 
+                }
                 return (
                     <div className=''>
                         
@@ -131,7 +135,7 @@ export default function Sidebar() {
                                 </div>
                                 </NavLink>
         
-                                {item.isEnd && item.isEnd === true && <hr style={{marginTop: "10px"}}></hr>}
+                                {item.title=="Help" && <hr style={{marginTop: "-50px"}}></hr>}
                             </div>
                             
                     </div>

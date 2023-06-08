@@ -49,10 +49,10 @@ export default function SearchBar() {
 
     return (
     
-        <div style={{width:"548px", height:"32px"}}>
+        <div style={{width:"400px", height:"32px", marginLeft:'430px'}}>
             <ReactSearchAutocomplete
                 items={testData}
-                placeholder="Search"
+                placeholder="Search..."
                 onSearch={handleOnSearch}
                 autoFocus
                 // formatResult={formatResult}

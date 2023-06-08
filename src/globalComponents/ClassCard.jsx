@@ -1,8 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "react-bootstrap/Card";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../modules/loginPage/AuthContext";
 
 function ClassCard({ classInfo, bgColor }) {
-  const { ClassID, Name, ScoreTarget, TeacherName, TermFrom, TermTo } =
+  const { user } = useAuthContext(); 
+
+  const { ClassID, Name,NumberOfStudent, ScoreTarget, TeacherName, TermFrom, TermTo } =
     classInfo;
     const TermFromDate = new Date(TermFrom);
     const TermToDate = new Date(TermTo);
@@ -17,13 +21,20 @@ function ClassCard({ classInfo, bgColor }) {
   )
     .toString()
     .padStart(2, "0")}/${TermToDate.getFullYear().toString()}`;
+  
+  let navigate = useNavigate();
   return (
     <Card
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
-      style={{ backgroundColor: bgColor, minHeight:"180px"}}
+      style={{
+        backgroundColor: bgColor,
+        minHeight: "140px",
+        cursor: "pointer",
+      }}
       className="mb-3"
-    >
+      onClick={user ==='admin' ? () => navigate(`/classes/${ClassID}/dashboard`) : undefined}
+      >
       <Card.Body>
         <div
           style={{
@@ -50,7 +61,7 @@ function ClassCard({ classInfo, bgColor }) {
           className="text-center"
           style={{ fontSize: "14px", fontWeight: 400, marginBottom: "4px" }}
         >
-          {TeacherName} | {500} students
+          {TeacherName} | {NumberOfStudent} students
         </Card.Text>
         <Card.Text
           className="text-center"

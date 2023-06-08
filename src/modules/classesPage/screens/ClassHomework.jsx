@@ -14,7 +14,9 @@ import StudentService, {
 } from "../../../service.js";
 import NoStudent from "../components/NoStudent";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
+import Notification from "./../components/Notification";
 import Loading from "../components/Loading";
+import AddTest from "../components/AddTest";
 
 function ClassHomework() {
   const [tests, setTests] = useState([]);
@@ -23,13 +25,16 @@ function ClassHomework() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isAddingHomework, setIsAddingHomework] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAddTest, setIsAddTest] = useState(false);
+  const [defaultDateAddTest, setDefaultDateAddTest] = useState(new Date());
 
   const params = useParams();
   const { classId } = params;
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     TestsService.getHomework(classId)
       .then((res) => {
         setTests(res.data.ResponseResult.Result);
@@ -54,7 +59,7 @@ function ClassHomework() {
         throw err;
       });
     setTimeout(() => {
-      setIsLoading(false)
+      setIsLoading(false);
     }, 1000);
   }, []);
 
@@ -84,7 +89,7 @@ function ClassHomework() {
         return {
           ...student,
           periTests,
-          averageScore: Math.round(sumScores / periTests.length),
+          averageScore: (sumScores / periTests.length).toFixed(1),
         };
       }
     });
@@ -128,17 +133,18 @@ function ClassHomework() {
     let newHomeworkTests = [];
     students.forEach((student) => {
       const newHomeworkTest = {
-        Date: new Date(date),
+        Date: new Date(date).toISOString().split("T")[0],
         Score: 0,
         HomeworkID: testId,
         StudentID: student,
-        RequiredScore: score === "" ? null : parseInt(score),
+        RequiredScore: score === "" ? null : parseFloat(score),
       };
       newHomeworkTests.push(newHomeworkTest);
     });
     setHomeworkTests((prevTests) => [...prevTests, ...newHomeworkTests]);
     setIsAddingHomework(false);
     setIsEditable(true);
+    setIsDeleting(false)
     setIsUpdating(true);
   };
 
@@ -151,7 +157,7 @@ function ClassHomework() {
     });
 
     const homeworkTestsCopy = [...homeworkTests];
-    homeworkTestsCopy[index].Score = parseInt(value);
+    homeworkTestsCopy[index].Score = parseFloat(value);
     setHomeworkTests(homeworkTestsCopy);
   };
 
@@ -171,6 +177,24 @@ function ClassHomework() {
       });
     });
     await StatisticsService.deleteHomework(classId, date);
+  };
+
+  const saveTest = async (test) => {
+    await TestsService.addHomeworkTest(test);
+    setIsAddTest(false);
+    TestsService.getHomework(classId)
+      .then((res) => {
+        setTests(res.data.ResponseResult.Result);
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+
+  const addTestHandler = (date) => {
+    setDefaultDateAddTest(date);
+    setIsAddingHomework(false);
+    setIsAddTest(true);
   };
 
   return (
@@ -219,9 +243,7 @@ function ClassHomework() {
         </Col>
       </Row>
 
-      {isLoading && (
-        <Loading isLoading={isLoading}/>
-      )}
+      {isLoading && <Loading isLoading={isLoading} />}
 
       {students.length > 0 && !isLoading && (
         <div className={classes["table-div"]} id="tableDiv">
@@ -242,16 +264,28 @@ function ClassHomework() {
                 <th>NAME</th>
                 <th>AVERAGE</th>
                 {testDates.map((date) => (
-                  <th key={Math.random()}>
-                    <span style={{ marginRight: "4px" }}>
-                      {date.getDate() + "/" + (date.getMonth() + 1)}
-                    </span>
-                    {isUpdating && (
-                      <button onClick={() => deleteHomeworkHandler(date)}>
-                        <FontAwesomeIcon icon={faTimesCircle} />
-                      </button>
+                  <>
+                    <th key={Math.random()}>
+                      <span style={{ marginRight: "4px" }}>
+                        {date.getDate() + "/" + (date.getMonth() + 1)}
+                      </span>
+                      {isUpdating && (
+                        <button onClick={() => deleteHomeworkHandler(date)}>
+                          <FontAwesomeIcon icon={faTimesCircle} />
+                        </button>
+                      )}
+                    </th>
+                    {isDeleting && (
+                      <Notification
+                        message="Are you sure to delete this periodic tests results? This action can not be
+              undone."
+                        onCancelDelete={() => {
+                          setIsDeleting(false);
+                        }}
+                        onAcceptDelete={() => deleteHomeworkHandler(date)}
+                      />
                     )}
-                  </th>
+                  </>
                 ))}
                 {isUpdating && (
                   <th>
@@ -285,6 +319,16 @@ function ClassHomework() {
           existingTests={existingTests}
           onCloseModal={closeAddHandler}
           onSave={saveHomeworkHandler}
+          onAddTest={addTestHandler}
+        />
+      )}
+
+      {isAddTest && (
+        <AddTest
+          onCloseModal={() => setIsAddTest(false)}
+          onSave={saveTest}
+          classId={students[0].ClassID}
+          defaultDate={defaultDateAddTest}
         />
       )}
     </Container>
