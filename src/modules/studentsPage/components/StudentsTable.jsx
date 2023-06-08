@@ -270,8 +270,7 @@ function StudentsTable({ std }) {
                         <Image
                           src={_std.Student.ImageURL}
                           roundedCircle="true"
-                          width="40px"
-                          height="40px"
+                          style={{objectFit: 'fixed', width: '40px', height: '40px'}}
                         ></Image>
                       </Col>
                       <Col>

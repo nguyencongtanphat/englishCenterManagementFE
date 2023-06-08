@@ -55,7 +55,7 @@ export default function SearchBar() {
                 placeholder="Search..."
                 onSearch={handleOnSearch}
                 autoFocus
-                formatResult={formatResult}
+                // formatResult={formatResult}
             />
         </div>
   )
