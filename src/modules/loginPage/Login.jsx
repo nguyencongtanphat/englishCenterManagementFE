@@ -1,4 +1,4 @@
-import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { Container, Form, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import  Logo  from '../../assets/images/global/LogoLogin.svg'
@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect } from "react";
 import { useAuthContext } from './AuthContext';
-
 function LoginPage() {
     const { login } = useAuthContext();
     const [teacherList, setTeacherList] = useState([]);
@@ -25,7 +24,7 @@ function LoginPage() {
 
     const handleSubmit = (event) => {
       event.preventDefault();
-      if (email=="admin" && password=="admin"){
+      if (email==="admin" && password==="admin"){
         login('admin');
         navigate('/');
       } 
@@ -75,7 +74,7 @@ function LoginPage() {
                 />
               </Col>
               <Col className="d-flex justify-content-end">
-                <Link style={{textDecoration:"none"}} to="">Forgot your password?</Link>
+                <a style={{textDecoration:"none", cursor:'pointer', color:'#2877fd'}} onClick={()=>{navigate(`/forgotpassword`);}}>Forgot your password?</a>
               </Col>
             </Row>
             
