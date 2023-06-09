@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import { ref, uploadBytes, getDownloadURL} from "firebase/storage"
 import { storage } from "../../firebase";
-
+import Loading from '../classesPage/components/Loading';
 function TeacherAdd(){
     const navigate = useNavigate();
     const firstNameRef = useRef("");
@@ -23,13 +23,13 @@ function TeacherAdd(){
     const certificateRef = useRef("");
     const scoreRef = useRef("");
     const [imageUpload, setImageUpload] = useState(null);
-
+    const [loading, setLoading] = useState(false);
     const sleep = async (milliseconds) => {
         await new Promise(resolve => {
             return setTimeout(resolve, milliseconds)
         });
     };
-
+  
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
     const uploadImage = () => {
@@ -50,6 +50,8 @@ function TeacherAdd(){
             });
     };
     const saveHandler = async () => {
+        setFormVisible(false);
+        setLoading(true); 
         uploadImage();
         while (url==null) {await sleep(1000);}
         try {
@@ -75,12 +77,17 @@ function TeacherAdd(){
                 ImageURL: url
             });
             navigate('/teachers');
+            setLoading(false);
+            setFormVisible(true);
         } 
         catch (e) {
             console.log('Lỗi: ', e);
             alert('Đã có lỗi xảy ra khi tạo mới Teacher');
+            setLoading(false);
+            setFormVisible(true);
         }
     };
+    const [formVisible, setFormVisible] = useState(true);
     return(
         <div className="mx-3" style={{fontSize: "14px"}}>
             <Stack direction="horizontal" gap={2} className="mt-3">
@@ -97,6 +104,7 @@ function TeacherAdd(){
                 <Link key="Home" to="/" className="me-3" style={{textDecoration: "none", color: "#1B64F2", fontSize: "14px" }}>New Teacher</Link>
             </Stack>
             <h3 className="mb-3"><b>New Teacher</b></h3>
+            {formVisible ? (
             <div className={`${styled['form']}`}>
                 <Form className={`${styled['inside']}`}>
                     <Row>
@@ -160,6 +168,10 @@ function TeacherAdd(){
                         </Form.Group>
                     </Row>
                 </Form>
+                </div>
+                ) : null}
+                {loading && !formVisible && <Loading />}
+                {formVisible && (
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <button
                         style={{
@@ -180,9 +192,8 @@ function TeacherAdd(){
                     >
                         Save
                     </button>
-                    </div>
+                    </div> )}
             </div>
-        </div>
     );
 }
 
