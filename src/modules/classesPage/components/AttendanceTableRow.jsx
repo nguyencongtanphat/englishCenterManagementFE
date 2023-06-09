@@ -19,8 +19,10 @@ function AttendanceTableRow({ sdta, isUpdating, isEditable, onChange }) {
       >
         <div className={classes.imgDiv}>
           <img
-            style={{
-              height: "100%",
+             style={{
+              height: "40px",
+              width: "40px",
+              objectFit: "fixed"
             }}
             src={sdta.ImageURL}
             alt={sdta.Name}

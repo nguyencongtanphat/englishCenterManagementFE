@@ -140,8 +140,11 @@ function TeacherDetail() {
                 <Image
                   src={teacher.ImageURL}
                   roundedCircle="true"
-                  width="64px"
-                  height="64px"
+                  style={{
+                    height: "64px",
+                    width: "64px",
+                    objectFit: "fixed"
+                  }}
                 ></Image>
                 <div className={`${styled["name_details"]}`}>
                   <label style={{ fontSize: "16px", fontWeight: "600" }}>

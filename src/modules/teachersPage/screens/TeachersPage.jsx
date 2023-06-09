@@ -368,8 +368,11 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                             <Image
                               src={teacher.ImageURL}
                               roundedCircle="true"
-                              width="40px"
-                              height="40px"
+                              style={{
+                                height: "40px",
+                                width: "40px",
+                                objectFit: "fixed"
+                              }}
                             ></Image>
                             </Col>
                             <Col>
