@@ -255,7 +255,7 @@ function ClassesAdd() {
                     <div className={`${styled['details1']}`}>
                         <p style={{fontSize: "20px", fontWeight: 600}}>Information</p>
                         <div className={`${styled['avt_details']}`}>
-                            <Image src={stdInfo.ImageURL} roundedCircle="true" width="64px" height="64px"></Image>
+                            <Image src={stdInfo.ImageURL} roundedCircle="true" style={{width: "64px", height:"64px", objectFit: "fixed"}}></Image>
                             <div className={`${styled['name_details']}`}>
                                 <label style={{fontSize: "16px", fontWeight: "600"}}>{stdInfo.Name}</label>
                                 <label style={{color: "#6B7280"}}>ID: {stdInfo.StudentID}</label>

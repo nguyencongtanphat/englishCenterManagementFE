@@ -19,7 +19,9 @@ function PeriodicTableRow({ sdtt, isUpdating, isEditable, onChange }) {
         <div className={classes.imgDiv}>
           <img
             style={{
-              height: "100%",
+              height: "40px",
+              width: "40px",
+              objectFit: "fixed"
             }}
             src={sdtt.ImageURL}
             alt={sdtt.Name}

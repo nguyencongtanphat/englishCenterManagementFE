@@ -66,8 +66,11 @@ const ClassesStudentList = ({std}) => {
                                   <Image
                                     src={_std.Student.ImageURL}
                                     roundedCircle="true"
-                                    width="40px"
-                                    height="40px"
+                                    style={{
+                                      height: "40px",
+                                      width: "40px",
+                                      objectFit: "fixed"
+                                    }}
                                   ></Image>
                                   </Col>
                                   <Col><b>{_std.Student.Name}</b><br/>{_std.Student.StudentID}</Col>
