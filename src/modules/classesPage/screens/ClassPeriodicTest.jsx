@@ -81,7 +81,7 @@ function ClassPeriodicTest() {
           .map((periodicTest) => {
             sumScores += periodicTest.Score;
             return {
-              date: periodicTest.TestID.Date,
+              date: periodicTest.TestID?.Date,
               score: periodicTest.Score,
             };
           });
@@ -109,7 +109,7 @@ function ClassPeriodicTest() {
     });
   }
 
-  const testDates = existingTests.map((test) => new Date(test.Date));
+  const testDates = existingTests.map((test) => new Date(test?.Date));
 
   const updateHandler = () => {
     setIsUpdating(true);
