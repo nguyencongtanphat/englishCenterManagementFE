@@ -1,11 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./../screens/ClassPeriodicTest.module.css";
 import { useNavigate } from "react-router-dom";
 
+function TableCell({ score, date, isUpdating, onBlur }) {
+  const [value, setValue] = useState(score);
+
+  const changeHandler = (event) => {
+    const _value = parseFloat(event.target.value);
+    // console.log(_value);
+    if (isNaN(_value)) setValue("");
+    else if (_value >= 0 && _value <= 100) {
+      setValue(_value);
+    }
+  };
+
+  const blurHandler = (event) => {
+    const _value = parseFloat(event.target.value);
+    const date = event.target.dataset.date;
+    if (isNaN(_value)) {
+      setValue(0);
+      onBlur(0, date);
+    } else onBlur(_value, date);
+  };
+
+  return (
+    <input
+      value={value}
+      data-date={date}
+      readOnly={!isUpdating}
+      type="number"
+      className="text-center bg-light border-0 w-100"
+      style={{ outline: "none" }}
+      onBlur={blurHandler}
+      onChange={changeHandler}
+    />
+  );
+}
+
 function PeriodicTableRow({ sdtt, isUpdating, isEditable, onChange }) {
   const navigate = useNavigate();
-  const changeHandler = (event) => {
-    onChange(event.target.value, sdtt.StudentID, event.target.dataset.date);
+  const blurHandler = (value, date) => {
+    onChange(value, sdtt.StudentID, date);
   };
 
   return (
@@ -37,14 +72,11 @@ function PeriodicTableRow({ sdtt, isUpdating, isEditable, onChange }) {
       {/* Scores by days */}
       {sdtt.periTests.map((test) => (
         <td key={Math.random()}>
-          <input
-            defaultValue={test.score}
-            data-date={test.date}
-            readOnly={!isUpdating}
-            type="number"
-            className="text-center bg-light border-0 w-100"
-            style={{ outline: "none" }}
-            onBlur={changeHandler}
+          <TableCell
+            score={test.score}
+            date={test.date}
+            onBlur={blurHandler}
+            isUpdating={isUpdating}
           />
         </td>
       ))}
