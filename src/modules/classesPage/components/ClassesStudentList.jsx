@@ -65,13 +65,13 @@ const ClassesStudentList = ({ std }) => {
               <tr
                 key={_std.id}
                 onClick={() => {
-                  navigate(`/students/${_std.Student._id}`);
+                  navigate(`/app/students/${_std.Student._id}`);
                 }}
               >
                 <td>
                   <Container>
                     <Link
-                      to={"/students"}
+                      // to={"/students"}
                       className="text-decoration-none text-dark"
                     >
                       <Row>
