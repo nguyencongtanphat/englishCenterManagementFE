@@ -43,7 +43,7 @@ export default function Sidebar() {
                         <div className='row sitebar-menu-item' style={{marginTop: "8px"}}
                             key={index}
                         >
-                            <NavLink to={item.route}
+                            <NavLink to={  item.route}
                                 className={({ isActive }) => {
                                     if(isActive){
                                         if(item.title === "Dashboard"){

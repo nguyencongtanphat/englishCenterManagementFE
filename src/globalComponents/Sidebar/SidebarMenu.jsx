@@ -7,48 +7,42 @@ import HelpIcon from './SidebarIcon/HelpIcon.jsx'
 import SettingIcon from './SidebarIcon/SettingIcon.jsx'
 import StudentIcon from './SidebarIcon/StudentIcon.jsx'
 import TeacherIcon from './SidebarIcon/TeacherIcon.jsx'
-const SidebarMenu = 
+const SidebarMenu = {
+  id: 1,
+  title: "Teller Operation",
+  subMenuL1: [
     {
-        "id": 1,
-        "title": "Teller Operation",
-        "subMenuL1": [
-            {
-                "id": 1,
-                "title": "Dashboard",
-                "icon": ChartPieIcon,
-                "route": "/"
-            },
-            {
-                "id": 2,
-                "title": "Students",
-                "icon": StudentIcon,
-                "route": "/students"
-            },
-            {
-                "id": 3,
-                "title": "Classes",
-                "icon": ClassIcon,
-                "route": "/classes"
-            },
-            {
-                "id": 4,
-                "title": "Teachers",
-                "icon": TeacherIcon,
-                "route": "/teachers"
-            },{
-                "id": 5,
-                "title": "Certificates",
-                "icon": CertificateIcon,
-                "isEnd": true,
-                "route": "/certificates"
-            },{
-                "id": 6,
-                "title": "Help",
-                "icon": HelpIcon,
-                "route": "/help"
-            }
-        ]
-    }
+      id: 1,
+      title: "Dashboard",
+      icon: ChartPieIcon,
+      route: "/app",
+    },
+    {
+      id: 2,
+      title: "Students",
+      icon: StudentIcon,
+      route: "/app/students",
+    },
+    {
+      id: 3,
+      title: "Classes",
+      icon: ClassIcon,
+      route: "/app/classes",
+    },
+    {
+      id: 4,
+      title: "Teachers",
+      icon: TeacherIcon,
+      route: "/app/teachers",
+    },
+    {
+      id: 6,
+      title: "Help",
+      icon: HelpIcon,
+      route: "/help",
+    },
+  ],
+};
 
 
 export default SidebarMenu

@@ -26,7 +26,7 @@ function LoginPage() {
       event.preventDefault();
       if (email==="admin" && password==="admin"){
         login('admin');
-        navigate('/');
+        navigate('/app');
       } 
       else {
         const teacher = teacherList.find((tea) => tea.TeacherID === email && tea.Password === password);
