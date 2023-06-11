@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer } from "@react-pdf/renderer";
 import "./index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -31,11 +31,23 @@ import ForgotPassword from "./modules/loginPage/ForgotPassword";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Introduction />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/app",
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <HomePage />,
         errorElement: <ErrorPage />,
       },
@@ -111,18 +123,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-  path: "/introduction",
-    element: <Introduction/>,
-  },
-  {
-    path: "/login",
-      element: <Login/>,
-    },
-  {
-    path: "/forgotpassword",
-    element: <ForgotPassword/>,
-    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
