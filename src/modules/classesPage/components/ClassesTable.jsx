@@ -255,7 +255,7 @@ function ClassesTable({ classes }) {
               <tr key={_class._id}>
                 <td>
                   <Link
-                    to={`/classes/${_class.ClassID}/dashboard`}
+                    to={_class.ClassID + '/dashboard'}
                     onClick={() => handleClassClick(_class.ClassID)}
                     className="text-decoration-none text-dark fw-semibold"
                   >

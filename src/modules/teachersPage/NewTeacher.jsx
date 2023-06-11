@@ -56,10 +56,10 @@ function TeacherAdd() {
         teacherInfo.ImageURL= url;
     console.log("Teacher Info: ", teacherInfo);
       await axios.post("http://localhost:3001/api/v1/teacher", teacherInfo);
-      navigate("/teachers");
+      navigate("/app/teachers");
       setLoading(false);
     } catch (e) {
-      console.log("Lỗi: ", e.message);
+      console.log("Lỗi: ", e);
       alert("Đã có lỗi xảy ra khi tạo mới Teacher");
       setLoading(false);
     }
@@ -265,8 +265,8 @@ function TeacherAdd() {
               display: "flex",
               position: "absolute",
               padding: "5px",
-              left: "667px",
-              bottom: "126px",
+              left: '933px',
+              bottom: '186px',
               fontSize: "14px",
               fontWeight: "bold",
               paddingInline: "16px",

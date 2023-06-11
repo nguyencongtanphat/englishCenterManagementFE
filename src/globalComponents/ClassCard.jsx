@@ -33,7 +33,7 @@ function ClassCard({ classInfo, bgColor }) {
         cursor: "pointer",
       }}
       className="mb-3"
-      onClick={user ==='admin' ? () => navigate(`/classes/${ClassID}/dashboard`) : undefined}
+      onClick={user ==='admin' ? () => navigate(`/app/classes/${ClassID}/dashboard`) : undefined}
       >
       <Card.Body>
         <div

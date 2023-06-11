@@ -19,13 +19,13 @@ export default function Header() {
             <Row>
                 <Col className='col-1'>
                    <div>
-                        <a href='/'> 
+                        <a href='/app'> 
                             <img src={LogoImg} style={{lineHeight: '32px', height: '32px', padding: '1px', marginLeft:'8px', marginTop:"6px"}}/>
                         </a> 
                    </div>
                 </Col>
                 <Col className='col-2'>
-                  <a href='/' style={{lineHeight:'46px', textDecoration:'none', fontSize:'20px', color:'black', fontWeight:'bold', cursor:'pointer'}} >Earth Center English</a>
+                  <a href='/app' style={{lineHeight:'46px', textDecoration:'none', fontSize:'20px', color:'black', fontWeight:'bold', cursor:'pointer'}} >Earth Center English</a>
                 </Col>
                 <Col className='col-3'>
                     <HeaderSearchBar />

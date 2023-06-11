@@ -190,46 +190,6 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
   const [totalTeachers, setTotalTeachers] = useState([]);
   const [displayedStudents, setDisplayedStudents] = useState([]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get('http://localhost:3001/api/v1/student-report/total')
-  //     .then((res) => {
-  //       //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
-  //       setDisplayedStudents(res.data.ResponseResult.Result);
-  //       setTotalStudents(res.data.ResponseResult.Result)
-  //       console.log('Data Result');
-  //       console.log(res.data.ResponseResult.Result);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-  //search teachers:
-  // const [searchValue, setSearchValue] = useState("");
-
-  // //Search handle
-  // const handleSearchChange = (event) => {
-  //   const value = event.target.value;
-  //   setSearchValue(value);
-
-  //   find(value, ["TeacherName", "ClassID"]);
-  // };
-
-  // const find = (query) => {
-  //   const params = new URLSearchParams();
-  //   params.append("query", query);
-
-  //   axios
-  //     .get(`http://localhost:3001/api/v1/teacher/search?${params}`)
-  //     .then((response) => {
-  //       setTeachers(response.data.ResponseResult.Result);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-
   return (
     <>
       {/* Filter */}
@@ -304,7 +264,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
           {user === "admin" && (
           <Col className="text-end" style={{ marginTop: "32px" }}>
             <Link
-              to="/newteacher"
+              to="/app/newteacher"
               className="bg-primary text-light py-2 px-3 rounded-2 text-decoration-none"
               style={{ alignItems: "center" }}
             >
@@ -356,7 +316,7 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
                    <tr key={teacher.id} >
                       <td 
                       // onClick={()=>{navigate(`/teachers/${teacher._id}`);}}
-                      onClick={user === "admin" ? () => navigate(`/teachers/${teacher._id}`) : null}
+                      onClick={user === "admin" ? () => navigate(`/app/teachers/${teacher._id}`) : null}
                       style={{ cursor: user!== "admin" ? "not-allowed" : "pointer" }}
                       >
                         <Container>
