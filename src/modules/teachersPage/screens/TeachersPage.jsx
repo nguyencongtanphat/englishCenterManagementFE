@@ -76,10 +76,6 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
   useEffect(() => {
     setIsLoading(true);
     fetchTeachers();
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000);
   }, [selectedCertificate]);
 
   const fetchTeachers = async () => {
@@ -102,7 +98,8 @@ const [selectedTeacherId, setSelectedTeacherId] = useState("");
       const classIDs = classLists.map((classList) =>
       classList.map((classItem) => classItem.ClassID));
       setTeacherClassIDs(classIDs);
-
+        
+      setIsLoading(false);
     } 
     catch (error) {
       console.error(error);

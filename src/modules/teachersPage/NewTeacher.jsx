@@ -29,9 +29,9 @@ function TeacherAdd(){
             return setTimeout(resolve, milliseconds)
         });
     };
-  
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
+
     const uploadImage = () => {
         const imageRef = ref(storage, `${imageUpload.name}`);
         uploadBytes(imageRef, imageUpload)

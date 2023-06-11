@@ -20,19 +20,21 @@ function ClassList({teacherClasses }) {
   ];
 
   useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 1000);
-  }, []);
+    // setIsLoading(true);
+    // setTimeout(() => {
+    //   setIsLoading(false)
+    // }, 1000);
+    if (teacherClasses.length > 0) {
+      setIsLoading(false);
+    }
+  }, [teacherClasses]);
 
   let index = 0;
   return (
     <AppCard className="">
       <Container>
         <p style={{fontSize: "20px", fontWeight: 600}}>Teaching Classes</p>
-       {isLoading && <Loading isLoading={isLoading}/>}
-       {teacherClasses.length > 0 && !isLoading &&(
+       {isLoading ? <Loading isLoading={isLoading}/>:teacherClasses.length > 0 && !isLoading &&(
            <Row>
            {teacherClasses.map((classInfo) => {
              if (index > colorsBg.length) index = 0;
@@ -45,8 +47,6 @@ function ClassList({teacherClasses }) {
            })}
          </Row>
        )}
-      {teacherClasses.length === 0 && !isLoading && <NoClass />}
-
       </Container>
     </AppCard>
   );

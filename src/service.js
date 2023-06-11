@@ -21,21 +21,23 @@ class StudentService {
     );
   }
 
-  getStudentReportOverviewByClass(classId) {
-    return axios.get(
+  async getStudentReportOverviewByClass(classId) {
+    const res = await axios.get(
       `http://localhost:3001/api/v1/student-report/total/${classId}`
     );
+    return res.data.ResponseResult.Result;
   }
 
   getStudentReportOverview() {
     return axios.get(`http://localhost:3001/api/v1/student-report/total`);
   }
 
-  getTopStudents({ classid } = {}) {
+  async getTopStudents({ classid } = {}) {
     let urlString =
       "http://localhost:3001/api/v1/student-report/total/?istop=true";
     urlString = classid ? urlString + "&classid=" + classid : urlString;
-    return axios.get(urlString);
+    const res =  await axios.get(urlString);
+    return res.data.ResponseResult.Result;
   }
 
   getStudentReportDailyMonthly({

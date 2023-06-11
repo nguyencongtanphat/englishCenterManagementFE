@@ -37,11 +37,9 @@ function StudentsTable({ std }) {
     const fetchData = async () => {
       const result = await axios.get('http://localhost:3001/api/v1/students');
       setStudentList(result.data);
+       setIsLoading(false);
     };
     fetchData();
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 700);
   }, [studentDeleted]);
 
   const deleteHandler = async (Id) => {
