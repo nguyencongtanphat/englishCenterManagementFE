@@ -261,7 +261,7 @@ function StudentsTable({ std }) {
           <tbody style={{ backgroundColor: "white", cursor: "pointer" }}>
             {displayedStudents.map((_std) => (
               <tr key={_std.id}>
-                <td onClick={()=>{navigate(`/students/${_std.Student._id}`);}}>
+                <td onClick={()=>{navigate(_std.Student._id)}}>
                   <Container>
                     <Row>
                       <Col md="auto">

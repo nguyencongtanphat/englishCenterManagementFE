@@ -24,7 +24,7 @@ function ClassCard({ classInfo, bgColor }) {
       key={ClassID}
       text={bgColor === "light" ? "dark" : "white"}
       style={{ backgroundColor: bgColor, minHeight:"140px", cursor:"pointer"}}
-      onClick={()=>{navigate(`/classes/${ClassID}/dashboard`);}}
+      onClick={()=>{navigate(`/app/classes/${ClassID}/dashboard`);}}
       className="mb-3"
     >
       <Card.Body>

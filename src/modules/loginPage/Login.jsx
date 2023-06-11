@@ -34,7 +34,7 @@ function LoginPage() {
           console.log(teacher);
           localStorage.setItem('teacherID', teacher._id); 
           login(teacher.Name); 
-          navigate('/');
+          navigate('/app');
         } 
         else {
           alert("The Username or Password is incorrect. Please try again!");

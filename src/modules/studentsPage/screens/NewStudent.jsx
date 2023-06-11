@@ -124,7 +124,7 @@ function ClassesAdd() {
     try {
       axios.post("http://localhost:3001/api/v1/students", apiNewStudent);
       alert("Tạo mới Student thành công");
-      navigate("/students");
+      navigate("/app/students");
     } catch (e) {
         alert("Tạo mới Student thất bại");
         console.log("Failed to create student")

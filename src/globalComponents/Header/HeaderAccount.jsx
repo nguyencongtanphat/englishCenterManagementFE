@@ -30,7 +30,7 @@ export default function HeaderAccount() {
                     <a class="dropdown-item" href='#'>Info</a>
                 </li>
                 <li>
-                    <a class="dropdown-item" href='/introduction'>Logout</a>
+                    <a class="dropdown-item" href='/'>Logout</a>
                 </li>
             </ul>
         </div>

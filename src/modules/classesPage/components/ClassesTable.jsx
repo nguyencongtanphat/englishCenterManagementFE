@@ -174,7 +174,7 @@ function ClassesTable({ classes }) {
   };
 
   const handleClassClick = (classId) => {
-    navigate(`/classes/${classId}/dashboard`);
+    navigate(`/app/classes/${classId}/dashboard`);
   };
 
   return (
@@ -254,10 +254,9 @@ function ClassesTable({ classes }) {
           {displayedClasses.map((_class) => (
               <tr key={_class._id}>
                 <td>
-                  <Link
-                    to={`/classes/${_class.ClassID}/dashboard`}
-                    onClick={() => handleClassClick(_class.ClassID)}
+                  <Link to={_class.ClassID + '/dashboard'}
                     className="text-decoration-none text-dark fw-semibold"
+                    // onClick={() => handleClassClick(_class.ClassID)}
                   >
                     {_class.ClassID} <br/>
                     <span style={{fontSize:'12px',color:'#555'}}>{_class.Name}</span>

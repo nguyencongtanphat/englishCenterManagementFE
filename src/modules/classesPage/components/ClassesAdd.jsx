@@ -48,7 +48,7 @@ function ClassesAdd(){
             axios.post('http://localhost:3001/api/v1/class', apiNewClass);
             
             // alert('Tạo mới Class thành công');
-            navigate('/classes');
+            navigate('/app/classes');
         } 
         catch (e) {
             console.log('Lỗi: ', e);
