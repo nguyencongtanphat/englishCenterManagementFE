@@ -9,7 +9,7 @@ import moment from "moment-timezone";
 
 function ClassDashboard() {
   const [topStudents, setTopStudents] = useState([]);
-  const [students, setStudents] = useState([]);
+  const [students, setStudents] = useState(null);
   const { classId } = useParams();
   const [date, setDate] = useState(null);
   const [month, setMonth] = useState(null);
@@ -123,9 +123,9 @@ function ClassDashboard() {
     fetchData();
   }, [classId]);
 
-  if (!Array.isArray(students)) {
-    return <div>Invalid student data</div>;
-  }
+  // if (!Array.isArray(students)) {
+  //   return <div>Invalid student data</div>;
+  // }
 
   return (
     <>

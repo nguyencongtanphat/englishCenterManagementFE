@@ -6,6 +6,7 @@ import deleteSVG from "../../../assets/images/global/delete.svg";
 import editSVG from "../../../assets/images/global/edit.svg";
 import Loading from "../components/Loading";
 import NoData from "./NoData";
+import startOfDay from "date-fns/fp/startOfDay/index.js";
 
 function mathRound(number) {
   return Math.round(number * 100) / 100;
@@ -20,12 +21,13 @@ const ClassesStudentList = ({ std }) => {
     // setTimeout(() => {
     //   setIsLoading(false);
     // }, 1600);
-    
-    if (std.length > 0) {
+
+    if (std) {
       setIsLoading(false);
     }
-  }, [ std]);
+  }, [std]);
 
+  console.log("render :", std)
   return (
     <div style={{ borderRadius: "0px" }}>
       <Row>
@@ -34,9 +36,9 @@ const ClassesStudentList = ({ std }) => {
         </Col>
       </Row>
 
-      {isLoading  ? (
-        <Loading isLoading={isLoading} />
-      ) : (
+      {isLoading && <Loading isLoading={isLoading} />}
+
+      {std?.length > 0 && !isLoading && (
         <Table
           bordered
           hover
@@ -178,9 +180,7 @@ const ClassesStudentList = ({ std }) => {
         </Table>
       )}
 
-      {/* {std.length > 0 && !isLoading && (
-       
-      )} */}
+      {std?.length === 0 && !isLoading && <NoData/>}
     </div>
   );
 };
