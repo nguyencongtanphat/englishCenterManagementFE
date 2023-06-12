@@ -32,14 +32,17 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Introduction />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
     element: <Login />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/forgotpassword",
     element: <ForgotPassword />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/app",
@@ -64,10 +67,12 @@ const router = createBrowserRouter([
             index: true,
             path: "",
             element: <ClassesPage />,
+            errorElement: <ErrorPage />,
           },
           {
             path: "add",
             element: <ClassesAdd />,
+            errorElement: <ErrorPage />,
           },
           {
             path: ":classId",
@@ -76,22 +81,27 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <ClassDashboard />,
+                errorElement: <ErrorPage />,
               },
               {
                 path: "dashboard",
                 element: <ClassDashboard />,
+                errorElement: <ErrorPage />,
               },
               {
                 path: "attendant",
                 element: <ClassAttendant />,
+                errorElement: <ErrorPage />,
               },
               {
                 path: "periodic-test",
                 element: <ClassPeriodicTest />,
+                errorElement: <ErrorPage />,
               },
               {
                 path: "homework",
                 element: <ClassHomework />,
+                errorElement: <ErrorPage />,
               },
             ],
           },
@@ -100,26 +110,32 @@ const router = createBrowserRouter([
       {
         path: "students",
         element: <StudentsPage />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "newteacher",
         element: <NewTeacher />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "students/new",
         element: <NewStudent />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "students/:studentId",
         element: <StudentDetails />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "teachers",
         element: <TeachersPage />,
+        errorElement: <ErrorPage />,
       },
       {
         path: "teachers/:id",
         element: <TeacherDetail />,
+        errorElement: <ErrorPage />,
       },
     ],
   },
