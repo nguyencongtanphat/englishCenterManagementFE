@@ -16,7 +16,7 @@ function ListStudentView({ topStudents }) {
               as="li"
               className="d-flex justify-content-between align-items-start border-0"
               onClick={() => {
-                navigate(`/students/${student.Student?._id}`);
+                navigate(`/app/students/${student.Student?._id}`);
               }}
               style={{ cursor: "pointer" }}
             >
