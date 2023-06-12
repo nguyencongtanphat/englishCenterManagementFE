@@ -17,6 +17,7 @@ import { faTimesCircle } from "@fortawesome/fontawesome-free-solid";
 import Notification from "./../components/Notification";
 import Loading from "../components/Loading";
 import AddTest from "../components/AddTest";
+import MyBackdrop from "../../../globalComponents/Backdrop";
 
 function ClassPeriodicTest() {
   const [tests, setTests] = useState([]);
@@ -29,6 +30,7 @@ function ClassPeriodicTest() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAddTest, setIsAddTest] = useState(false);
   const [defaultDateAddTest, setDefaultDateAddTest] = useState(new Date());
+  const [isSavingToDb, setIsSavingToDb] = useState(false);
 
   const params = useParams();
   const { classId } = params;
@@ -164,7 +166,15 @@ function ClassPeriodicTest() {
   const completeUpdateHandler = async () => {
     setIsEditable(false);
     setIsUpdating(false);
-    await StatisticsService.postPeriodicTest(classId, periodicTests);
+    setIsSavingToDb(true);
+    try {
+      await StatisticsService.postPeriodicTest(classId, periodicTests);
+      setIsSavingToDb(false);
+    } catch (e) {
+      setIsSavingToDb(false)
+      throw new Error(e.message)
+    }
+    
   };
 
   const deletePeriodicTestHandler = async (date) => {
@@ -329,6 +339,12 @@ function ClassPeriodicTest() {
           classId={students[0].ClassID}
           defaultDate={defaultDateAddTest}
         />
+      )}
+
+      {isSavingToDb && (
+        <MyBackdrop>
+          <Loading isLoading={true} />
+        </MyBackdrop>
       )}
     </Container>
   );

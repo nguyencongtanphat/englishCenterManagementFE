@@ -36,7 +36,7 @@ class StudentService {
     let urlString =
       "http://localhost:3001/api/v1/student-report/total/?istop=true";
     urlString = classid ? urlString + "&classid=" + classid : urlString;
-    const res =  await axios.get(urlString);
+    const res = await axios.get(urlString);
     return res.data.ResponseResult.Result;
   }
 
@@ -140,10 +140,15 @@ export class ClassService {
     }
   }
 
-  static async getPieChartData({ classId = null, month = null, date = null, isPeriod = null}={}) {
-    try{
-       console.log("getPieChartData month date", month, date);
-       if(date){
+  static async getPieChartData({
+    classId = null,
+    month = null,
+    date = null,
+    isPeriod = null,
+  } = {}) {
+    try {
+      console.log("getPieChartData month date", month, date);
+      if (date) {
         console.log("date here");
         console.log(
           "url pie chart class date",
@@ -153,9 +158,9 @@ export class ClassService {
         );
         let currentReport;
         const response = await axios.get(
-           `${url}/class-report?classId=${classId}` +
-             "&date=" +
-             date.slice(0, 10)
+          `${url}/class-report?classId=${classId}` +
+            "&date=" +
+            date.slice(0, 10)
         );
         const reports = response.data.ResponseResult.Result.reports;
         reports.forEach((report) => {
@@ -170,7 +175,7 @@ export class ClassService {
           { name: "Not-Good", value: currentReport["BadLevel"] },
         ];
         return data;
-       }else if(month){
+      } else if (month) {
         console.log(
           "url pie chart month",
           `${url}/student-report/monthly/?month=${month}&classid=${classId}`
@@ -195,34 +200,34 @@ export class ClassService {
           { name: "Not-Good", value: badNumber },
         ];
         return data;
-       }else{
-         console.log(
-           "url pie chart period",
-           `${url}/student-report/monthly/?classid=${classId}`
-         );
-         const response = await axios.get(
-           `${url}/student-report/monthly/?classid=${classId}`
-         );
-         const reports = response.data.ResponseResult.Result.Reports;
+      } else {
+        console.log(
+          "url pie chart period",
+          `${url}/student-report/monthly/?classid=${classId}`
+        );
+        const response = await axios.get(
+          `${url}/student-report/monthly/?classid=${classId}`
+        );
+        const reports = response.data.ResponseResult.Result.Reports;
 
-         let goodNumber = 0;
-         let mediumNumber = 0;
-         let badNumber = 0;
-         reports.forEach((report) => {
-           if (report.AvgTotalScore >= 80) goodNumber++;
-           else if (report.AvgTotalScore < 80 && report.AvgTotalScore >= 65)
-             mediumNumber++;
-           else badNumber++;
-         });
-         const data = [
-           { name: "Good", value: goodNumber },
-           { name: "Medium", value: mediumNumber },
-           { name: "Not-Good", value: badNumber },
-         ];
-         return data;
-       }
-    }catch(e){
-      console.log("errore", e)
+        let goodNumber = 0;
+        let mediumNumber = 0;
+        let badNumber = 0;
+        reports.forEach((report) => {
+          if (report.AvgTotalScore >= 80) goodNumber++;
+          else if (report.AvgTotalScore < 80 && report.AvgTotalScore >= 65)
+            mediumNumber++;
+          else badNumber++;
+        });
+        const data = [
+          { name: "Good", value: goodNumber },
+          { name: "Medium", value: mediumNumber },
+          { name: "Not-Good", value: badNumber },
+        ];
+        return data;
+      }
+    } catch (e) {
+      console.log("errore", e);
     }
   }
 
@@ -246,8 +251,6 @@ export class ClassService {
     }
   }
 }
-
-
 
 export class HomeService {
   static async getDateCenter() {
@@ -299,8 +302,8 @@ export class HomeService {
         let mediumNumber = 0;
         let badNumber = 0;
         reports.forEach((report) => {
-          if (report.AvgTotalScore>= 80) goodNumber++;
-          else if (report.AvgTotalScore< 80 && report.AvgTotalScore>= 65)
+          if (report.AvgTotalScore >= 80) goodNumber++;
+          else if (report.AvgTotalScore < 80 && report.AvgTotalScore >= 65)
             mediumNumber++;
           else badNumber++;
         });
@@ -334,14 +337,9 @@ export class HomeService {
           { name: "Not-Good", value: currentReport["BadLevel"] },
         ];
         return data;
-      } else{
-        console.log(
-          "url pie chart period",
-          `${url}/student-report/monthly/`
-        );
-        const response = await axios.get(
-          `${url}/student-report/monthly/`
-        );
+      } else {
+        console.log("url pie chart period", `${url}/student-report/monthly/`);
+        const response = await axios.get(`${url}/student-report/monthly/`);
         const reports = response.data.ResponseResult.Result.Reports;
 
         let goodNumber = 0;
@@ -416,92 +414,141 @@ export class HomeService {
 }
 
 export class StatisticsService {
-  // replace ${classId} with classId later
-  static getAttendances(classId) {
-    return axios.get(
-      `http://localhost:3001/api/v1/statistics/attendances/${classId}`
-    );
+  static async getAttendances(classId) {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/api/v1/statistics/attendances/${classId}`
+      );
+      return res;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 
-  static getHomework(classId) {
-    return axios.get(
-      `http://localhost:3001/api/v1/statistics/homework/${classId}`
-    );
+  static async getHomework(classId) {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/api/v1/statistics/homework/${classId}`
+      );
+      return res;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 
-  static getPeriodicTests(classId) {
-    return axios.get(
-      `http://localhost:3001/api/v1/statistics/tests/${classId}`
-    );
+  static async getPeriodicTests(classId) {
+    try {
+      const res = await axios.get(
+        `http://localhost:3001/api/v1/statistics/tests/${classId}`
+      );
+      return res;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 
-  static postAttendances(classId, attendances) {
-    return axios.post(
-      `http://localhost:3001/api/v1/statistics/attendances/${classId}`,
-      {
-        attendances,
-      }
-    );
+  static async postAttendances(classId, attendances) {
+    try {
+      const res = await axios.post(
+        `http://localhost:3001/api/v1/statistics/attendances/${classId}`,
+        {
+          attendances,
+        }
+      );
+      return res;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 
-  static postAttendancesByScanning(classId, studentIds) {
-    return axios.post(
-      `http://localhost:3001/api/v1/statistics/attendances/${classId}/scan`,
-      {
-        studentIds,
-      }
-    );
+  static async postAttendancesByScanning(classId, studentIds) {
+    try {
+      const res = await axios.post(
+        `http://localhost:3001/api/v1/statistics/attendances/${classId}/scan`,
+        {
+          studentIds,
+        }
+      );
+      return res;
+    } catch (e) {
+      throw new Error(e.message);
+    }
   }
 
-  static postPeriodicTest(classId, tests) {
-    return axios.post(
+  static async postPeriodicTest(classId, tests) {
+    try {
+      const res = await axios.post(
       `http://localhost:3001/api/v1/statistics/tests/${classId}`,
       {
         tests,
       }
-    );
+      );
+      return res
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 
-  static postHomeworkTest(classId, homeworks) {
-    return axios.post(
+  static async postHomeworkTest(classId, homeworks) {
+    try {
+      const res = await axios.post(
       `http://localhost:3001/api/v1/statistics/homework/${classId}`,
       {
         homeworks,
       }
-    );
+      );
+      return res
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 
-  static deleteAttendance(classId, date) {
-    return axios.delete(
+  static async deleteAttendance(classId, date) {
+    try {
+      const res = await axios.delete(
       `http://localhost:3001/api/v1/statistics/attendances/${classId}`,
       {
         data: {
           date,
         },
       }
-    );
+      );
+      return res
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 
-  static deletePeriodicTest(classId, date) {
-    return axios.delete(
+  static async deletePeriodicTest(classId, date) {
+    try {
+      const res = await axios.delete(
       `http://localhost:3001/api/v1/statistics/tests/${classId}`,
       {
         data: {
           date,
         },
       }
-    );
+      );
+      return res
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 
-  static deleteHomework(classId, date) {
-    return axios.delete(
+  static async deleteHomework(classId, date) {
+    try {
+      const res = await axios.delete(
       `http://localhost:3001/api/v1/statistics/homework/${classId}`,
       {
         data: {
           date,
         },
       }
-    );
+      );
+      return res
+    } catch (e) {
+      throw new Error(e.message)
+    }
   }
 }
 

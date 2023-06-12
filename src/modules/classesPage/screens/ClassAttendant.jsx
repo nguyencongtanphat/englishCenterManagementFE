@@ -15,6 +15,7 @@ import { faQrcode } from "@fortawesome/fontawesome-free-solid";
 import Notification from "../components/Notification";
 import ScanningPopup from "../components/ScanningPopup";
 import Loading from "../components/Loading";
+import MyBackdrop from "../../../globalComponents/Backdrop";
 
 function ClassAttendant() {
   const [students, setStudents] = useState([]);
@@ -26,6 +27,7 @@ function ClassAttendant() {
   const [isScanning, setIsScanning] = useState(false);
   const [isScanningDisable, setIsScanningDisable] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSavingToDb, setIsSavingToDb] = useState(false);
 
   const params = useParams();
   const { classId } = params;
@@ -165,7 +167,16 @@ function ClassAttendant() {
   const completeUpdateHandler = async () => {
     setIsEditable(false);
     setIsUpdating(false);
-    await StatisticsService.postAttendances(classId, attendances);
+    setIsSavingToDb(true);
+    try {
+      await StatisticsService.postAttendances(classId, attendances);
+      setIsSavingToDb(false);
+    } catch (e) {
+      setIsSavingToDb(false);
+      throw new Error(e.message);
+    }
+
+    setIsSavingToDb(false);
   };
 
   const deleteAttendanceHandler = async (date) => {
@@ -376,6 +387,11 @@ function ClassAttendant() {
           }}
           onSaveScanning={saveScanningHandler}
         />
+      )}
+      {isSavingToDb && (
+        <MyBackdrop>
+          <Loading isLoading={true} />
+        </MyBackdrop>
       )}
     </Container>
   );

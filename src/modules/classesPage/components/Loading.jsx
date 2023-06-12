@@ -8,7 +8,7 @@ function Loading({isLoading}) {
   };
 
   return (
-    <div style={{ marginTop: "16px" }}>
+    <div style={{ marginTop: "16px", zIndex: 100 }}>
       <ClipLoader
         color="#0D6EFD"
         loading={isLoading}
@@ -18,7 +18,7 @@ function Loading({isLoading}) {
         data-testid="loader"
         speedMultiplier={0.8}
       />
-      <p style={{ textAlign: "center", marginTop: "16px" }}>Loading...</p>
+      <p style={{ textAlign: "center", marginTop: "16px" }}>Processing...</p>
     </div>
   );
 }
