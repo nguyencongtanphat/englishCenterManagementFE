@@ -15,7 +15,7 @@ const SidebarMenu = {
       id: 1,
       title: "Dashboard",
       icon: ChartPieIcon,
-      route: "/app",
+      route: "/app/",
     },
     {
       id: 2,

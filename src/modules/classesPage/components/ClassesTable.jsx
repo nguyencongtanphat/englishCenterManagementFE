@@ -36,7 +36,7 @@ function ClassesTable({ classes }) {
   const [classToDelete, setClassToDelete] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   
-  //Search handle
+  //----------- Handle Search Class------------
   const handleSearchChange = (event) => {
     const value = event.target.value;
     setSearchValue(value);
@@ -71,6 +71,7 @@ function ClassesTable({ classes }) {
     }, 400);
   }, [classDeleted]);
 
+  //-----------Hanle Delete Class----------
   const handleDelete = (id) => {
     setClassToDelete(id);
     setShowConfirmation(true);
@@ -96,7 +97,6 @@ function ClassesTable({ classes }) {
         setClassList(classList.filter((cls) => cls._id !== Id));
       }
       setClassDeleted(prevState => !prevState);
-      // alert('Xóa class thành công!');
       window.location.reload();
       
     } 
@@ -117,7 +117,6 @@ function ClassesTable({ classes }) {
     axios
       .get("http://localhost:3001/api/v1/class/")
       .then((res) => {
-        //Đoạn này để lọc danh sách các teacherName bị trùng thì chỉ hiển thị trên dropdown 1 lần
         const allTeachers = res.data.ResponseResult.Result;
         const uniqueTeachers = allTeachers.filter((teacher, index, self) =>
           index === self.findIndex((t) => t.TeacherName === teacher.TeacherName)
@@ -133,7 +132,7 @@ function ClassesTable({ classes }) {
       });
   }, []);
 
-  // hàm xử lý khi filter Teacher
+  // ----------Handle filter Teacher----------
   const handleTeacherChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedTeacher(selectedValue);
@@ -153,7 +152,7 @@ function ClassesTable({ classes }) {
       });
   };
 
-  // hàm xử lý khi Filter Type
+  //----------Filter Type-------------
   const handleTypeChange = (event) => {
     const selectedValue = event.target.value;
     setSelectedType(selectedValue);
@@ -173,9 +172,9 @@ function ClassesTable({ classes }) {
       });
   };
 
-  const handleClassClick = (classId) => {
-    navigate(`/app/classes/${classId}/dashboard`);
-  };
+  // const handleClassClick = (classId) => {
+  //   navigate(`/app/classes/${classId}/dashboard`);
+  // };
 
   return (
     <div>
