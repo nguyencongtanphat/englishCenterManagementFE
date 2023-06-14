@@ -58,7 +58,7 @@ function ClassDashboard() {
       setDatesList(dates);
       setMonthsList(months);
       //set defaut value for date
-      setDate(dates[0]);
+      setDate(dates[dates.length-1]);
     };
     loadData();
   }, [classId]);

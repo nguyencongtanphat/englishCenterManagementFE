@@ -61,7 +61,7 @@ function HomePage() {
       setDatesList(dates);
       setMonthsList(months);
       //set defaut value for date
-      setDate(dates[0])
+      setDate(dates[dates.length-1])
       setClasses(classes)
       setTopStudent(students);
     }
